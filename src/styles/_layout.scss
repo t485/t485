@@ -1,0 +1,130 @@
+@import "variables";
+
+@font-face {
+	font-family: "Nexa Bold";
+	src: url("../fonts/Nexa Bold.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "Proxima Nova Regular";
+	src: url("../fonts/ProximaNova-Regular.otf") format("opentype");
+}
+
+body {
+	font-family: "Proxima Nova Regular", sans-serif;
+}
+
+h1,
+h2,
+h3 {
+	font-family: "Muli", sans-serif;
+}
+
+.navbar-brand {
+	font-family: "Nexa Bold", sans-serif;
+}
+
+.transparent-navbar {
+	@include desktop() {
+		background-color: transparent !important;
+	}
+	@include mobile() {
+		background-color: rgba(0, 0, 0, 0.6) !important;
+		//color: black !important;
+	}
+}
+
+.transparent-footer {
+	background-color: transparent !important;
+}
+
+.transparent-footer p,
+.transparent-footer span,
+.transparent-footer a {
+	color: white;
+}
+
+div.main {
+	min-height: 100vh;
+	padding-bottom: 60px;
+}
+
+div.full-height {
+	min-height: 100vh;
+}
+
+// Text with a line
+.text-divider {
+	width: 100%;
+	text-align: center;
+	border-bottom: 1px solid #000;
+	line-height: 0.1em;
+	margin: 10px 0 20px;
+}
+
+.text-divider-inner {
+	background: #fff;
+	padding: 0 10px;
+}
+
+// Style ALL links, even without href (bootstrap doesnt do this by default)
+a:not([href]) {
+	color: #007bff;
+	text-decoration: none;
+	background-color: transparent;
+	cursor: grab;
+}
+
+a:not([href]):hover {
+	color: #0056b3;
+	text-decoration: underline;
+}
+
+a.link-no-style {
+	&:hover {
+		text-decoration: none;
+	}
+}
+
+.footer-col {
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	align-items: center;
+
+	footer {
+		display: flex;
+		position: relative;
+		bottom: 0;
+		margin-top: -60px;
+		height: 60px;
+		clear: both;
+		@include desktop() {
+			background-color: $color-secondary;
+			padding: 0px 10px;
+		}
+
+		color: rgba(0, 0, 0, 0.9);
+		justify-content: center;
+		width: 100%;
+
+		span {
+			align-self: center;
+			text-align: center;
+		}
+	}
+}
+
+@include desktop() {
+	.main-background {
+		background-color: $color-secondary;
+	}
+
+	.main-card {
+		padding: 30px;
+		background-color: white;
+		border-radius: 8px;
+		box-shadow: 3px 3px 5px 1px #ccc;
+		margin-bottom: 30px;
+	}
+}

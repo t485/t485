@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"sourceMap": true,
+		"noImplicitAny": true,
+		"module": "commonjs",
+		"target": "es6",
+		"jsx": "react",
+		"lib": ["dom", "esnext"],
+		"esModuleInterop": true,
+		"noUnusedLocals": false,
+		"typeRoots": ["node_modules/@types"]
+	},
+	"exclude": ["node_modules", "public", ".cache"]
+}

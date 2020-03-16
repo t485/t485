@@ -1,0 +1,28 @@
+import { Meta, Story, Props, Preview } from '@storybook/addon-docs/blocks';
+import Layout from './Layout';
+import { withKnobs, text, boolean, number } from "@storybook/addon-knobs"
+import {withSmartKnobs} from "storybook-addon-smart-knobs";
+
+<Meta title="layout/Layout" component={Layout} decorators={[withKnobs(), withSmartKnobs()]} />
+
+# Layout
+The Layout is the default frame for page content. It automatically renders the navbar and a sticky footer, and all content will
+be wrapped in a container.
+
+## Props
+<Props of={Layout} />
+
+## Demo
+### Basic
+
+<Preview>
+    <Story name="basic">
+        <Layout>
+           <h1>Hello, World!</h1>
+           <p>The footer will stick to the bottom of the page only if there isn't enough content to push it down further. A classic sticky footer!</p>
+        </Layout>
+    </Story>
+</Preview>
+
+
+

@@ -1,0 +1,948 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`It matches the snapshot with no title or description 1`] = `
+<VotingGroup
+  onSelectChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "Option One",
+        "value": "1",
+      },
+      Object {
+        "label": "Option Two",
+        "value": 2,
+      },
+      Object {
+        "label": "Option Three",
+        "value": "thiisareallylongstringvalue",
+      },
+    ]
+  }
+  value={
+    Array [
+      "1",
+      2,
+    ]
+  }
+>
+  <div>
+    <FormCheck
+      checked={true}
+      custom={true}
+      disabled={false}
+      id="check-0-string-1"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      key="0"
+      label="Option One"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    >
+      <div
+        className="custom-control custom-checkbox"
+      >
+        <FormCheckInput
+          as="input"
+          checked={true}
+          disabled={false}
+          isInvalid={false}
+          isStatic={false}
+          isValid={false}
+          onChange={[Function]}
+          type="checkbox"
+        >
+          <input
+            checked={true}
+            className="custom-control-input"
+            disabled={false}
+            id="check-0-string-1"
+            onChange={[Function]}
+            type="checkbox"
+          />
+        </FormCheckInput>
+        <FormCheckLabel
+          title=""
+        >
+          <label
+            className="custom-control-label"
+            htmlFor="check-0-string-1"
+            title=""
+          >
+            Option One
+          </label>
+        </FormCheckLabel>
+      </div>
+    </FormCheck>
+    <FormCheck
+      checked={true}
+      custom={true}
+      disabled={false}
+      id="check-1-number-2"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      key="1"
+      label="Option Two"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    >
+      <div
+        className="custom-control custom-checkbox"
+      >
+        <FormCheckInput
+          as="input"
+          checked={true}
+          disabled={false}
+          isInvalid={false}
+          isStatic={false}
+          isValid={false}
+          onChange={[Function]}
+          type="checkbox"
+        >
+          <input
+            checked={true}
+            className="custom-control-input"
+            disabled={false}
+            id="check-1-number-2"
+            onChange={[Function]}
+            type="checkbox"
+          />
+        </FormCheckInput>
+        <FormCheckLabel
+          title=""
+        >
+          <label
+            className="custom-control-label"
+            htmlFor="check-1-number-2"
+            title=""
+          >
+            Option Two
+          </label>
+        </FormCheckLabel>
+      </div>
+    </FormCheck>
+    <FormCheck
+      checked={false}
+      custom={true}
+      disabled={false}
+      id="check-2-string-thiisareallylongstringvalue"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      key="2"
+      label="Option Three"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    >
+      <div
+        className="custom-control custom-checkbox"
+      >
+        <FormCheckInput
+          as="input"
+          checked={false}
+          disabled={false}
+          isInvalid={false}
+          isStatic={false}
+          isValid={false}
+          onChange={[Function]}
+          type="checkbox"
+        >
+          <input
+            checked={false}
+            className="custom-control-input"
+            disabled={false}
+            id="check-2-string-thiisareallylongstringvalue"
+            onChange={[Function]}
+            type="checkbox"
+          />
+        </FormCheckInput>
+        <FormCheckLabel
+          title=""
+        >
+          <label
+            className="custom-control-label"
+            htmlFor="check-2-string-thiisareallylongstringvalue"
+            title=""
+          >
+            Option Three
+          </label>
+        </FormCheckLabel>
+      </div>
+    </FormCheck>
+  </div>
+</VotingGroup>
+`;
+
+exports[`It matches the snapshot with title and description 1`] = `
+<VotingGroup
+  onSelectChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "Option One",
+        "value": "1",
+      },
+      Object {
+        "label": "Option Two",
+        "value": 2,
+      },
+      Object {
+        "label": "Option Three",
+        "value": "thiisareallylongstringvalue",
+      },
+    ]
+  }
+  value={
+    Array [
+      "1",
+      2,
+    ]
+  }
+>
+  <div>
+    <FormCheck
+      checked={true}
+      custom={true}
+      disabled={false}
+      id="check-0-string-1"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      key="0"
+      label="Option One"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    >
+      <div
+        className="custom-control custom-checkbox"
+      >
+        <FormCheckInput
+          as="input"
+          checked={true}
+          disabled={false}
+          isInvalid={false}
+          isStatic={false}
+          isValid={false}
+          onChange={[Function]}
+          type="checkbox"
+        >
+          <input
+            checked={true}
+            className="custom-control-input"
+            disabled={false}
+            id="check-0-string-1"
+            onChange={[Function]}
+            type="checkbox"
+          />
+        </FormCheckInput>
+        <FormCheckLabel
+          title=""
+        >
+          <label
+            className="custom-control-label"
+            htmlFor="check-0-string-1"
+            title=""
+          >
+            Option One
+          </label>
+        </FormCheckLabel>
+      </div>
+    </FormCheck>
+    <FormCheck
+      checked={true}
+      custom={true}
+      disabled={false}
+      id="check-1-number-2"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      key="1"
+      label="Option Two"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    >
+      <div
+        className="custom-control custom-checkbox"
+      >
+        <FormCheckInput
+          as="input"
+          checked={true}
+          disabled={false}
+          isInvalid={false}
+          isStatic={false}
+          isValid={false}
+          onChange={[Function]}
+          type="checkbox"
+        >
+          <input
+            checked={true}
+            className="custom-control-input"
+            disabled={false}
+            id="check-1-number-2"
+            onChange={[Function]}
+            type="checkbox"
+          />
+        </FormCheckInput>
+        <FormCheckLabel
+          title=""
+        >
+          <label
+            className="custom-control-label"
+            htmlFor="check-1-number-2"
+            title=""
+          >
+            Option Two
+          </label>
+        </FormCheckLabel>
+      </div>
+    </FormCheck>
+    <FormCheck
+      checked={false}
+      custom={true}
+      disabled={false}
+      id="check-2-string-thiisareallylongstringvalue"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      key="2"
+      label="Option Three"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    >
+      <div
+        className="custom-control custom-checkbox"
+      >
+        <FormCheckInput
+          as="input"
+          checked={false}
+          disabled={false}
+          isInvalid={false}
+          isStatic={false}
+          isValid={false}
+          onChange={[Function]}
+          type="checkbox"
+        >
+          <input
+            checked={false}
+            className="custom-control-input"
+            disabled={false}
+            id="check-2-string-thiisareallylongstringvalue"
+            onChange={[Function]}
+            type="checkbox"
+          />
+        </FormCheckInput>
+        <FormCheckLabel
+          title=""
+        >
+          <label
+            className="custom-control-label"
+            htmlFor="check-2-string-thiisareallylongstringvalue"
+            title=""
+          >
+            Option Three
+          </label>
+        </FormCheckLabel>
+      </div>
+    </FormCheck>
+  </div>
+</VotingGroup>
+`;
+
+exports[`It renders maxVotes properly It matches the snapshot with a valid nonzero selection 1`] = `
+<VotingGroup
+  description="A nice description can go here."
+  maxVotes={2}
+  onSelectChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "Option One",
+        "value": 1,
+      },
+      Object {
+        "label": "Option Two",
+        "value": 2,
+      },
+      Object {
+        "label": "Option Three",
+        "value": 3,
+      },
+    ]
+  }
+  title="Title"
+  value={
+    Array [
+      1,
+      2,
+    ]
+  }
+>
+  <div>
+    <h4
+      className="mb-1 votingGroupTitle"
+    >
+      Title
+    </h4>
+    <p
+      className="text-muted mb-2 mt-1 votingGroupDescription"
+    >
+      A nice description can go here.
+    </p>
+    <p
+      className="mt-2 mb-1 votingGroupMaxVotes text-muted"
+    >
+      2
+       of 
+      2
+       votes used. You are not required to use all your votes.
+    </p>
+    <FormCheck
+      checked={true}
+      custom={true}
+      disabled={false}
+      id="check-0-number-1"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      key="0"
+      label="Option One"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    >
+      <div
+        className="custom-control custom-checkbox"
+      >
+        <FormCheckInput
+          as="input"
+          checked={true}
+          disabled={false}
+          isInvalid={false}
+          isStatic={false}
+          isValid={false}
+          onChange={[Function]}
+          type="checkbox"
+        >
+          <input
+            checked={true}
+            className="custom-control-input"
+            disabled={false}
+            id="check-0-number-1"
+            onChange={[Function]}
+            type="checkbox"
+          />
+        </FormCheckInput>
+        <FormCheckLabel
+          title=""
+        >
+          <label
+            className="custom-control-label"
+            htmlFor="check-0-number-1"
+            title=""
+          >
+            Option One
+          </label>
+        </FormCheckLabel>
+      </div>
+    </FormCheck>
+    <FormCheck
+      checked={true}
+      custom={true}
+      disabled={false}
+      id="check-1-number-2"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      key="1"
+      label="Option Two"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    >
+      <div
+        className="custom-control custom-checkbox"
+      >
+        <FormCheckInput
+          as="input"
+          checked={true}
+          disabled={false}
+          isInvalid={false}
+          isStatic={false}
+          isValid={false}
+          onChange={[Function]}
+          type="checkbox"
+        >
+          <input
+            checked={true}
+            className="custom-control-input"
+            disabled={false}
+            id="check-1-number-2"
+            onChange={[Function]}
+            type="checkbox"
+          />
+        </FormCheckInput>
+        <FormCheckLabel
+          title=""
+        >
+          <label
+            className="custom-control-label"
+            htmlFor="check-1-number-2"
+            title=""
+          >
+            Option Two
+          </label>
+        </FormCheckLabel>
+      </div>
+    </FormCheck>
+    <FormCheck
+      checked={false}
+      custom={true}
+      disabled={false}
+      id="check-2-number-3"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      key="2"
+      label="Option Three"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    >
+      <div
+        className="custom-control custom-checkbox"
+      >
+        <FormCheckInput
+          as="input"
+          checked={false}
+          disabled={false}
+          isInvalid={false}
+          isStatic={false}
+          isValid={false}
+          onChange={[Function]}
+          type="checkbox"
+        >
+          <input
+            checked={false}
+            className="custom-control-input"
+            disabled={false}
+            id="check-2-number-3"
+            onChange={[Function]}
+            type="checkbox"
+          />
+        </FormCheckInput>
+        <FormCheckLabel
+          title=""
+        >
+          <label
+            className="custom-control-label"
+            htmlFor="check-2-number-3"
+            title=""
+          >
+            Option Three
+          </label>
+        </FormCheckLabel>
+      </div>
+    </FormCheck>
+  </div>
+</VotingGroup>
+`;
+
+exports[`It renders maxVotes properly It matches the snapshot with an invalid selection 1`] = `
+<VotingGroup
+  description="A nice description can go here."
+  maxVotes={1}
+  onSelectChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "Option One",
+        "value": 1,
+      },
+      Object {
+        "label": "Option Two",
+        "value": 2,
+      },
+      Object {
+        "label": "Option Three",
+        "value": 3,
+      },
+    ]
+  }
+  title="Title"
+  value={
+    Array [
+      1,
+      2,
+    ]
+  }
+>
+  <div>
+    <h4
+      className="mb-1 votingGroupTitle"
+    >
+      Title
+    </h4>
+    <p
+      className="text-muted mb-2 mt-1 votingGroupDescription"
+    >
+      A nice description can go here.
+    </p>
+    <p
+      className="mt-2 mb-1 votingGroupMaxVotes text-danger"
+    >
+      2
+       of 
+      1
+       votes used. You are not required to use all your votes.
+    </p>
+    <FormCheck
+      checked={true}
+      custom={true}
+      disabled={false}
+      id="check-0-number-1"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      key="0"
+      label="Option One"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    >
+      <div
+        className="custom-control custom-checkbox"
+      >
+        <FormCheckInput
+          as="input"
+          checked={true}
+          disabled={false}
+          isInvalid={false}
+          isStatic={false}
+          isValid={false}
+          onChange={[Function]}
+          type="checkbox"
+        >
+          <input
+            checked={true}
+            className="custom-control-input"
+            disabled={false}
+            id="check-0-number-1"
+            onChange={[Function]}
+            type="checkbox"
+          />
+        </FormCheckInput>
+        <FormCheckLabel
+          title=""
+        >
+          <label
+            className="custom-control-label"
+            htmlFor="check-0-number-1"
+            title=""
+          >
+            Option One
+          </label>
+        </FormCheckLabel>
+      </div>
+    </FormCheck>
+    <FormCheck
+      checked={true}
+      custom={true}
+      disabled={false}
+      id="check-1-number-2"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      key="1"
+      label="Option Two"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    >
+      <div
+        className="custom-control custom-checkbox"
+      >
+        <FormCheckInput
+          as="input"
+          checked={true}
+          disabled={false}
+          isInvalid={false}
+          isStatic={false}
+          isValid={false}
+          onChange={[Function]}
+          type="checkbox"
+        >
+          <input
+            checked={true}
+            className="custom-control-input"
+            disabled={false}
+            id="check-1-number-2"
+            onChange={[Function]}
+            type="checkbox"
+          />
+        </FormCheckInput>
+        <FormCheckLabel
+          title=""
+        >
+          <label
+            className="custom-control-label"
+            htmlFor="check-1-number-2"
+            title=""
+          >
+            Option Two
+          </label>
+        </FormCheckLabel>
+      </div>
+    </FormCheck>
+    <FormCheck
+      checked={false}
+      custom={true}
+      disabled={false}
+      id="check-2-number-3"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      key="2"
+      label="Option Three"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    >
+      <div
+        className="custom-control custom-checkbox"
+      >
+        <FormCheckInput
+          as="input"
+          checked={false}
+          disabled={false}
+          isInvalid={false}
+          isStatic={false}
+          isValid={false}
+          onChange={[Function]}
+          type="checkbox"
+        >
+          <input
+            checked={false}
+            className="custom-control-input"
+            disabled={false}
+            id="check-2-number-3"
+            onChange={[Function]}
+            type="checkbox"
+          />
+        </FormCheckInput>
+        <FormCheckLabel
+          title=""
+        >
+          <label
+            className="custom-control-label"
+            htmlFor="check-2-number-3"
+            title=""
+          >
+            Option Three
+          </label>
+        </FormCheckLabel>
+      </div>
+    </FormCheck>
+  </div>
+</VotingGroup>
+`;
+
+exports[`It renders maxVotes properly It matches the snapshot with no selection 1`] = `
+<VotingGroup
+  description="A nice description can go here."
+  maxVotes={2}
+  onSelectChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "Option One",
+        "value": 1,
+      },
+      Object {
+        "label": "Option Two",
+        "value": 2,
+      },
+      Object {
+        "label": "Option Three",
+        "value": 3,
+      },
+    ]
+  }
+  title="Title"
+>
+  <div>
+    <h4
+      className="mb-1 votingGroupTitle"
+    >
+      Title
+    </h4>
+    <p
+      className="text-muted mb-2 mt-1 votingGroupDescription"
+    >
+      A nice description can go here.
+    </p>
+    <p
+      className="mt-2 mb-1 votingGroupMaxVotes text-muted"
+    >
+      0
+       of 
+      2
+       votes used. You are not required to use all your votes.
+    </p>
+    <FormCheck
+      checked={false}
+      custom={true}
+      disabled={false}
+      id="check-0-number-1"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      key="0"
+      label="Option One"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    >
+      <div
+        className="custom-control custom-checkbox"
+      >
+        <FormCheckInput
+          as="input"
+          checked={false}
+          disabled={false}
+          isInvalid={false}
+          isStatic={false}
+          isValid={false}
+          onChange={[Function]}
+          type="checkbox"
+        >
+          <input
+            checked={false}
+            className="custom-control-input"
+            disabled={false}
+            id="check-0-number-1"
+            onChange={[Function]}
+            type="checkbox"
+          />
+        </FormCheckInput>
+        <FormCheckLabel
+          title=""
+        >
+          <label
+            className="custom-control-label"
+            htmlFor="check-0-number-1"
+            title=""
+          >
+            Option One
+          </label>
+        </FormCheckLabel>
+      </div>
+    </FormCheck>
+    <FormCheck
+      checked={false}
+      custom={true}
+      disabled={false}
+      id="check-1-number-2"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      key="1"
+      label="Option Two"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    >
+      <div
+        className="custom-control custom-checkbox"
+      >
+        <FormCheckInput
+          as="input"
+          checked={false}
+          disabled={false}
+          isInvalid={false}
+          isStatic={false}
+          isValid={false}
+          onChange={[Function]}
+          type="checkbox"
+        >
+          <input
+            checked={false}
+            className="custom-control-input"
+            disabled={false}
+            id="check-1-number-2"
+            onChange={[Function]}
+            type="checkbox"
+          />
+        </FormCheckInput>
+        <FormCheckLabel
+          title=""
+        >
+          <label
+            className="custom-control-label"
+            htmlFor="check-1-number-2"
+            title=""
+          >
+            Option Two
+          </label>
+        </FormCheckLabel>
+      </div>
+    </FormCheck>
+    <FormCheck
+      checked={false}
+      custom={true}
+      disabled={false}
+      id="check-2-number-3"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      key="2"
+      label="Option Three"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    >
+      <div
+        className="custom-control custom-checkbox"
+      >
+        <FormCheckInput
+          as="input"
+          checked={false}
+          disabled={false}
+          isInvalid={false}
+          isStatic={false}
+          isValid={false}
+          onChange={[Function]}
+          type="checkbox"
+        >
+          <input
+            checked={false}
+            className="custom-control-input"
+            disabled={false}
+            id="check-2-number-3"
+            onChange={[Function]}
+            type="checkbox"
+          />
+        </FormCheckInput>
+        <FormCheckLabel
+          title=""
+        >
+          <label
+            className="custom-control-label"
+            htmlFor="check-2-number-3"
+            title=""
+          >
+            Option Three
+          </label>
+        </FormCheckLabel>
+      </div>
+    </FormCheck>
+  </div>
+</VotingGroup>
+`;

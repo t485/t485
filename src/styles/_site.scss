@@ -1,0 +1,12 @@
+// Style ALL links, even without href (bootstrap doesnt do this by default)
+a:not([href]) {
+	color: #007bff;
+	text-decoration: none;
+	background-color: transparent;
+	cursor: grab;
+}
+
+a:not([href]):hover {
+	color: #0056b3;
+	text-decoration: underline;
+}

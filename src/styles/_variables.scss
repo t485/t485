@@ -1,0 +1,16 @@
+$color-primary: green;
+$color-secondary: #eeeeee; // #e1e6ea; // TODO: or #f8f9fa or #eee
+
+// Breakpoint
+$mobile-end: 799px;
+
+@mixin mobile {
+	@media screen and (max-width: $mobile-end) {
+		@content;
+	}
+}
+@mixin desktop {
+	@media not screen, (min-width: $mobile-end + 1) {
+		@content;
+	}
+}

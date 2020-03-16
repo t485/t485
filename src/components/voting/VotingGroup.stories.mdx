@@ -1,0 +1,49 @@
+import { Meta, Story, Props, Preview } from '@storybook/addon-docs/blocks';
+import VotingGroup from './VotingGroup';
+import { withKnobs, text, boolean, number } from "@storybook/addon-knobs"
+import {action} from "@storybook/addon-actions"
+import {withSmartKnobs} from "storybook-addon-smart-knobs"
+
+<Meta title="voting/VotingGroup" component={VotingGroup} decorators={[withKnobs(), withSmartKnobs()]} />
+
+# VotingGroup
+A voting group offers a collection of checkbox inputs for a grouped set of options, with optional title, description, and validation constraints.
+
+## Props
+<Props of={VotingGroup} />
+
+## Demo
+### Basic
+
+<Preview>
+    <Story name="basic">
+        <VotingGroup
+         options={[
+            {label:"Option 1", "value":"1"},
+            {label:"Option 2", "value":"2"},
+            {label:"Option 3", "value":"3"}
+         ]}
+         onSelect={action("Selected")}
+         />
+    </Story>
+</Preview>
+
+### Full
+
+<Preview>
+    <Story name="title, description, and a few selected">
+            <VotingGroup
+            title="A cool title"
+            description="A very nice, slightly long description that should be formatted grey."
+             options={[
+                {label:"Option 1", "value":"1"},
+                {label:"Option 2", "value":"2"},
+                {label:"Option 3", "value":"3"}
+             ]}
+             onSelect={action("Selected")}
+             value={["1","3"]}
+             />
+        </Story>
+</Preview>
+
+

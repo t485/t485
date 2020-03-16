@@ -1,0 +1,12 @@
+@import "variables";
+
+#site-navbar {
+	&:not(.transparent-navbar) {
+		background-color: $color-primary !important;
+		box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+	}
+	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
+	z-index: 100;
+}
