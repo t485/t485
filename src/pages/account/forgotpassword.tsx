@@ -4,7 +4,7 @@ import { Button, Form } from "react-bootstrap";
 import { Field, Formik, FormikBag } from "formik";
 import * as Yup from "yup";
 import firebase from "../../components/server/firebase";
-import AuthContinueState from "../../components/auth/AuthContinueState";
+import { AuthContinueState } from "../../components/auth/AuthContinueState";
 
 const ForgotPasswordPage = ({ location }): ReactElement => {
 	const continueData = location.state as AuthContinueState;
