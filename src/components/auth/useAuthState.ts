@@ -2,8 +2,11 @@ import { useEffect, useReducer, useState } from "react";
 import { auth, User } from "firebase";
 import firebase from "../server/firebase";
 
-
-export default function useAuthState(): [User | undefined, boolean, auth.Error | undefined] {
+export default function useAuthState(): [
+	User | undefined,
+	boolean,
+	auth.Error | undefined
+] {
 	const [auth, setAuth] = useState<undefined | auth.Auth>(undefined);
 
 	interface State {

@@ -1,13 +1,17 @@
-import React, {ReactElement, ReactNode} from "react";
-import {Alert, Button, Form, Table} from "react-bootstrap";
-import {Layout, SEO} from "../components/layout";
+import React, { ReactElement, ReactNode } from "react";
+import { Alert, Button, Form, Table } from "react-bootstrap";
+import { Layout, SEO } from "../components/layout";
 import NewPassword from "../components/auth/NewPassword";
-import {navigate} from "gatsby";
-import {AuthContinueState, AuthReturnState, useAuthState,} from "../components/auth";
-import {Field, Formik, FormikBag} from "formik";
+import { navigate } from "gatsby";
+import {
+	AuthContinueState,
+	AuthReturnState,
+	useAuthState,
+} from "../components/auth";
+import { Field, Formik, FormikBag } from "formik";
 import * as Yup from "yup";
 import Mailcheck from "mailcheck";
-import {User} from "firebase";
+import { User } from "firebase";
 // const UpdateDisplayNameForm = (): ReactElement => {
 // 	const [user, loading, error] = useAuthState(firebase.auth())
 // 	const [name, setName] = React.useState(user?.displayName || "Loading...")
@@ -50,17 +54,17 @@ interface AccountDetailFieldProps {
 }
 
 const AccountDetailField = ({
-	                            name,
-	                            children,
-	                            renderIf,
-	                            empty,
-                            }: AccountDetailFieldProps): ReactElement => {
+	name,
+	children,
+	renderIf,
+	empty,
+}: AccountDetailFieldProps): ReactElement => {
 	if (renderIf === false) return <></>;
 	// if renderIf is undefined, don't return nothing
 	if (empty) {
 		return (
 			<tr>
-				<td colSpan={2}/>
+				<td colSpan={2} />
 			</tr>
 		);
 	}
@@ -91,12 +95,12 @@ const AccountDetailField = ({
 };
 
 const AccountDetails = ({
-	                        user,
-	                        editable,
-	                        onEdit,
-	                        onCancel,
-	                        onSuccess,
-                        }: AccountDetailsProps): ReactElement => {
+	user,
+	editable,
+	onEdit,
+	onCancel,
+	onSuccess,
+}: AccountDetailsProps): ReactElement => {
 	interface FormData {
 		newEmail: string;
 		newPassword: string;
@@ -104,8 +108,8 @@ const AccountDetails = ({
 	}
 
 	const handleSubmit = (
-		{newPassword, confirmNewPassword, newEmail}: FormData,
-		{setSubmitting, setErrors}: FormikBag<FormData, FormData>
+		{ newPassword, confirmNewPassword, newEmail }: FormData,
+		{ setSubmitting, setErrors }: FormikBag<FormData, FormData>
 	): void => {
 		console.log(newPassword, confirmNewPassword, newEmail);
 		const requiresChallenge = false;
@@ -127,13 +131,13 @@ const AccountDetails = ({
 			);
 		}
 		Promise.all(pendingUpdates)
-			.then(function () {
+			.then(function() {
 				// Updates successful.
 				console.log("DONE");
 				setSubmitting(false);
 				onSuccess();
 			})
-			.catch(function (error) {
+			.catch(function(error) {
 				// An error happened.
 				// alert("ERROR")
 				console.log(error);
@@ -188,14 +192,14 @@ const AccountDetails = ({
 			onSubmit={handleSubmit}
 		>
 			{({
-				  errors,
-				  touched,
-				  handleSubmit,
-				  values,
-				  isSubmitting,
-				  setFieldValue,
-				  isValid,
-			  }: {
+				errors,
+				touched,
+				handleSubmit,
+				values,
+				isSubmitting,
+				setFieldValue,
+				isValid,
+			}: {
 				errors: { [Field: string]: string };
 				touched: { [Field: string]: boolean };
 				handleSubmit: (e: React.FormEvent) => void;
@@ -249,121 +253,121 @@ const AccountDetails = ({
 						</a>
 						<Table responsive>
 							<tbody>
-							<AccountDetailField name={"Full Name"}>
-								{user.displayName || "Not Set"}
-								{editable && (
-									<Form.Text className="text-muted">
-										To change your account name, please
-										contact the webmaster.
-									</Form.Text>
-								)}
-							</AccountDetailField>
-							<AccountDetailField name={"Email"}>
-								{editable ? (
+								<AccountDetailField name={"Full Name"}>
+									{user.displayName || "Not Set"}
+									{editable && (
+										<Form.Text className="text-muted">
+											To change your account name, please
+											contact the webmaster.
+										</Form.Text>
+									)}
+								</AccountDetailField>
+								<AccountDetailField name={"Email"}>
+									{editable ? (
+										<Form.Group>
+											<Field
+												as={Form.Control}
+												name={"newEmail"}
+												isInvalid={
+													errors.newEmail &&
+													touched.newEmail
+												}
+												placeholder={
+													"Enter a new email"
+												}
+												disabled={isSubmitting}
+											/>
+											<Form.Text>
+												{emailSuggestion && (
+													<>
+														Did you mean:{" "}
+														<a
+															onClick={(): void =>
+																setFieldValue(
+																	"newEmail",
+																	emailSuggestion
+																)
+															}
+														>
+															{emailSuggestion}
+														</a>
+														?
+													</>
+												)}
+											</Form.Text>
+											<Form.Control.Feedback
+												type={"invalid"}
+											>
+												{errors.newEmail}
+											</Form.Control.Feedback>
+											<Form.Text className="text-muted">
+												If you do not want to change
+												your email, either leave this
+												field blank or set it to your
+												current email.
+											</Form.Text>
+										</Form.Group>
+									) : (
+										<>{user.email || "Not Set"}</>
+									)}
+								</AccountDetailField>
+								<AccountDetailField
+									name={"New Password"}
+									renderIf={editable}
+								>
+									<Form.Group>
+										<Field
+											as={NewPassword}
+											name={"newPassword"}
+											isInvalid={
+												errors.newPassword &&
+												touched.newPassword
+											}
+											error={errors.newPassword}
+											placeholder={"Enter a new password"}
+											disabled={isSubmitting}
+										/>
+										<Form.Text className="text-muted">
+											If you do not want to change your
+											password, leave this field blank.
+										</Form.Text>
+									</Form.Group>
+								</AccountDetailField>
+								<AccountDetailField
+									name={"Password"}
+									renderIf={!editable}
+								>
+									<a onClick={(): void => onEdit()}>
+										Enter editing mode
+									</a>{" "}
+									to change your password
+								</AccountDetailField>
+								<AccountDetailField
+									name={"Confirm New Password"}
+									renderIf={editable && !!values.newPassword}
+								>
 									<Form.Group>
 										<Field
 											as={Form.Control}
-											name={"newEmail"}
-											isInvalid={
-												errors.newEmail &&
-												touched.newEmail
-											}
+											name={"confirmNewPassword"}
 											placeholder={
-												"Enter a new email"
+												"Confirm your new password"
 											}
+											type="password"
 											disabled={isSubmitting}
+											isInvalid={
+												errors.confirmNewPassword &&
+												touched.confirmNewPassword
+											}
 										/>
-										<Form.Text>
-											{emailSuggestion && (
-												<>
-													Did you mean:{" "}
-													<a
-														onClick={(): void =>
-															setFieldValue(
-																"newEmail",
-																emailSuggestion
-															)
-														}
-													>
-														{emailSuggestion}
-													</a>
-													?
-												</>
-											)}
-										</Form.Text>
-										<Form.Control.Feedback
-											type={"invalid"}
-										>
-											{errors.newEmail}
+
+										<Form.Control.Feedback type="invalid">
+											{errors.confirmNewPassword}
 										</Form.Control.Feedback>
-										<Form.Text className="text-muted">
-											If you do not want to change
-											your email, either leave this
-											field blank or set it to your
-											current email.
-										</Form.Text>
 									</Form.Group>
-								) : (
-									<>{user.email || "Not Set"}</>
-								)}
-							</AccountDetailField>
-							<AccountDetailField
-								name={"New Password"}
-								renderIf={editable}
-							>
-								<Form.Group>
-									<Field
-										as={NewPassword}
-										name={"newPassword"}
-										isInvalid={
-											errors.newPassword &&
-											touched.newPassword
-										}
-										error={errors.newPassword}
-										placeholder={"Enter a new password"}
-										disabled={isSubmitting}
-									/>
-									<Form.Text className="text-muted">
-										If you do not want to change your
-										password, leave this field blank.
-									</Form.Text>
-								</Form.Group>
-							</AccountDetailField>
-							<AccountDetailField
-								name={"Password"}
-								renderIf={!editable}
-							>
-								<a onClick={(): void => onEdit()}>
-									Enter editing mode
-								</a>{" "}
-								to change your password
-							</AccountDetailField>
-							<AccountDetailField
-								name={"Confirm New Password"}
-								renderIf={editable && !!values.newPassword}
-							>
-								<Form.Group>
-									<Field
-										as={Form.Control}
-										name={"confirmNewPassword"}
-										placeholder={
-											"Confirm your new password"
-										}
-										type="password"
-										disabled={isSubmitting}
-										isInvalid={
-											errors.confirmNewPassword &&
-											touched.confirmNewPassword
-										}
-									/>
+								</AccountDetailField>
 
-									<Form.Control.Feedback type="invalid">
-										{errors.confirmNewPassword}
-									</Form.Control.Feedback>
-								</Form.Group>
-							</AccountDetailField>
-
-							<AccountDetailField empty/>
+								<AccountDetailField empty />
 							</tbody>
 						</Table>
 						{editable && (
@@ -432,8 +436,8 @@ const AccountDetails = ({
 									{!changes.any
 										? "No changes to save"
 										: !isValid
-											? "Fix errors before saving"
-											: "Save"}
+										? "Fix errors before saving"
+										: "Save"}
 								</Button>
 							</>
 						)}
@@ -444,8 +448,8 @@ const AccountDetails = ({
 	);
 };
 const AccountPage = ({
-	                     location,
-                     }: {
+	location,
+}: {
 	location?: AuthReturnState;
 }): ReactElement => {
 	const [user, loading, error] = useAuthState();
@@ -497,14 +501,14 @@ const AccountPage = ({
 		if (location?.state?.state?.updateInProgress) {
 			if (location?.state?.state?.newPassword) {
 				user.updatePassword(location?.state?.state?.newPassword)
-					.then(function () {
+					.then(function() {
 						// Update successful.
 						console.log("DONE");
 						setShowSuccess(true);
 
 						// onSuccess()
 					})
-					.catch(function (error: firebase.auth.Error) {
+					.catch(function(error: firebase.auth.Error) {
 						// An error happened.
 						// alert("ERROR")
 						console.log(error);
@@ -525,7 +529,7 @@ const AccountPage = ({
 
 	return (
 		<Layout>
-			<SEO title="Your Account"/>
+			<SEO title="Your Account" />
 			<h1>Account Settings</h1>
 			<p>
 				Hello, <b>{user?.displayName}</b>. These are your settings.

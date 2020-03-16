@@ -1,23 +1,27 @@
-import React, {ReactElement} from "react";
-import {Button, Form} from "react-bootstrap";
-import {navigate} from "gatsby-link";
+import React, { ReactElement } from "react";
+import { Button, Form } from "react-bootstrap";
+import { navigate } from "gatsby-link";
 import Layout from "../../components/layout/Layout";
 import SEO from "../../components/layout/seo";
-import {Field, Formik, FormikBag} from "formik";
+import { Field, Formik, FormikBag } from "formik";
 import * as Yup from "yup";
 import firebase from "../../components/server/firebase";
-import {WindowLocation} from "reach__router";
-import {AuthContinueState, AuthReturnState, useAuthState,} from "../../components/auth";
-import {User} from "firebase";
+import { WindowLocation } from "reach__router";
+import {
+	AuthContinueState,
+	AuthReturnState,
+	useAuthState,
+} from "../../components/auth";
+import { User } from "firebase";
 // import {GoogleLoginButton} from "react-social-login-buttons"
-import {unexpectedFirebaseError} from "../../utils/unexpectedError";
+import { unexpectedFirebaseError } from "../../utils/unexpectedError";
 
 const LoginForm = ({
-	                   continueTo,
-	                   continueState,
-	                   challengeUser,
-	                   continueButton,
-                   }: {
+	continueTo,
+	continueState,
+	challengeUser,
+	continueButton,
+}: {
 	continueTo: string;
 	continueState?: object;
 	challengeUser?: User;
@@ -32,8 +36,8 @@ const LoginForm = ({
 		email: challengeUser
 			? undefined
 			: Yup.string()
-				.email("The email you entered isn't valid.")
-				.required("Please enter an email"),
+					.email("The email you entered isn't valid.")
+					.required("Please enter an email"),
 		password: Yup.string().required("Please enter a password"),
 	});
 
@@ -48,8 +52,8 @@ const LoginForm = ({
 	};
 
 	const handleSubmit = (
-		{email, password}: FormData,
-		{setSubmitting, setErrors}: FormikBag<FormData, FormData>
+		{ email, password }: FormData,
+		{ setSubmitting, setErrors }: FormikBag<FormData, FormData>
 	): void => {
 		if (challengeUser) {
 			const user = challengeUser;
@@ -131,11 +135,11 @@ const LoginForm = ({
 				onSubmit={handleSubmit}
 			>
 				{({
-					  errors,
-					  touched,
-					  handleSubmit,
-					  isSubmitting,
-				  }: {
+					errors,
+					touched,
+					handleSubmit,
+					isSubmitting,
+				}: {
 					errors: { [Field: string]: string };
 					touched: { [Field: string]: boolean };
 					handleSubmit: (e: React.FormEvent) => void;
@@ -201,8 +205,8 @@ const LoginForm = ({
 							{isSubmitting
 								? "Loading..."
 								: continueButton
-									? "Continue"
-									: "Login"}
+								? "Continue"
+								: "Login"}
 						</Button>
 					</Form>
 				)}
@@ -220,8 +224,8 @@ const LoginForm = ({
 };
 
 const LoginPage = ({
-	                   location,
-                   }: {
+	location,
+}: {
 	location: WindowLocation;
 }): ReactElement => {
 	const [user, ,] = useAuthState();
@@ -244,7 +248,7 @@ const LoginPage = ({
 				maxWidth: "600px",
 			}}
 		>
-			<SEO title="Login"/>
+			<SEO title="Login" />
 			<div
 				style={
 					{
@@ -259,8 +263,8 @@ const LoginPage = ({
 					{continueObj?.message
 						? "Please login to continue"
 						: continueObj?.isChallenge
-							? "Hi " + (user?.displayName.split(" ")[0] || "")
-							: "Login"}
+						? "Hi " + (user?.displayName.split(" ")[0] || "")
+						: "Login"}
 				</h1>
 				{continueObj?.isChallenge && (
 					<p className="text-muted text-center">

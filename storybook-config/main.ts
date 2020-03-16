@@ -2,14 +2,14 @@ module.exports = {
 	stories: ["../src/**/*.(stories|story).(j|tsx?|mdx)"],
 	addons: [
 		{
-			name: '@storybook/preset-typescript',
+			name: "@storybook/preset-typescript",
 			options: {
 				tsLoaderOptions: {
-					transpileOnly: true
+					transpileOnly: true,
 				},
 				forkTsCheckerWebpackPluginOptions: {
-					memoryLimit: 4096
-				}
+					memoryLimit: 4096,
+				},
 			},
 		},
 		"@storybook/addon-docs",

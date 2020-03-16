@@ -2,6 +2,7 @@ import React, { ReactElement } from "react";
 import { Field, Formik, FormikBag } from "formik";
 import { Button, Form } from "react-bootstrap";
 import * as Yup from "yup";
+import { StringSchema } from "yup";
 
 export enum FieldInputType {
 	TEXT = "text",
@@ -56,6 +57,17 @@ export default function AuthForm({
 			.email("The email you entered isn't valid.")
 			.required("Please enter an email"),
 	});
+	const getSchemaFor = (
+		type: FieldInputType,
+		required: string | false = false
+	): StringSchema => {
+		let schema = Yup.string();
+		if (required !== false) {
+			schema = schema.required(required);
+		}
+
+		return schema;
+	};
 	const getHTMLInputType = (type: FieldInputType): string => {
 		switch (type) {
 			case FieldInputType.PASSWORD:
