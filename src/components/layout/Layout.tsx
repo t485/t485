@@ -71,10 +71,7 @@ const Layout = ({
 		<>
 			<Container
 				fluid
-				className={classNames(
-					"px-0 main",
-					background ? "main-background" : ""
-				)}
+				className={classNames("px-0 main", background ? "main-background" : "")}
 			>
 				<Navbar
 					pageName={pageName}
@@ -100,17 +97,15 @@ const Layout = ({
 				<Row noGutters>
 					<Col className="footer-col">
 						<footer
-							className={
-								transparentNavFooter ? "transparent-footer" : ""
-							}
+							className={transparentNavFooter ? "transparent-footer" : ""}
 						>
 							<span>
 								Copyright © 2006
 								{new Date().getFullYear() > 2006
 									? "-" + new Date().getFullYear()
 									: ""}{" "}
-								Troop 485, Silicon Valley Monterey Bay Council,
-								Boy Scouts of America.
+								Troop 485, Silicon Valley Monterey Bay Council, Boy Scouts of
+								America.
 							</span>
 						</footer>
 					</Col>

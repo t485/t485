@@ -66,9 +66,8 @@ const ActionPage = (): ReactElement => {
 				<>
 					<h1>Error: Invalid Link</h1>
 					<p>
-						The link you followed to access this page is invalid. If
-						you believe this is a mistake, please contact the
-						webmaster.
+						The link you followed to access this page is invalid. If you believe
+						this is a mistake, please contact the webmaster.
 					</p>
 				</>
 			)}

@@ -15,12 +15,7 @@ interface GraphQLQueryResult {
 }
 
 const IndexPage = ({ data }: { data: GraphQLQueryResult }): ReactElement => (
-	<Layout
-		pageName="index"
-		transparentNavFooter
-		card={false}
-		background={false}
-	>
+	<Layout pageName="index" transparentNavFooter card={false} background={false}>
 		<SEO
 			title="Home"
 			keywords={[`Troop 485`, `Scouting`, `Boy Scouts`, `Cupertino`]}

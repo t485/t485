@@ -94,24 +94,19 @@ const NewPassword = ({
 											"Strong",
 									  ][feedback.score + 1]}
 							</Popover.Title>
-							{feedback.feedback.warning &&
-								feedback.feedback.suggestions && (
-									<Popover.Content>
-										{feedback.feedback.warning && (
-											<>
-												<b>
-													{feedback.feedback.warning}
-												</b>
-												<br />
-											</>
-										)}
-										Suggestions:{" "}
-										{feedback.feedback.suggestions &&
-											feedback.feedback.suggestions.join(
-												" "
-											)}
-									</Popover.Content>
-								)}
+							{feedback.feedback.warning && feedback.feedback.suggestions && (
+								<Popover.Content>
+									{feedback.feedback.warning && (
+										<>
+											<b>{feedback.feedback.warning}</b>
+											<br />
+										</>
+									)}
+									Suggestions:{" "}
+									{feedback.feedback.suggestions &&
+										feedback.feedback.suggestions.join(" ")}
+								</Popover.Content>
+							)}
 						</UpdatingPopover>
 						// )}
 					}
@@ -127,9 +122,7 @@ const NewPassword = ({
 					/>
 				</OverlayTrigger>
 
-				<Form.Control.Feedback type="invalid">
-					{error}
-				</Form.Control.Feedback>
+				<Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>
 			</Form.Group>
 			{value !== "" && feedback.score > -1 && (
 				<>

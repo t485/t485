@@ -109,9 +109,7 @@ const ForgotPasswordPage = ({ location }): ReactElement => {
 								type={"submit"}
 								disabled={!!(isSubmitting || errors.email)}
 							>
-								{errors.email
-									? "Fix errors to continue"
-									: "Send Reset Email"}
+								{errors.email ? "Fix errors to continue" : "Send Reset Email"}
 							</Button>
 						</Form>
 					)}

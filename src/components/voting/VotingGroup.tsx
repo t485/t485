@@ -65,13 +65,11 @@ const VotingGroup = ({
 				<p
 					className={classNames(
 						"mt-2 mb-1 votingGroupMaxVotes",
-						(value || []).length > maxVotes
-							? "text-danger"
-							: "text-muted"
+						(value || []).length > maxVotes ? "text-danger" : "text-muted"
 					)}
 				>
-					{(value || []).length} of {maxVotes} votes used. You are not
-					required to use all your votes.
+					{(value || []).length} of {maxVotes} votes used. You are not required
+					to use all your votes.
 				</p>
 			)}
 			{options.map((opt, i) => {
@@ -83,9 +81,7 @@ const VotingGroup = ({
 						id={`check-${i}-${typeof opt.value}-${opt.value}`} // required for react bootstrap
 						label={opt.label}
 						checked={checked}
-						onChange={(): void =>
-							onSelectChange(opt.value, !checked)
-						}
+						onChange={(): void => onSelectChange(opt.value, !checked)}
 					/>
 				);
 			})}

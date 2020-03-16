@@ -81,9 +81,9 @@ describe("VotingGroup calls onSelectChanged with the proper argument", () => {
 			target: { value: "true" },
 		});
 		expect(onSelectChange).toHaveBeenNthCalledWith(2, "two", true);
-		sut.find(
-			"#check-2-string-thiisareallylongstringvalue"
-		).simulate("change", { target: { value: "true" } });
+		sut
+			.find("#check-2-string-thiisareallylongstringvalue")
+			.simulate("change", { target: { value: "true" } });
 		expect(onSelectChange).toHaveBeenNthCalledWith(
 			3,
 			"thiisareallylongstringvalue",
@@ -120,9 +120,9 @@ describe("It renders maxVotes properly", () => {
 		expect(
 			nonzeroSelectionSUT.find(".votingGroupMaxVotes")
 		).not.toHaveClassName("text-danger");
-		expect(
-			nonzeroSelectionSUT.find(".votingGroupMaxVotes")
-		).toHaveClassName("text-muted");
+		expect(nonzeroSelectionSUT.find(".votingGroupMaxVotes")).toHaveClassName(
+			"text-muted"
+		);
 		expect(nonzeroSelectionSUT.text()).toContain("2 of 2");
 	});
 	test("It matches the snapshot with a valid nonzero selection", () => {
@@ -130,9 +130,9 @@ describe("It renders maxVotes properly", () => {
 	});
 	const invalidSelectionSUT = mount(<VotingGroup {...props} maxVotes={1} />);
 	test("It renders the correct validation state when there is an invalid selection", () => {
-		expect(
-			invalidSelectionSUT.find(".votingGroupMaxVotes")
-		).toHaveClassName("text-danger");
+		expect(invalidSelectionSUT.find(".votingGroupMaxVotes")).toHaveClassName(
+			"text-danger"
+		);
 		expect(
 			invalidSelectionSUT.find(".votingGroupMaxVotes")
 		).not.toHaveClassName("text-muted");

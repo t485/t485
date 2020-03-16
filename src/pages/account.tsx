@@ -117,8 +117,7 @@ const AccountDetails = ({
 		if (newPassword) {
 			if (newPassword !== confirmNewPassword) {
 				setErrors({
-					confirmNewPassword:
-						"The password you entered doesn't match.",
+					confirmNewPassword: "The password you entered doesn't match.",
 				});
 				setSubmitting(false);
 				return;
@@ -151,8 +150,7 @@ const AccountDetails = ({
 						state: {
 							updateInProgress: true,
 							editable: false,
-							newPassword:
-								newPassword !== "" ? newPassword : undefined,
+							newPassword: newPassword !== "" ? newPassword : undefined,
 							newEmail:
 								newEmail !== "" && newEmail !== user.email
 									? newEmail
@@ -213,9 +211,7 @@ const AccountDetails = ({
 				isValid: boolean;
 			}): ReactElement => {
 				const changes = {
-					newEmail:
-						values.newEmail !== user.email &&
-						values.newEmail !== "",
+					newEmail: values.newEmail !== user.email && values.newEmail !== "",
 					newPassword: values.newPassword !== "",
 					any: false,
 				};
@@ -257,8 +253,7 @@ const AccountDetails = ({
 									{user.displayName || "Not Set"}
 									{editable && (
 										<Form.Text className="text-muted">
-											To change your account name, please
-											contact the webmaster.
+											To change your account name, please contact the webmaster.
 										</Form.Text>
 									)}
 								</AccountDetailField>
@@ -268,13 +263,8 @@ const AccountDetails = ({
 											<Field
 												as={Form.Control}
 												name={"newEmail"}
-												isInvalid={
-													errors.newEmail &&
-													touched.newEmail
-												}
-												placeholder={
-													"Enter a new email"
-												}
+												isInvalid={errors.newEmail && touched.newEmail}
+												placeholder={"Enter a new email"}
 												disabled={isSubmitting}
 											/>
 											<Form.Text>
@@ -283,10 +273,7 @@ const AccountDetails = ({
 														Did you mean:{" "}
 														<a
 															onClick={(): void =>
-																setFieldValue(
-																	"newEmail",
-																	emailSuggestion
-																)
+																setFieldValue("newEmail", emailSuggestion)
 															}
 														>
 															{emailSuggestion}
@@ -295,52 +282,37 @@ const AccountDetails = ({
 													</>
 												)}
 											</Form.Text>
-											<Form.Control.Feedback
-												type={"invalid"}
-											>
+											<Form.Control.Feedback type={"invalid"}>
 												{errors.newEmail}
 											</Form.Control.Feedback>
 											<Form.Text className="text-muted">
-												If you do not want to change
-												your email, either leave this
-												field blank or set it to your
-												current email.
+												If you do not want to change your email, either leave
+												this field blank or set it to your current email.
 											</Form.Text>
 										</Form.Group>
 									) : (
 										<>{user.email || "Not Set"}</>
 									)}
 								</AccountDetailField>
-								<AccountDetailField
-									name={"New Password"}
-									renderIf={editable}
-								>
+								<AccountDetailField name={"New Password"} renderIf={editable}>
 									<Form.Group>
 										<Field
 											as={NewPassword}
 											name={"newPassword"}
-											isInvalid={
-												errors.newPassword &&
-												touched.newPassword
-											}
+											isInvalid={errors.newPassword && touched.newPassword}
 											error={errors.newPassword}
 											placeholder={"Enter a new password"}
 											disabled={isSubmitting}
 										/>
 										<Form.Text className="text-muted">
-											If you do not want to change your
-											password, leave this field blank.
+											If you do not want to change your password, leave this
+											field blank.
 										</Form.Text>
 									</Form.Group>
 								</AccountDetailField>
-								<AccountDetailField
-									name={"Password"}
-									renderIf={!editable}
-								>
-									<a onClick={(): void => onEdit()}>
-										Enter editing mode
-									</a>{" "}
-									to change your password
+								<AccountDetailField name={"Password"} renderIf={!editable}>
+									<a onClick={(): void => onEdit()}>Enter editing mode</a> to
+									change your password
 								</AccountDetailField>
 								<AccountDetailField
 									name={"Confirm New Password"}
@@ -350,14 +322,11 @@ const AccountDetails = ({
 										<Field
 											as={Form.Control}
 											name={"confirmNewPassword"}
-											placeholder={
-												"Confirm your new password"
-											}
+											placeholder={"Confirm your new password"}
 											type="password"
 											disabled={isSubmitting}
 											isInvalid={
-												errors.confirmNewPassword &&
-												touched.confirmNewPassword
+												errors.confirmNewPassword && touched.confirmNewPassword
 											}
 										/>
 
@@ -381,14 +350,8 @@ const AccountDetails = ({
 													Password changed (
 													<a
 														onClick={(): void => {
-															setFieldValue(
-																"newPassword",
-																""
-															);
-															setFieldValue(
-																"confirmNewPassword",
-																""
-															);
+															setFieldValue("newPassword", "");
+															setFieldValue("confirmNewPassword", "");
 														}}
 													>
 														Undo
@@ -398,15 +361,11 @@ const AccountDetails = ({
 											)}
 											{changes.newEmail && (
 												<li>
-													Email changed from{" "}
-													{user.email} to{" "}
+													Email changed from {user.email} to{" "}
 													<b>{values.newEmail}</b> (
 													<a
 														onClick={(): void =>
-															setFieldValue(
-																"newEmail",
-																user.email
-															)
+															setFieldValue("newEmail", user.email)
 														}
 													>
 														Undo
@@ -429,9 +388,7 @@ const AccountDetails = ({
 									variant="primary"
 									type={"submit"}
 									className="float-right"
-									disabled={
-										!changes.any || !isValid || isSubmitting
-									}
+									disabled={!changes.any || !isValid || isSubmitting}
 								>
 									{!changes.any
 										? "No changes to save"
@@ -500,7 +457,8 @@ const AccountPage = ({
 
 		if (location?.state?.state?.updateInProgress) {
 			if (location?.state?.state?.newPassword) {
-				user.updatePassword(location?.state?.state?.newPassword)
+				user
+					.updatePassword(location?.state?.state?.newPassword)
 					.then(function() {
 						// Update successful.
 						console.log("DONE");

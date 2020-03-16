@@ -62,7 +62,8 @@ const LoginForm = ({
 				password
 			);
 			// console.log(user, user.email, password)
-			user.reauthenticateWithCredential(credentials)
+			user
+				.reauthenticateWithCredential(credentials)
 				.then(onAuthSuccess)
 				.catch(e => {
 					console.log(e);
@@ -275,9 +276,7 @@ const LoginPage = ({
 					continueState={continueObj?.state}
 					continueTo={continuePath || "/"}
 					challengeUser={continueObj?.isChallenge ? user : undefined}
-					continueButton={
-						!!continueObj?.return || !!continueObj?.isChallenge
-					}
+					continueButton={!!continueObj?.return || !!continueObj?.isChallenge}
 				/>
 			</div>
 		</Layout>

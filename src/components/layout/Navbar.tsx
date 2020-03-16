@@ -28,9 +28,7 @@ function NavbarLink(props: {
 	if (props.dropdown) {
 		return (
 			<>
-				<NavDropdown.Item {...linkProps}>
-					{props.children}
-				</NavDropdown.Item>
+				<NavDropdown.Item {...linkProps}>{props.children}</NavDropdown.Item>
 			</>
 		);
 	} else {
@@ -126,11 +124,7 @@ export const Navbar = ({
 				<Link to="/" className="link-no-style">
 					<BootstrapNavbar.Brand as="span">
 						BSA Troop 485{" "}
-						{admin ? (
-							<span style={{ color: "#99ccff" }}>| Admin</span>
-						) : (
-							<></>
-						)}
+						{admin ? <span style={{ color: "#99ccff" }}>| Admin</span> : <></>}
 					</BootstrapNavbar.Brand>
 				</Link>
 				<BootstrapNavbar.Toggle aria-controls="basic-navbar-nav" />
