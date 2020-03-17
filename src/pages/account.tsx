@@ -12,6 +12,7 @@ import { Field, Formik, FormikBag } from "formik";
 import * as Yup from "yup";
 import Mailcheck from "mailcheck";
 import { User } from "firebase";
+import { unexpectedFirebaseError } from "../utils/unexpectedError";
 // const UpdateDisplayNameForm = (): ReactElement => {
 // 	const [user, loading, error] = useAuthState(firebase.auth())
 // 	const [name, setName] = React.useState(user?.displayName || "Loading...")
@@ -124,9 +125,7 @@ const AccountDetails = ({
 			}
 
 			pendingUpdates.push(
-				user
-					.updatePassword("") //newPassword) // TODO REMOVE
-					.catch(error => Promise.reject(error)) // pass the error through
+				user.updatePassword(newPassword).catch(error => Promise.reject(error)) // pass the error through
 			);
 		}
 		Promise.all(pendingUpdates)
@@ -140,30 +139,30 @@ const AccountDetails = ({
 				// An error happened.
 				// alert("ERROR")
 				console.log(error);
-				// switch (error.code) {
-				// 	case "auth/requires-recent-login":
-				navigate("/account/login", {
-					state: {
-						from: "/account",
-						isChallenge: true,
-						return: true,
-						state: {
-							updateInProgress: true,
-							editable: false,
-							newPassword: newPassword !== "" ? newPassword : undefined,
-							newEmail:
-								newEmail !== "" && newEmail !== user.email
-									? newEmail
-									: undefined,
-						},
-					} as AuthContinueState,
-				});
-				// break
-				// 	default:
-				// 		setErrors({
-				// 			confirmNewPassword: unexpectedFirebaseError(error)
-				// 		})
-				// }
+				switch (error.code) {
+					case "auth/requires-recent-login":
+						navigate("/account/login", {
+							state: {
+								from: "/account",
+								isChallenge: true,
+								return: true,
+								state: {
+									updateInProgress: true,
+									editable: false,
+									newPassword: newPassword !== "" ? newPassword : undefined,
+									newEmail:
+										newEmail !== "" && newEmail !== user.email
+											? newEmail
+											: undefined,
+								},
+							} as AuthContinueState,
+						});
+						break;
+					default:
+						setErrors({
+							confirmNewPassword: unexpectedFirebaseError(error),
+						});
+				}
 				setSubmitting(false);
 			});
 	};
@@ -390,11 +389,7 @@ const AccountDetails = ({
 									className="float-right"
 									disabled={!changes.any || !isValid || isSubmitting}
 								>
-									{!changes.any
-										? "No changes to save"
-										: !isValid
-										? "Fix errors before saving"
-										: "Save"}
+									{!changes.any ? "No changes to save" : "Save"}
 								</Button>
 							</>
 						)}
@@ -498,7 +493,7 @@ const AccountPage = ({
 				show={showSuccess}
 				onClose={(): void => setShowSuccess(false)}
 			>
-				Your setttings has been successfully updated.
+				Your settings have been successfully updated.
 			</Alert>
 			{/*<button onClick={(): void => {*/}
 			{/*	*/}
