@@ -110,9 +110,12 @@ const NewPassword = ({
 										</>
 									)}
 
-									{feedback.feedback.suggestions && (
-										<>Suggestions: {feedback.feedback.suggestions.join(" ")}</>
-									)}
+									{feedback.feedback.suggestions &&
+										feedback.feedback.suggestions.length > 0 && (
+											<>
+												Suggestions: {feedback.feedback.suggestions.join(" ")}
+											</>
+										)}
 								</Popover.Content>
 							)}
 						</UpdatingPopover>
