@@ -1,8 +1,9 @@
 import React, { ReactElement } from "react";
-import { Field, Formik, FormikBag } from "formik";
+import { Field as FormikField, Formik, FormikBag, FormikErrors } from "formik";
 import { Button, Form } from "react-bootstrap";
 import * as Yup from "yup";
 import { StringSchema } from "yup";
+import { NewPassword } from "./";
 
 export enum FieldInputType {
 	TEXT = "text",
@@ -15,23 +16,83 @@ export enum FieldInputType {
 type FieldTypes<T extends Record<string, any>> = {
 	[K in keyof T]: string;
 };
+declare namespace Field {
+	type ValidationMessage = string | false;
 
-interface Field {
-	inputType: FieldInputType;
-	/**
-	 * Defaults to an empty string
-	 */
-	initialValue?: string;
-	/**
-	 * Defaults to a sensible default based on the field input type.
-	 */
-	schema?: Yup.StringSchema;
+	interface FieldValidation {
+		required?: ValidationMessage;
+	}
+
+	export interface Field {
+		inputType: FieldInputType;
+		/**
+		 * Defaults to an empty string
+		 */
+		initialValue?: string;
+		/**
+		 * Defaults to a sensible default based on the field input type.
+		 */
+		schema?: Yup.StringSchema;
+		/**
+		 * A label for the input.
+		 */
+		label: string;
+		/**
+		 * A placeholder for the element. Set to "" to display an empty placeholder.
+		 * If not defined, a sensible default will be shown.
+		 */
+		placeholder?: string;
+		/**
+		 * An object to customize validation and validation messages.
+		 */
+		validation?: FieldValidation;
+		/**
+		 * Help text to display.
+		 */
+		helpText?: string;
+	}
+
+	export type Any =
+		| Field.Text
+		| Field.Email
+		| Field.Password
+		| Field.NewPassword
+		| Field.ConfirmPassword;
+
+	export interface Text extends Field {
+		inputType: FieldInputType.TEXT;
+	}
+
+	export interface Email extends Field {
+		inputType: FieldInputType.EMAIL;
+		validation: {
+			email?: ValidationMessage;
+		} & FieldValidation;
+	}
+
+	export interface Password extends Field {
+		inputType: FieldInputType.PASSWORD;
+	}
+
+	export interface NewPassword extends Field {
+		inputType: FieldInputType.NEW_PASSWORD;
+		validation?: {
+			minLength: ValidationMessage;
+		} & FieldValidation;
+	}
+
+	export interface ConfirmPassword extends Field {
+		inputType: FieldInputType.CONFIRM_PASSWORD;
+		validation?: {
+			matches: ValidationMessage;
+		} & FieldValidation;
+	}
 }
 
-type FormData = FieldTypes<Record<string, Field>>;
+type FormData = FieldTypes<Record<string, Field.Field>>;
 
 interface AuthFormProps {
-	fields: Record<string, Field>;
+	fields: Record<string, Field.Field>;
 	/**
 	 * A handler for when the function submits.
 	 * @param values - An object containing one value for each key in the fields object provided
@@ -45,25 +106,81 @@ interface AuthFormProps {
 	 * The text that the button should have when the form is valid. When not valid, the button will render "Fix Errors to " concatenated with the value of this.
 	 */
 	buttonLabel: string;
+	/**
+	 * Content to go into the 'tray'. This is positioned between the last input field and the submit button.
+	 * Typically, forgot password/create account links go here.
+	 */
+	tray?: ReactElement;
+
+	/**
+	 * If set to true, the button will not be disabled even if there are errors.
+	 * This is an advanced prop. For a sample implementation, see the forgotpassword page
+	 * This is not recommended because it can be confusing to the user when they submit and nothing happens, which is what the case is when
+	 * they submit and get the same errors.
+	 * If's recommended you only enable this when a specific error has been triggered. To do that, store this value in a state, and only enable
+	 * that state when the error is triggered. Of course, this isn't a perfect solution, because once that error has been triggered, the
+	 * button will not be disabled for ALL errors. If this is a big issue, AuthForm may not be the ideal component for your use case.
+	 * @default false
+	 * @advanced
+	 */
+	dontDisableButtonWithError?: boolean;
 }
 
 export default function AuthForm({
 	fields,
 	buttonLabel,
 	onSubmit,
+	tray,
+	dontDisableButtonWithError,
 }: AuthFormProps): ReactElement {
-	const schema = Yup.object().shape({
-		email: Yup.string()
-			.email("The email you entered isn't valid.")
-			.required("Please enter an email"),
-	});
-	const getSchemaFor = (
-		type: FieldInputType,
-		required: string | false = false
+	type GetSchemaForOverload = {
+		(
+			field: Field.Text | Field.Email | Field.Password | Field.NewPassword
+		): StringSchema;
+		(field: Field.ConfirmPassword, linkedPasswordField: string): StringSchema;
+	};
+	const getSchemaFor: GetSchemaForOverload = (
+		field: Field.Any,
+		linkedPasswordField?: string
 	): StringSchema => {
+		const type = field.inputType;
+		const validation = field.validation;
 		let schema = Yup.string();
-		if (required !== false) {
-			schema = schema.required(required);
+		if (validation?.required !== false) {
+			// default is required
+			schema = schema.required(
+				validation?.required || "This field is required."
+			);
+		}
+
+		if (
+			type === FieldInputType.EMAIL &&
+			(field as Field.Email)?.validation?.email !== false
+		) {
+			schema = schema.email(
+				(field as Field.Email)?.validation?.email ||
+					"Please enter a valid email."
+			);
+		}
+		if (
+			type === FieldInputType.NEW_PASSWORD &&
+			(field as Field.NewPassword)?.validation?.minLength !== false
+		) {
+			schema = schema.min(
+				6,
+				(field as Field.NewPassword)?.validation?.minLength ||
+					"Please enter a password of at least ${min} characters."
+			);
+		}
+		if (
+			type === FieldInputType.CONFIRM_PASSWORD &&
+			(field as Field.ConfirmPassword)?.validation?.matches !== false
+		) {
+			console.log(field, linkedPasswordField);
+			schema = schema.oneOf(
+				[Yup.ref(linkedPasswordField)],
+				"The passwords you entered don't match."
+			);
 		}
 
 		return schema;
@@ -81,12 +198,68 @@ export default function AuthForm({
 				return type;
 		}
 	};
+	const getPlaceholder = (field: Field.Field): string => {
+		if (field.placeholder !== undefined) {
+			return field.placeholder;
+		}
+		switch (field.inputType) {
+			case FieldInputType.PASSWORD:
+				return "Enter your password...";
+			case FieldInputType.CONFIRM_PASSWORD:
+				return "Confirm your new password...";
+			case FieldInputType.NEW_PASSWORD:
+				return "Enter a new password...";
+			case FieldInputType.TEXT:
+				return "";
+			case FieldInputType.EMAIL:
+				return "Enter your email...";
+			default:
+				return "";
+		}
+	};
+	const schemaShape: { [K in keyof FormData]: StringSchema } = {};
+	let firstPasswordFieldName: string | undefined;
+	console.log(fields);
+	for (const name in fields) {
+		if (
+			fields[name].inputType === FieldInputType.NEW_PASSWORD &&
+			!firstPasswordFieldName
+		) {
+			firstPasswordFieldName = name;
+		}
+		if (fields[name].inputType === FieldInputType.CONFIRM_PASSWORD) {
+			if (!firstPasswordFieldName) {
+				throw new Error(
+					"AuthForm: The confirm password field cannot exist in a form without a new password field before the confirm password field."
+				);
+			}
+			console.log("dfa", firstPasswordFieldName);
+			schemaShape[name] = getSchemaFor(
+				fields[name] as Field.ConfirmPassword,
+				firstPasswordFieldName
+			);
+		} else {
+			schemaShape[name] = getSchemaFor(
+				fields[name] as
+					| Field.Text
+					| Field.Email
+					| Field.Password
+					| Field.NewPassword
+			);
+		}
+	}
+	const schema = Yup.object().shape(schemaShape);
+	console.log(schema);
 	return (
 		<Formik
 			validationSchema={schema}
-			initialValues={{
-				email: "",
-			}}
+			initialValues={((): { [K in keyof FormData]: "" } => {
+				const initialValueObj: Partial<{ [K in keyof FormData]: "" }> = {};
+				for (const key in fields) {
+					initialValueObj[key] = "";
+				}
+				return initialValueObj;
+			})()}
 			onSubmit={onSubmit}
 		>
 			{({
@@ -99,37 +272,62 @@ export default function AuthForm({
 				touched: { [K in keyof FormData]: boolean };
 				handleSubmit: (e: React.FormEvent) => void;
 				isSubmitting: boolean;
-			}): ReactElement => (
-				<Form onSubmit={handleSubmit}>
-					{Object.keys(fields).map((name, i) => {
-						const value = fields[name];
+			}): ReactElement => {
+				const hasErrors = (errors: FormikErrors<FormData>): boolean => {
+					for (const key in errors) {
+						if (errors[key]) return true;
+					}
+					return false;
+				};
+				return (
+					<Form onSubmit={handleSubmit}>
+						{Object.keys(fields).map((name, i) => {
+							const field = fields[name];
 
-						return (
-							<Form.Group controlId="authEmail" key={i}>
-								<Form.Label>Email address</Form.Label>
-								<Field
-									as={Form.Control}
-									name={name}
-									type={getHTMLInputType(value.inputType)}
-									isInvalid={errors[name] && touched[name]}
-									disabled={isSubmitting}
-								/>
-								<Form.Control.Feedback type="invalid">
-									{errors[name]}
-								</Form.Control.Feedback>
-							</Form.Group>
-						);
-					})}
-					<Button
-						variant={"primary"}
-						block
-						type={"submit"}
-						disabled={!!(isSubmitting || errors.email)}
-					>
-						{(errors.email ? "Fix Errors to " : "") + buttonLabel}
-					</Button>
-				</Form>
-			)}
+							return (
+								<Form.Group controlId={"authForm-Field-" + name} key={i}>
+									<Form.Label>{field.label}</Form.Label>
+									<FormikField
+										as={
+											field.inputType === FieldInputType.NEW_PASSWORD
+												? NewPassword
+												: Form.Control
+										}
+										name={name}
+										type={getHTMLInputType(field.inputType)}
+										isInvalid={errors[name] && touched[name]}
+										disabled={isSubmitting}
+										autoComplete={name}
+										placeholder={getPlaceholder(field)}
+									/>
+									<Form.Control.Feedback type="invalid">
+										{errors[name]}
+									</Form.Control.Feedback>
+									<Form.Text>{field.helpText}</Form.Text>
+								</Form.Group>
+							);
+						})}
+						{tray}
+						<Button
+							variant={"primary"}
+							block
+							type={"submit"}
+							disabled={
+								!!(
+									isSubmitting ||
+									(!dontDisableButtonWithError && hasErrors(errors))
+								)
+							}
+						>
+							{/* NOTE: button is intentionally clickable on submit. This avoids confusing users, and eliminates any chance of autofill bugs.
+							 Before the onSubmit handler is called for AuthForm, AuthForm will validate. Additionally, clicking this buttom removes focus
+							 from an input field, meaning errors will be shown, since the internal handler also calls onTouched each time.
+							 */}
+							{(errors.email ? "Fix Errors to " : "") + buttonLabel}
+						</Button>
+					</Form>
+				);
+			}}
 		</Formik>
 	);
 }

@@ -1,6 +1,8 @@
-import { FirebaseError } from "firebase";
+import * as firebase from "firebase/app";
 
-function unexpectedFirebaseError(error: FirebaseError): string {
+function unexpectedFirebaseError(
+	error: firebase.FirebaseError | firebase.auth.AuthError
+): string {
 	return (
 		"An unknown error occurred. Please contact the webmaster. Include the following Reference Data: \n\n" +
 		"<<SDV1:START>> " +
@@ -8,8 +10,7 @@ function unexpectedFirebaseError(error: FirebaseError): string {
 			btoa(
 				JSON.stringify({
 					version: "1",
-					code: error.code,
-					message: error.message,
+					error: error,
 					date: new Date().getTime(),
 				})
 			)

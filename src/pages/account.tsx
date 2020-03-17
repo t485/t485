@@ -8,6 +8,7 @@ import {
 	AuthReturnState,
 	useAuthState,
 } from "../components/auth";
+import { AuthChallengePageLocationProps } from "./account/challenge";
 import { Field, Formik, FormikBag } from "formik";
 import * as Yup from "yup";
 import Mailcheck from "mailcheck";
@@ -148,7 +149,6 @@ const AccountDetails = ({
 								return: true,
 								state: {
 									updateInProgress: true,
-									editable: false,
 									newPassword: newPassword !== "" ? newPassword : undefined,
 									newEmail:
 										newEmail !== "" && newEmail !== user.email
@@ -506,15 +506,13 @@ const AccountPage = ({
 					editable={editable}
 					onCancel={(): void => setEditable(false)}
 					onEdit={(): void => {
-						navigate("/account/login", {
+						navigate("/account/challenge", {
 							state: {
 								from: "/account",
-								isChallenge: true,
-								return: true,
 								state: {
 									editable: true,
 								},
-							} as AuthContinueState,
+							} as AuthChallengePageLocationProps,
 						});
 					}}
 					onSuccess={(): void => {

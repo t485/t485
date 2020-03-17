@@ -1,0 +1,33 @@
+import { Meta, Story, Props, Preview } from '@storybook/addon-docs/blocks';
+import AuthForm from './AuthForm';
+import { withKnobs, text, boolean, number } from "@storybook/addon-knobs"
+import {withSmartKnobs} from "storybook-addon-smart-knobs";
+import {action, withActions} from "@storybook/addon-actions";
+
+<Meta title="forms/AuthForm" component={AuthForm} decorators={[withKnobs(), withSmartKnobs(), withActions()]} />
+
+# Layout
+
+## Props
+<Props of={AuthForm} />
+
+## Demo
+### Basic
+
+<Preview>
+    <Story name="basic">
+        <AuthForm fields={{
+            password:{
+                label:"New Password",
+                inputType:"new_password"
+            },
+            confirmPassword:{
+                label:"Confirm New Password",
+                inputType:"confirm_password"
+            }
+        }} buttonLabel={"Login"} onSubmit={action("submit")} />
+    </Story>
+</Preview>
+
+
+

@@ -1,8 +1,8 @@
-import firebase from "firebase";
+import * as firebase from "firebase/app";
 import "firebase/auth";
 import firebaseConfig from "../../../firebase-config";
 
-if (!firebase.apps.length) {
+if (!firebase.apps.length && typeof window !== "undefined") {
 	firebase.initializeApp(firebaseConfig);
 }
 

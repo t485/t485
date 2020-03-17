@@ -49,6 +49,11 @@ interface LayoutProps {
 	 * Style to pass onto the container closest to the content.
 	 */
 	style?: React.CSSProperties;
+
+	/**
+	 * Renders a card narrower than usual. Typically used by auth pages.
+	 */
+	narrow?: boolean;
 }
 
 const Layout = ({
@@ -60,6 +65,7 @@ const Layout = ({
 	background,
 	className,
 	style,
+	narrow,
 }: LayoutProps): React.ReactElement => {
 	if (card !== false) {
 		card = true;
@@ -86,7 +92,15 @@ const Layout = ({
 								card ? "main-card" : "",
 								className || ""
 							)}
-							style={style}
+							style={{
+								...(narrow
+									? {
+											top: "15vh",
+											maxWidth: "600px",
+									  }
+									: {}),
+								...style,
+							}}
 						>
 							<main>{children}</main>
 						</Container>
