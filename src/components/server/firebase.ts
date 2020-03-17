@@ -2,7 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import firebaseConfig from "../../../firebase-config";
 
-if (!firebase.apps.length && typeof window !== "undefined") {
+if (typeof window !== "undefined" && !firebase.apps.length) {
 	firebase.initializeApp(firebaseConfig);
 }
 
