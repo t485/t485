@@ -119,6 +119,7 @@ export const Navbar = ({
 				expand="lg"
 				id="site-navbar"
 				className={transparent ? "transparent-navbar" : ""}
+				fixed="top"
 			>
 				{/* <Container> */}
 				<Link to="/" className="link-no-style">

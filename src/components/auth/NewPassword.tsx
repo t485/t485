@@ -40,7 +40,7 @@ const NewPassword = ({
 			children: ReactElement | ReactElement[];
 			scheduleUpdate: () => void;
 		},
-		ref
+		ref: React.RefObject<Popover> & React.RefObject<HTMLDivElement>
 	): ReactElement => {
 		React.useEffect(() => {
 			// console.log('updating!');
@@ -59,15 +59,13 @@ const NewPassword = ({
 		<>
 			<Form.Group>
 				<OverlayTrigger
+					flip={true}
 					trigger="focus"
-					placement="left"
+					placement="top-start"
 					overlay={
-						// ({scheduleUpdate}: { scheduleUpdate: () => void }): ReactElement => {
-						// 	// React.useEffect(() => {
-						// 	// 	scheduleUpdate()
-						// 	// }, [feedback?.feedback, scheduleUpdate])
-						// 	return (
-
+						// React bootstrap injects the scheduleUpdate function, but it is not well defined in it's typings
+						// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+						// @ts-ignore
 						<UpdatingPopover id="password-strength-popover">
 							<Popover.Title
 								as="h3"
@@ -84,7 +82,7 @@ const NewPassword = ({
 							>
 								Password Strength:{" "}
 								{value.length < 6
-									? "Too Short!"
+									? "Too Short"
 									: [
 											"Loading...",
 											"Very Weak",
@@ -94,17 +92,27 @@ const NewPassword = ({
 											"Strong",
 									  ][feedback.score + 1]}
 							</Popover.Title>
-							{feedback.feedback.warning && feedback.feedback.suggestions && (
+
+							{(value.length < 6 ||
+								feedback.feedback.warning ||
+								feedback.feedback.suggestions) && (
 								<Popover.Content>
+									{value.length < 6 && (
+										<>
+											<b>Passwords must be at least 6 characters</b>
+											<br />
+										</>
+									)}
 									{feedback.feedback.warning && (
 										<>
 											<b>{feedback.feedback.warning}</b>
 											<br />
 										</>
 									)}
-									Suggestions:{" "}
-									{feedback.feedback.suggestions &&
-										feedback.feedback.suggestions.join(" ")}
+
+									{feedback.feedback.suggestions && (
+										<>Suggestions: {feedback.feedback.suggestions.join(" ")}</>
+									)}
 								</Popover.Content>
 							)}
 						</UpdatingPopover>
