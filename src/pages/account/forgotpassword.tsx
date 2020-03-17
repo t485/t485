@@ -1,121 +1,140 @@
 import React, { ReactElement } from "react";
 import { Layout, SEO } from "../../components/layout";
-import { Button, Form } from "react-bootstrap";
-import { Field, Formik, FormikBag } from "formik";
-import * as Yup from "yup";
+import {
+	addToChain,
+	AuthContinueState,
+	AuthForm,
+	FieldInputType,
+} from "../../components/auth";
 import firebase from "../../components/server/firebase";
-import { AuthContinueState } from "../../components/auth/AuthContinueState";
+import { unexpectedFirebaseError } from "../../utils/unexpectedError";
 
-const ForgotPasswordPage = ({ location }): ReactElement => {
-	const continueData = location.state as AuthContinueState;
-	const continueState = {
-		test: "true",
-	};
-
-	interface FormData {
-		email: string;
+export default function ForgotPasswordPage({
+	location: { state },
+}: {
+	location: { state: AuthContinueState };
+}): ReactElement {
+	const [successEmail, setSuccessEmail] = React.useState<string>("");
+	const [noDisableButton, setNoDisableButton] = React.useState(false);
+	state = addToChain(state, "forgotpassword");
+	console.log(state);
+	if (successEmail !== "") {
+		return (
+			<Layout narrow>
+				<SEO title={"Reauthenticate"} />
+				<h1 className="text-center">Check your inbox!</h1>
+				<p>
+					We&apos;ve sent an email containing a link to reset your password to{" "}
+					<b>{successEmail}</b> (
+					<a onClick={(): void => setSuccessEmail("")}>Not You?</a>).
+				</p>
+				<p className={"mt-4"}>
+					<b>Didn&apos;t receive it yet?</b> On rare occasions, our emails may
+					take up to 10 minutes to send.
+				</p>
+			</Layout>
+		);
 	}
-
-	const handleSubmit = (
-		{ email }: FormData,
-		{ setSubmitting }: FormikBag<FormData, FormData>
-	): void => {
-		console.log("HELLO");
-		const actionCodeSettings: firebase.auth.ActionCodeSettings = {
-			url:
-				"https://beta.t485.org/?email=" +
-				email +
-				"&continueState=" +
-				encodeURIComponent(JSON.stringify(continueState)),
-		};
-		firebase
-			.auth()
-			.sendPasswordResetEmail(email, actionCodeSettings)
-			.then(function() {
-				// Email sent.
-				console.log("DONE");
-				setSubmitting(false);
-			})
-			.catch(function(error) {
-				// An error happened.
-				console.log("ERROR", error);
-				setSubmitting(false);
-			});
-	};
-	const schema = Yup.object().shape({
-		email: Yup.string()
-			.email("The email you entered isn't valid.")
-			.required("Please enter an email"),
-	});
 	return (
-		<Layout
-			style={{
-				top: "15vh",
-				maxWidth: "600px",
-			}}
-		>
-			<SEO title="Forgot Password" />
-			<div
-				style={
-					{
-						// margin: "auto",
-						// position: "absolute",
-						// top: "50%",
-						// transform: "translateY(-50%)"
+		<Layout narrow>
+			<SEO title={"Reauthenticate"} />
+			{/*<Alert show={!!successEmail} variant={"success"} dismissible onClose={() => setSuccessEmail("")}>*/}
+			{/*	<b>Check your inbox!</b> We&apos;ve sent an email to <b>{successEmail}</b>.*/}
+			{/*</Alert>*/}
+			<h1 className="text-center">Forgot Your Password?</h1>
+			<p className="text-muted text-center">
+				We can send you a password reset email.
+			</p>
+			<AuthForm
+				fields={{
+					email: {
+						inputType: FieldInputType.EMAIL,
+						label: "Your Email",
+						validation: {
+							required: "You must enter an email.",
+						},
+						helpText:
+							"If you also forgot the email you signed up with, please contact the webmaster.",
+					},
+				}}
+				dontDisableButtonWithError={noDisableButton}
+				buttonLabel={"Send Password Reset Email"}
+				onSubmit={({ email }, form): void => {
+					const lastResetEmail = parseInt(
+						localStorage.getItem("lastResetEmail" + email)
+					);
+					const canTryAgain = new Date(lastResetEmail + 11 * 60 * 1000);
+					const tryAgainHours =
+						canTryAgain.getHours() > 12
+							? canTryAgain.getHours() - 12
+							: canTryAgain.getHours();
+					const tryAgainTime =
+						(tryAgainHours < 10 ? "0" : "") +
+						tryAgainHours +
+						":" +
+						(canTryAgain.getMinutes() < 10 ? "0" : "") +
+						canTryAgain.getMinutes() +
+						(canTryAgain.getHours() < 12 ? "AM" : "PM");
+					if (
+						lastResetEmail &&
+						new Date().getTime() - lastResetEmail < 10 * 60 * 1000
+					) {
+						// 1000 second buffer to prevent errors.
+						const timeLeft =
+							lastResetEmail + 10 * 60 * 1000 - new Date().getTime() + 1000;
+						form.setErrors({
+							email:
+								"You can't send a password reset email to the same address more than once every 10 to 15 minutes. Try again at " +
+								tryAgainTime +
+								".",
+						});
+						setNoDisableButton(true);
+
+						form.setSubmitting(false);
+						return;
 					}
-				}
-			>
-				<h1 className="text-center">Reset Password</h1>
-				<Formik
-					validationSchema={schema}
-					initialValues={{
-						email: "",
-					}}
-					onSubmit={handleSubmit}
-				>
-					{({
-						errors,
-						touched,
-						handleSubmit,
-						isSubmitting,
-					}: {
-						errors: { [Field: string]: string };
-						touched: { [Field: string]: boolean };
-						handleSubmit: (e: React.FormEvent) => void;
-						isSubmitting: boolean;
-					}): ReactElement => (
-						<Form onSubmit={handleSubmit}>
-							<Form.Group controlId="authEmail">
-								<Form.Label>Email address</Form.Label>
-								<Field
-									as={Form.Control}
-									name={"email"}
-									isInvalid={errors.email && touched.email}
-									disabled={isSubmitting}
-								/>
-								<Form.Control.Feedback
-									type="invalid"
-									style={{
-										whiteSpace: "pre-wrap",
-										wordBreak: "break-all",
-									}}
-								>
-									{errors.email}
-								</Form.Control.Feedback>
-							</Form.Group>
-							<Button
-								variant={"primary"}
-								block
-								type={"submit"}
-								disabled={!!(isSubmitting || errors.email)}
-							>
-								{errors.email ? "Fix errors to continue" : "Send Reset Email"}
-							</Button>
-						</Form>
-					)}
-				</Formik>
-			</div>
+					const actionCodeSettings: firebase.auth.ActionCodeSettings = {
+						url:
+							"https://beta.t485.org/?email=" +
+							email +
+							"&continueState=" +
+							encodeURIComponent(JSON.stringify(state.state)),
+					};
+					firebase
+						.auth()
+						.sendPasswordResetEmail(email, actionCodeSettings)
+						.then(function() {
+							// Email sent.
+							localStorage.setItem(
+								"lastResetEmail" + email,
+								"" + new Date().getTime()
+							);
+							setSuccessEmail(email);
+							form.setSubmitting(false);
+						})
+						.catch(function(error) {
+							switch (error.code) {
+								case "auth/user-not-found":
+									form.setErrors({
+										email: "No account exists with this email.",
+									});
+									break;
+								case "auth/too-many-requests":
+									form.setErrors({
+										email:
+											"We have blocked all requests from this device due to unusual activity. Please try again later.",
+									});
+									break;
+								default:
+									form.setErrors({
+										email: unexpectedFirebaseError(error),
+									});
+							}
+							console.log(error);
+							form.setSubmitting(false);
+						});
+				}}
+			/>
 		</Layout>
 	);
-};
-export default ForgotPasswordPage;
+}
