@@ -18,7 +18,9 @@ export default function AuthChallengePage({
 	location: { state: AuthContinueState };
 }): ReactElement {
 	const [user, loading] = useAuthState();
-	state = addToChain(state, "challenge");
+	if (state) {
+		state = addToChain(state, "challenge");
+	}
 	console.log(loading);
 	if (!user && !loading) {
 		// User needs to login instead!

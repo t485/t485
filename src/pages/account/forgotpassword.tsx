@@ -21,7 +21,9 @@ export default function ForgotPasswordPage({
 }): ReactElement {
 	const [successEmail, setSuccessEmail] = React.useState<string>("");
 	const [noDisableButton, setNoDisableButton] = React.useState(false);
-	state = addToChain(state, "forgotpassword");
+	if (state) {
+		state = addToChain(state, "forgotpassword");
+	}
 	console.log(state);
 	if (successEmail !== "") {
 		return (

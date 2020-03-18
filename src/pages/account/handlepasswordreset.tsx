@@ -3,18 +3,27 @@ import { Layout, SEO } from "../../components/layout";
 import firebase from "../../components/server/firebase";
 import { ForgotPasswordState } from "./forgotpassword";
 import { addToChain, AuthForm, FieldInputType } from "../../components/auth";
-import createPersistedState from "use-persisted-state";
 import { Link, navigate } from "gatsby";
 import { Button } from "react-bootstrap";
 
-const usePersistingState = createPersistedState(
-	"persistedhandlepasswordresetstate",
-	sessionStorage
-);
-const usePersistingSuccessState = createPersistedState(
-	"persistedhandlepasswordresetsuccessstate",
-	sessionStorage
-);
+function useSessionStorage<T>(
+	key: string,
+	defaultValue: T
+): [T, (newValue: T) => void] {
+	let storageValue: string;
+	if (typeof window !== "undefined") {
+		storageValue = sessionStorage.getItem(key);
+	} else {
+		storageValue = "null";
+	}
+	const [state, setState] = React.useState(
+		() => JSON.parse(storageValue) || defaultValue
+	);
+	React.useEffect(() => {
+		sessionStorage.setItem(key, JSON.stringify(state));
+	}, [key, state]);
+	return [state, setState];
+}
 
 export interface PasswordResetState extends ForgotPasswordState {
 	code: string;
@@ -28,8 +37,8 @@ export default function ActionPage({
 	};
 }): ReactElement {
 	// Persist the state
-	const [success, setSuccess] = usePersistingSuccessState(false);
-	const defaultStateValue = location.state
+	const [success, setSuccess] = useSessionStorage("success", false);
+	const defaultStateValue: PasswordResetState = location.state
 		? {
 				code: location.state.code,
 				email: location.state.email,
@@ -40,7 +49,8 @@ export default function ActionPage({
 		  }
 		: undefined;
 	console.log(defaultStateValue);
-	const [state, setState] = usePersistingState<undefined | PasswordResetState>(
+	const [state, setState] = useSessionStorage<undefined | PasswordResetState>(
+		"state",
 		defaultStateValue
 	);
 	if (location?.state && state?.code !== location?.state?.code) {

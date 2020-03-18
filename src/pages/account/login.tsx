@@ -17,7 +17,10 @@ export default function LoginPage({
 	location: { state: AuthContinueState };
 }): ReactElement {
 	console.log(location);
-	const state = addToChain(location.state, "login");
+	let state = location.state;
+	if (location.state) {
+		state = addToChain(location.state, "login");
+	}
 	console.log(state);
 	return (
 		<Layout narrow>

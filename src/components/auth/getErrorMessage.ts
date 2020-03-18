@@ -14,7 +14,7 @@ export default function getErrorMessage(
 			};
 		case "auth/wrong-password":
 			return {
-				password: "The password is incorrect.",
+				password: "Incorrect Password! Please try again.",
 			};
 		case "auth/user-not-found":
 		case "auth/invalid-email":
