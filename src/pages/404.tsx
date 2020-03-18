@@ -5,8 +5,11 @@ import { Layout, SEO } from "../components/layout";
 const NotFoundPage = (): ReactElement => (
 	<Layout>
 		<SEO title="404: Not found" />
-		<h1>NOT FOUND</h1>
-		<p>You just hit a route that does not exist... the sadness.</p>
+		<h1>404: Resource not found</h1>
+		<p>
+			No file currently exists at this location. It may have been deleted,
+			renamed, or moved.
+		</p>
 	</Layout>
 );
 
