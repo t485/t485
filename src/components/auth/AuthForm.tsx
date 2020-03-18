@@ -275,7 +275,8 @@ export default function AuthForm({
 			}): ReactElement => {
 				const hasErrors = (errors: FormikErrors<FormData>): boolean => {
 					for (const key in errors) {
-						if (errors[key]) return true;
+						// it's only considered an error if the user knows it's an error.
+						if (errors[key] && touched[key]) return true;
 					}
 					return false;
 				};
@@ -299,10 +300,17 @@ export default function AuthForm({
 										disabled={isSubmitting}
 										autoComplete={name}
 										placeholder={getPlaceholder(field)}
+										error={
+											field.inputType === FieldInputType.NEW_PASSWORD
+												? errors[name]
+												: undefined
+										}
 									/>
-									<Form.Control.Feedback type="invalid">
-										{errors[name]}
-									</Form.Control.Feedback>
+									{field.inputType !== FieldInputType.NEW_PASSWORD && (
+										<Form.Control.Feedback type="invalid">
+											{errors[name]}
+										</Form.Control.Feedback>
+									)}
 									<Form.Text>{field.helpText}</Form.Text>
 								</Form.Group>
 							);
@@ -323,7 +331,7 @@ export default function AuthForm({
 							 Before the onSubmit handler is called for AuthForm, AuthForm will validate. Additionally, clicking this buttom removes focus
 							 from an input field, meaning errors will be shown, since the internal handler also calls onTouched each time.
 							 */}
-							{(errors.email ? "Fix Errors to " : "") + buttonLabel}
+							{(hasErrors(errors) ? "Fix Errors to " : "") + buttonLabel}
 						</Button>
 					</Form>
 				);

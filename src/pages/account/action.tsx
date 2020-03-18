@@ -1,22 +1,35 @@
 import React, { ReactElement } from "react";
-import getParameterByName from "getparameterbyname";
 import { Layout, SEO } from "../../components/layout";
 import { navigate } from "gatsby";
+import { ForgotPasswordState } from "./forgotpassword";
+import { PasswordResetState } from "./handlepasswordreset";
+
+function getParameterByName(
+	name: string,
+	url?: string
+): string | null | undefined {
+	if (!url) url = window.location.href;
+	name = name.replace(/[[\]]/g, "\\$&");
+	const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
+	const results = regex.exec(url);
+	if (!results) return null;
+	if (!results[2]) return "";
+	return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
 
 const ActionPage = (): ReactElement => {
 	const [error, setError] = React.useState(false);
 	React.useEffect(() => {
-		// TODO: Implement getParameterByName()
 		const url = window.location.href;
 		// Get the action to complete.
 		const mode = getParameterByName("mode", url);
 		// Get the one-time code from the query parameter.
 		const actionCode = getParameterByName("oobCode", url);
 		// (Optional) Get the continue URL from the query parameter if available.
-		const continueUrl = getParameterByName("continueUrl", url);
-
-		// Configure the Firebase SDK.
-		// This is the minimum configuration required for the API to be used.
+		// continueUrl is a url that contains a query string named state with the state.
+		const continueData: ForgotPasswordState = JSON.parse(
+			getParameterByName("state", getParameterByName("continueUrl", url))
+		);
 
 		// Handle the user management action.
 		switch (mode) {
@@ -26,8 +39,9 @@ const ActionPage = (): ReactElement => {
 				navigate("/account/handlepasswordreset", {
 					state: {
 						code: actionCode,
-						return: continueUrl,
-					},
+						email: continueData.email,
+						continueState: continueData.continueState,
+					} as PasswordResetState,
 					replace: true,
 				});
 				break;
@@ -47,7 +61,7 @@ const ActionPage = (): ReactElement => {
 				navigate("/account/handleemailverification", {
 					state: {
 						code: actionCode,
-						return: continueUrl,
+						return: continueData,
 					},
 					replace: true,
 				});

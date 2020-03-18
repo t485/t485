@@ -12,11 +12,12 @@ import firebase from "../../components/server/firebase";
 import { navigate } from "gatsby";
 
 export default function LoginPage({
-	location: { state },
+	location,
 }: {
 	location: { state: AuthContinueState };
 }): ReactElement {
-	state = addToChain(state, "login");
+	console.log(location);
+	const state = addToChain(location.state, "login");
 	console.log(state);
 	return (
 		<Layout narrow>

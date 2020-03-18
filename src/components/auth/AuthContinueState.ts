@@ -1,3 +1,12 @@
+type SafeObject =
+	| number
+	| string
+	| boolean
+	| SafeObject[]
+	| {
+			[key: string]: SafeObject;
+	  };
+
 interface AuthContinueState {
 	/**
 	 * The page that sent the user to the auth page.
@@ -20,8 +29,9 @@ interface AuthContinueState {
 	/**
 	 * Data that will be returned to the initiating page.
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	state?: any;
+	state?: {
+		[key: string]: SafeObject;
+	};
 	/**
 	 *	Whether or not to reauthenticate the currently logged in user instead.
 	 */
@@ -30,54 +40,32 @@ interface AuthContinueState {
 	 * Mainly for debugging. Provides a list of every single auth processing page that the user has encountered. E.g. if the user
 	 * is sent to login, and then clicks forgot password, and then clicks login again, the chain will be ["login", "forgotpassword", "login"]
 	 */
-	chain?: (
-		| string
-		| {
-				name: string;
-				data: object;
-		  }
-	)[];
+	chain?: string[];
 }
 
-interface AuthContinueStateWithChain extends AuthContinueState {
-	chain: (
-		| string
-		| {
-				name: string;
-				data: object;
-		  }
-	)[];
+interface AuthContinueStateWithChain extends Omit<AuthContinueState, "chain"> {
+	chain: string[];
 }
 
 export function addToChain(
 	state: AuthContinueState,
 	pageName: string
-): AuthContinueStateWithChain;
-export function addToChain(
-	state: AuthContinueState,
-	pageData: {
-		name: string;
-		data: object;
-	}
-): AuthContinueStateWithChain;
-export function addToChain(
-	state: AuthContinueState,
-	data:
-		| string
-		| {
-				name: string;
-				data: object;
-		  }
 ): AuthContinueStateWithChain {
-	const modifiableState: AuthContinueStateWithChain = Object.assign(
-		{
-			chain: [],
-		},
-		state
-	);
-	if (modifiableState.chain[modifiableState.chain.length - 1] !== data) {
-		modifiableState.chain.push(data);
+	// only clone if we need to modify it.
+	if (
+		state.chain &&
+		state.chain.length > 0 &&
+		state.chain[state.chain.length - 1] === pageName
+	) {
+		return state as AuthContinueStateWithChain;
 	}
+	const modifiableState: AuthContinueStateWithChain = JSON.parse(
+		JSON.stringify(state)
+	);
+	if (!modifiableState.chain) {
+		modifiableState.chain = [];
+	}
+	modifiableState.chain.push(pageName);
 	return modifiableState;
 }
 

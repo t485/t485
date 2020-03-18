@@ -9,6 +9,11 @@ import {
 import firebase from "../../components/server/firebase";
 import { unexpectedFirebaseError } from "../../utils/unexpectedError";
 
+export interface ForgotPasswordState {
+	email: string;
+	continueState: AuthContinueState;
+}
+
 export default function ForgotPasswordPage({
 	location: { state },
 }: {
@@ -95,10 +100,13 @@ export default function ForgotPasswordPage({
 					}
 					const actionCodeSettings: firebase.auth.ActionCodeSettings = {
 						url:
-							"https://beta.t485.org/?email=" +
-							email +
-							"&continueState=" +
-							encodeURIComponent(JSON.stringify(state.state)),
+							"https://t485.org/?state=" +
+							encodeURIComponent(
+								JSON.stringify({
+									email: email,
+									continueState: state,
+								} as ForgotPasswordState)
+							),
 					};
 					firebase
 						.auth()

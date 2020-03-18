@@ -1,6 +1,5 @@
 import React, { ReactElement, ReactNode } from "react";
 import { Link } from "gatsby";
-import { navigate } from "gatsby-link";
 import { Nav, Navbar as BootstrapNavbar, NavDropdown } from "react-bootstrap";
 import { useAuthState } from "../../components/auth";
 
@@ -18,23 +17,20 @@ function NavbarLink(props: {
 	 */
 	dropdown?: boolean;
 }): ReactElement {
-	// Gatsby link element doesn't work well with our storybook config
-	const linkProps = {
-		eventKey: props.page,
-		onClick: (): void => {
-			navigate("/" + props.page);
-		},
-	};
 	if (props.dropdown) {
 		return (
 			<>
-				<NavDropdown.Item {...linkProps}>{props.children}</NavDropdown.Item>
+				<NavDropdown.Item eventKey={props.page} as={Link} to={props.page}>
+					{props.children}
+				</NavDropdown.Item>
 			</>
 		);
 	} else {
 		return (
 			<Nav.Item>
-				<Nav.Link {...linkProps}>{props.children}</Nav.Link>
+				<Nav.Link eventKey={props.page} to={props.page} as={Link}>
+					{props.children}
+				</Nav.Link>
 			</Nav.Item>
 		);
 	}

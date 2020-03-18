@@ -1,4 +1,4 @@
-import React, { FormEvent, ReactElement } from "react";
+import React, { FormEvent, ReactElement, SyntheticEvent } from "react";
 import { Form, OverlayTrigger, Popover } from "react-bootstrap";
 import zxcvbn from "zxcvbn";
 
@@ -127,7 +127,7 @@ const NewPassword = ({
 						type="password"
 						value={value}
 						autoComplete="new-password"
-						onChange={(e): void => onChange(e)}
+						onChange={(e: SyntheticEvent): void => onChange(e)}
 						name={name}
 						{...restProps}
 					/>

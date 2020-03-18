@@ -421,18 +421,16 @@ const AccountPage = ({
 	}
 
 	React.useEffect(() => {
+		if (loading || user || !window) return;
 		// The state needs to be updated on reload, otherwise some functions may be performed twice.
 		const handler = (): void => {
-			console.log("HANDLING");
 			history.replaceState({}, "");
 		};
-		console.log("SUBSCRIBE");
 		window.addEventListener("beforeunload", handler);
 		return (): void => {
-			console.log("UNSUBSCRIBE");
 			window.removeEventListener("beforeunload", handler);
 		};
-	}, []);
+	}, [loading, user]);
 
 	// React.useEffect(() => {
 	// 	if (!user)return;
