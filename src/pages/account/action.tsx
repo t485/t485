@@ -48,7 +48,7 @@ const ActionPage = (): ReactElement => {
 			case "recoverEmail":
 				// Display email recovery handler and UI.
 				// handleRecoverEmail(actionCode, lang);
-				navigate("/account/handleemailrecovery", {
+				navigate("/account/handlerecoveremail", {
 					state: {
 						code: actionCode,
 					},

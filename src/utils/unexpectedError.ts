@@ -3,7 +3,9 @@ import * as firebase from "firebase/app";
 function unexpectedFirebaseError(
 	error: firebase.FirebaseError | firebase.auth.AuthError
 ): string {
-	return error.code;
+	return (
+		error.message + " If this is unexpected, please contact the webmaster."
+	);
 	// "An unknown error occurred. Please contact the webmaster. Include the following Reference Data: \n\n" +
 	// "<<SDV1:START>> " +
 	// encodeURIComponent(

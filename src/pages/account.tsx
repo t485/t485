@@ -129,6 +129,11 @@ const AccountDetails = ({
 				user.updatePassword(newPassword).catch(error => Promise.reject(error)) // pass the error through
 			);
 		}
+		if (newEmail !== user.email && newEmail.trim() !== "") {
+			pendingUpdates.push(
+				user.updateEmail(newEmail).catch(error => Promise.reject(error))
+			);
+		}
 		Promise.all(pendingUpdates)
 			.then(function() {
 				// Updates successful.
@@ -473,6 +478,22 @@ const AccountPage = ({
 						// 		})
 						// }
 						// setSubmitting(false)
+					});
+			}
+			if (location?.state?.state?.newEmail) {
+				user
+					.updateEmail(location?.state?.state?.newEmail)
+					.then(function() {
+						// Update successful.
+						console.log("DONE");
+						setShowSuccess(true);
+						//TODO: change to verifyBeforeUpdateEmail to ensure all emails are verified
+						// onSuccess()
+					})
+					.catch(function(error: firebase.auth.Error) {
+						// An error happened.
+						// alert("ERROR")
+						console.log(error);
 					});
 			}
 		}

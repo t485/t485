@@ -6,24 +6,7 @@ import { addToChain, AuthForm, FieldInputType } from "../../components/auth";
 import { Link, navigate } from "gatsby";
 import { Button } from "react-bootstrap";
 
-function useSessionStorage<T>(
-	key: string,
-	defaultValue: T
-): [T, (newValue: T) => void] {
-	let storageValue: string;
-	if (typeof window !== "undefined") {
-		storageValue = sessionStorage.getItem(key);
-	} else {
-		storageValue = "null";
-	}
-	const [state, setState] = React.useState(
-		() => JSON.parse(storageValue) || defaultValue
-	);
-	React.useEffect(() => {
-		sessionStorage.setItem(key, JSON.stringify(state));
-	}, [key, state]);
-	return [state, setState];
-}
+import useSessionStorage from "../../utils/useSessionStorage";
 
 export interface PasswordResetState extends ForgotPasswordState {
 	code: string;
@@ -47,9 +30,9 @@ export default function ActionPage({
 					"handlepasswordreset"
 				),
 		  }
-		: undefined;
+		: null;
 	console.log(defaultStateValue);
-	const [state, setState] = useSessionStorage<undefined | PasswordResetState>(
+	const [state, setState] = useSessionStorage<null | PasswordResetState>(
 		"state",
 		defaultStateValue
 	);
@@ -127,6 +110,36 @@ export default function ActionPage({
 									.
 								</p>
 							),
+						});
+						break;
+					case "auth/user-disabled":
+						setError({
+							title: "Account Disabled",
+							description: (
+								<p>
+									We are unable to process this request because your account has
+									been disabled. If you think this is an error, please contact
+									the webmaster.
+								</p>
+							),
+						});
+						break;
+					case "auth/user-not-found":
+						setError({
+							title: "Account Deleted",
+							description: (
+								<p>
+									We are unable to process this request because your account has
+									been deleted. If you think this is an error, please contact
+									the webmaster.
+								</p>
+							),
+						});
+						break;
+					default:
+						setError({
+							title: "Error: " + error.code,
+							description: <p>{error.message}</p>,
 						});
 				}
 			});
