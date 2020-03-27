@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useState } from "react";
 import { auth, User } from "firebase";
 import firebase from "../server/firebase";
+import firebaseConfig from "../../../firebase-config";
 
 export default function useAuthState(): [
 	User | undefined,
@@ -43,6 +44,9 @@ export default function useAuthState(): [
 		}
 	);
 	useEffect(() => {
+		if (typeof window !== "undefined" && !firebase.apps.length) {
+			firebase.initializeApp(firebaseConfig);
+		}
 		setAuth(firebase.auth());
 	}, [firebase]);
 
