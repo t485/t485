@@ -33,7 +33,7 @@ export default function AuthChallengePage({
 		<Layout narrow>
 			<SEO title={"Reauthenticate"} />
 			<h1 className="text-center">
-				{"Hi " + (user?.displayName.split(" ")[0] || "")}
+				{"Hi " + (user?.displayName?.split(" ")[0] || "")}
 			</h1>
 			<p className="text-center text-muted">
 				Please confirm your password to continue
