@@ -66,7 +66,7 @@ export default function LoginPage({
 						.auth()
 						.signInWithEmailAndPassword(email, password)
 						.then(() => {
-							return onAuthSuccess(state);
+							return onAuthSuccess(state, "login");
 						})
 						.catch((e: firebase.FirebaseError) => {
 							form.setErrors(getErrorMessage(e));

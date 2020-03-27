@@ -26,6 +26,7 @@ export default function AuthChallengePage({
 		// User needs to login instead!
 		navigate("/account/login", {
 			state: state,
+			replace: true,
 		});
 	}
 	return (
@@ -56,7 +57,7 @@ export default function AuthChallengePage({
 					user
 						.reauthenticateWithCredential(credentials)
 						.then(() => {
-							return onAuthSuccess(state);
+							return onAuthSuccess(state, "challenge");
 						})
 						.catch((e: firebase.FirebaseError) => {
 							form.setErrors(getErrorMessage(e));
