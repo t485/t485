@@ -2,15 +2,41 @@ $color-primary: green;
 $color-secondary: #eeeeee; // #e1e6ea; // TODO: or #f8f9fa or #eee
 
 // Breakpoint
-$mobile-end: 799px;
+$sm-end: 575px;
+$md-end: 767px;
 
-@mixin mobile {
-	@media screen and (max-width: $mobile-end) {
+@mixin sm {
+	@media screen and (max-width: $sm-end) {
 		@content;
 	}
 }
-@mixin desktop {
-	@media not screen, (min-width: $mobile-end + 1) {
+@mixin smmd {
+	@media screen and (max-width: $md-end) {
+		@content;
+	}
+}
+@mixin md {
+	@media screen and (min-width: $sm-end + 1) and (max-width: $md-end) {
+		@content;
+	}
+}
+@mixin mdlg {
+	@media screen and (min-width: $sm-end + 1) {
+		@content;
+	}
+}
+@mixin lg {
+	@media not screen, (min-width: $md-end + 1) {
+		@content;
+	}
+}
+@mixin hidecard {
+	@include sm() {
+		@content;
+	}
+}
+@mixin showcard {
+	@include mdlg() {
 		@content;
 	}
 }

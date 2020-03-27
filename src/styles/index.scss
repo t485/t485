@@ -16,32 +16,29 @@
 
 	h1 {
 		font-family: "Nexa Bold", sans-serif;
-		@include desktop() {
-			margin-top: 25vh;
+		@media only screen and (min-height: 700px) {
+			margin-top: 20vh;
 		}
 		font-size: 6em;
 		color: white;
 	}
+
 	h3 {
 		font-family: "Nexa Bold", sans-serif;
 		color: #eee;
 	}
+
 	p {
 		font-size: 1.5em;
 	}
 
 	.cta-block {
 		margin-top: 10vh;
-		@include mobile {
-			margin-bottom: 5vh;
-			& button:not(:first-child) {
-				margin-top: 10px;
-			}
-		}
-	}
-
-	.cta {
-		margin-left: 10px;
-		margin-right: 10px;
+		//@include sm {
+		//  margin-bottom: 5vh;
+		//  & button:not(:first-child) {
+		//    margin-top: 10px;
+		//  }
+		//}
 	}
 }

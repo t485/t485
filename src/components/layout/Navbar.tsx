@@ -160,7 +160,7 @@ export const Navbar = ({
 			<BootstrapNavbar
 				bg="dark"
 				variant="dark"
-				expand="lg"
+				expand="md"
 				id="site-navbar"
 				className={transparent ? "transparent-navbar" : ""}
 				fixed="top"

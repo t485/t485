@@ -25,10 +25,10 @@ h3 {
 }
 
 .transparent-navbar {
-	@include desktop() {
+	@include lg() {
 		background-color: transparent !important;
 	}
-	@include mobile() {
+	@include smmd() {
 		background-color: rgba(0, 0, 0, 0.6) !important;
 		//color: black !important;
 	}
@@ -99,7 +99,7 @@ a.link-no-style {
 		margin-top: -60px;
 		height: 60px;
 		clear: both;
-		@include desktop() {
+		@include showcard() {
 			background-color: $color-secondary;
 			padding: 0px 10px;
 		}
@@ -115,7 +115,7 @@ a.link-no-style {
 	}
 }
 
-@include desktop() {
+@include showcard() {
 	.main-background {
 		background-color: $color-secondary;
 	}
@@ -124,7 +124,9 @@ a.link-no-style {
 		padding: 30px;
 		background-color: white;
 		border-radius: 8px;
-		box-shadow: 3px 3px 5px 1px #ccc;
+		box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
 		margin-bottom: 30px;
+		// we already have mx-auto, so if the width is changed margins will automatically appear.
+		width: calc(100% - 20px);
 	}
 }

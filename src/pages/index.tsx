@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { Button, Container } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import Layout from "../components/layout/Layout";
 import SEO from "../components/layout/seo";
 import "../styles/index.scss";
@@ -24,14 +24,39 @@ const IndexPage = ({ data }: { data: GraphQLQueryResult }): ReactElement => (
 			<div>
 				<h1>Troop 485</h1>
 				<h3>Cupertino, California</h3>
-				<div className="text-center cta-block">
-					<Button variant="outline-light" size="lg" className="cta">
-						About Us
-					</Button>
-					<Button variant="primary" size="lg" className="cta">
-						Join Today
-					</Button>
-				</div>
+				<Row className="cta-block">
+					<Col md={2} lg={3} xl={4} className={"d-none d-md-block"}></Col>
+					<Col sm={12} md={4} lg={3} xl={2} className={""}>
+						<Button
+							variant="outline-light"
+							size="lg"
+							className="d-none d-md-block"
+							block
+						>
+							About Us
+						</Button>
+						<Button
+							variant="light"
+							size="lg"
+							className="d-block d-md-none"
+							block
+						>
+							About Us
+						</Button>
+					</Col>
+					<Col
+						sm={12}
+						md={4}
+						lg={3}
+						xl={2}
+						className={"mt-3 ml-0 ml-md-3 mt-md-0"}
+					>
+						<Button variant="primary" size="lg" className="" block>
+							Join Today
+						</Button>
+					</Col>
+					<Col md={2} lg={3} xl={4} className={"d-none d-md-block"}></Col>
+				</Row>
 			</div>
 			<div className="absolute bottom-0 left-0 right-0 top-0 -z-10 overflow-hidden background-image">
 				<Img

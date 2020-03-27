@@ -95,7 +95,6 @@ const Layout = ({
 							style={{
 								...(narrow
 									? {
-											top: "15vh",
 											maxWidth: "600px",
 									  }
 									: {}),
