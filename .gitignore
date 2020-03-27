@@ -76,3 +76,13 @@ yarn-error.log
 
 
 .idea/
+
+# Firebase
+firestore.rules
+firestore.indexes.json
+firebase.json
+functions/lib/
+functions/node_modules/
+functions/src/serviceAccountKey.ts
+functions/*-debug.log
+functions/database.rules.json
