@@ -2,6 +2,12 @@ import React, { ReactElement, ReactNode } from "react";
 import { Link } from "gatsby";
 import { Nav, Navbar as BootstrapNavbar, NavDropdown } from "react-bootstrap";
 import { useAuthState } from "../../components/auth";
+import firebase from "../server/firebase";
+
+declare const heap: {
+	identify: (identifier: string) => void;
+	addUserProperties: (properties: object) => void;
+}; // imported via gatsby
 
 function NavbarLink(props: {
 	/**
@@ -36,8 +42,50 @@ function NavbarLink(props: {
 	}
 }
 
+// Also handles heap analytics. TODO: move analtyics out?
 const AuthDropdown = (): ReactElement => {
 	const [user, loading, error] = useAuthState();
+	React.useEffect(() => {
+		if (loading) return;
+		if (error) {
+			heap.addUserProperties({
+				hadNavbarAuthError: true,
+			});
+			return;
+		}
+		if (!user || !user.uid) {
+			heap.addUserProperties({
+				hasAccount: false,
+			});
+			return;
+		}
+
+		heap.identify("user-" + user.uid);
+		firebase
+			.firestore()
+			.collection("users")
+			.doc(user.uid)
+			.get()
+			.then(snapshot => {
+				const data = snapshot.data() as {
+					admin?: boolean;
+					memberType?: string;
+					jobs?: string[];
+					roles?: string[];
+					permissions?: string[];
+				};
+				if (!data) return;
+				console.log(heap, data, "LOG");
+				heap.addUserProperties({
+					hasAccount: true,
+					isAdmin: data.admin,
+					memberType: data.memberType, // should be "scout" or "parent"
+					jobs: data.jobs,
+					roles: data.roles,
+					permissions: data.permissions,
+				});
+			});
+	}, [user, loading, error]);
 
 	if (loading) {
 		return (
