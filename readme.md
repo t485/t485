@@ -13,8 +13,10 @@ Then:
 3. Start the dev server: `$ yarn start` If you haven't configured ssl yet, run `$ yarn start:nossl` instead.
    instead.
 
-Internally, both commands will start a gatsby development server (at default port 8000), and a storybook
-server (at default port 6006) for you.
+By default, `$ yarn start` will only start a gatsby dev server. However, a storybook server is also avaliable.
+To start this, run `$ yarn storybook`, and to start both gatsby and storybook, run `$ yarn develop`
+
+By default, gatsby runs on port 8000 and storybook on port 6006.
 
 #### SSL
 
