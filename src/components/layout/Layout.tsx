@@ -9,10 +9,7 @@ import React from "react";
 // import { StaticQuery, graphql } from "gatsby"
 import { Col, Container, Row } from "react-bootstrap";
 import Navbar from "./Navbar";
-// fonts and base styles
-import "typeface-muli";
-// import "typeface-oswald"
-import "../../styles/style.scss";
+// fonts and base styles are in gatsby-browser and gatsby-ssr files, because layout is unmounted and remounted on page loads.
 
 import classNames from "classnames";
 
