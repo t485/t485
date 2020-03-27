@@ -113,6 +113,11 @@ interface AuthFormProps {
 	tray?: ReactElement;
 
 	/**
+	 * Text that the button should show when the form is invalid. Defaults to `Fix Errors to ${buttonLabel}`
+	 */
+	invalidButtonLabel?: string;
+
+	/**
 	 * If set to true, the button will not be disabled even if there are errors.
 	 * This is an advanced prop. For a sample implementation, see the forgotpassword page
 	 * This is not recommended because it can be confusing to the user when they submit and nothing happens, which is what the case is when
@@ -124,6 +129,10 @@ interface AuthFormProps {
 	 * @advanced
 	 */
 	dontDisableButtonWithError?: boolean;
+	/**
+	 * Help text to be displayed near the submit button.
+	 */
+	buttonHelpText?: string;
 }
 
 export default function AuthForm({
@@ -132,6 +141,8 @@ export default function AuthForm({
 	onSubmit,
 	tray,
 	dontDisableButtonWithError,
+	invalidButtonLabel,
+	buttonHelpText,
 }: AuthFormProps): ReactElement {
 	type GetSchemaForOverload = {
 		(
@@ -316,6 +327,7 @@ export default function AuthForm({
 							);
 						})}
 						{tray}
+						<Form.Text>{buttonHelpText}</Form.Text>
 						<Button
 							variant={"primary"}
 							block
@@ -331,7 +343,11 @@ export default function AuthForm({
 							 Before the onSubmit handler is called for AuthForm, AuthForm will validate. Additionally, clicking this buttom removes focus
 							 from an input field, meaning errors will be shown, since the internal handler also calls onTouched each time.
 							 */}
-							{(hasErrors(errors) ? "Fix Errors to " : "") + buttonLabel}
+							{isSubmitting
+								? "Loading..."
+								: hasErrors(errors)
+								? invalidButtonLabel || "Fix Errors to " + buttonLabel
+								: buttonLabel}
 						</Button>
 					</Form>
 				);

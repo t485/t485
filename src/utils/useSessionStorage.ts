@@ -3,7 +3,7 @@ import React from "react";
 export default function useSessionStorage<T>(
 	key: string,
 	defaultValue: T = null
-): [T, (newValue: T) => void] {
+): [T, (newValue: T | ((prevState: T) => T)) => void] {
 	let storageValue: string;
 	if (typeof window !== "undefined") {
 		storageValue = sessionStorage.getItem(key);
