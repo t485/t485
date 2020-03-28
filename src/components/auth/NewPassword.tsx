@@ -31,21 +31,21 @@ const NewPassword = ({
 	]);
 	const UpdatingPopoverBase = (
 		{
-			scheduleUpdate,
+			popper,
 			children,
 			id,
 			...props
 		}: {
 			id: string;
 			children: ReactElement | ReactElement[];
-			scheduleUpdate: () => void;
+			popper: { scheduleUpdate: () => void };
 		},
 		ref: React.RefObject<Popover> & React.RefObject<HTMLDivElement>
 	): ReactElement => {
 		React.useEffect(() => {
 			// console.log('updating!');
-			scheduleUpdate();
-		}, [children, scheduleUpdate]);
+			popper.scheduleUpdate();
+		}, [children, popper]);
 
 		return (
 			<Popover ref={ref} id={id} {...props}>
