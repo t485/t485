@@ -8,7 +8,6 @@ import {
 	AuthReturnState,
 	useAuthState,
 } from "../components/auth";
-import { AuthChallengePageLocationProps } from "./account/challenge";
 import { Field, Formik, FormikBag } from "formik";
 import * as Yup from "yup";
 import Mailcheck from "mailcheck";
@@ -531,7 +530,7 @@ const AccountPage = ({
 								state: {
 									editable: true,
 								},
-							} as AuthChallengePageLocationProps,
+							} as AuthContinueState,
 						});
 					}}
 					onSuccess={(): void => {
