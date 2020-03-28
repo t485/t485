@@ -1,0 +1,57 @@
+/**
+
+100 Lightest.
+200 Bolder than 100, lighter than 300.
+300 Bolder than 200, lighter than 400.
+400 Bolder than 300, lighter than 500. Equivalent of normal.
+500 Bolder than 400, lighter than 600.
+600 Bolder than 500, lighter than 700.
+700 Bolder than 600, lighter than 800. Equivalent of bold.
+800 Bolder than 700, lighter than 900.
+900 Boldest.
+
+*/
+@font-face {
+	font-family: "Proxima Nova";
+	src: url("ProximaNova-Bold.woff2") format("woff2"),
+		url("ProximaNova-Bold.woff") format("woff"),
+		url("ProximaNova-Bold.ttf") format("truetype");
+	font-weight: bold;
+	font-style: normal;
+}
+/*
+@font-face {
+    font-family: 'ProximaNova Alt Rg';
+    src: url('ProximaNovaA-Bold.woff2') format('woff2'),
+        url('ProximaNovaA-Bold.woff') format('woff'),
+        url('ProximaNovaA-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+*/
+@font-face {
+	font-family: "Proxima Nova";
+	src: url("ProximaNovaT-Thin.woff2") format("woff2"),
+		url("ProximaNovaT-Thin.woff") format("woff"),
+		url("ProximaNovaT-Thin.ttf") format("truetype");
+	font-weight: 100;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Proxima Nova";
+	src: url("ProximaNova-Black.woff2") format("woff2"),
+		url("ProximaNova-Black.woff") format("woff"),
+		url("ProximaNova-Black.ttf") format("truetype");
+	font-weight: 900;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Proxima Nova";
+	src: url("ProximaNova-Regular.woff2") format("woff2"),
+		url("ProximaNova-Regular.woff") format("woff"),
+		url("ProximaNova-Regular.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}

@@ -1,17 +1,9 @@
 @import "variables";
-
-@font-face {
-	font-family: "Nexa Bold";
-	src: url("../fonts/Nexa Bold.otf") format("opentype");
-}
-
-@font-face {
-	font-family: "Proxima Nova Regular";
-	src: url("../fonts/ProximaNova-Regular.otf") format("opentype");
-}
+@import url("../fonts/ProximaNova/index.css");
+@import url("../fonts/Nexa/index.css");
 
 body {
-	font-family: "Proxima Nova Regular", sans-serif;
+	font-family: "Proxima Nova", sans-serif;
 }
 
 h1,
@@ -21,7 +13,7 @@ h3 {
 }
 
 .navbar-brand {
-	font-family: "Nexa Bold", sans-serif;
+	font-family: "Nexa", sans-serif;
 }
 
 .transparent-navbar {
