@@ -9,9 +9,9 @@ import React from "react";
 // import { StaticQuery, graphql } from "gatsby"
 import { Col, Container, Row } from "react-bootstrap";
 import Navbar from "./Navbar";
-// fonts and base styles are in gatsby-browser and gatsby-ssr files, because layout is unmounted and remounted on page loads.
-
 import classNames from "classnames";
+
+// fonts and base styles are in gatsby-browser and gatsby-ssr files, because layout is unmounted and remounted on page loads.
 
 interface LayoutProps {
 	/**
@@ -31,17 +31,32 @@ interface LayoutProps {
 	 */
 	admin?: boolean;
 	/**
-	 * Whether or not to use the card layout. Defaults to true.
+	 * Equiviliant to setting noCard, noContainer, and noBackground all to true.
+	 * If empty is set and noCard, noContainer, or noBackground is also explicitly set to false (not undefined), then empty has lower precedent.
+	 * E.g.: <Layout empty noContainer={false}> renders Layout with noCad={true} noContainer={false} noBackground={true}
 	 */
-	card?: boolean;
+	empty?: boolean;
 	/**
-	 * Set to false to disable the grey background. Default is true.
+	 * If set to true, no card will be rendered. If undefined or false, a card will be shown.
 	 */
-	background?: boolean;
+	noCard?: boolean;
+	/**
+	 * If set to true, the page will not be wrapped in utility components (row, col, container) that help with common layouts.
+	 * If undefined or false, then the content will be wrapped in a container.
+	 */
+	noContainer?: boolean;
+	/**
+	 * Set to true to disable the grey background. If undefined or false, it will be rendered.
+	 */
+	noBackground?: boolean;
 	/**
 	 * CSS Classes to pass onto the container closest to the content.
 	 */
 	className?: string;
+	/**
+	 * CSS Classes to apply to the footer.
+	 */
+	footerClassName?: string;
 	/**
 	 * Style to pass onto the container closest to the content.
 	 */
@@ -58,18 +73,21 @@ const Layout = ({
 	pageName,
 	transparentNavFooter,
 	admin,
-	card,
-	background,
+	empty,
+	noCard,
+	noContainer,
+	noBackground,
 	className,
 	style,
 	narrow,
+	footerClassName,
 }: LayoutProps): React.ReactElement => {
-	if (card !== false) {
-		card = true;
-	}
-	if (background !== false) {
-		background = true;
-	}
+	// For increased readability
+
+	// if empty is set, then there is background == false as long as noBackground is not explicitly set to false (not undefined)
+	const background = empty ? noBackground === false : !noBackground;
+	const card = empty ? noCard === false : !noCard;
+	const container = empty ? noContainer === false : !noContainer;
 	return (
 		<>
 			<Container
@@ -81,33 +99,40 @@ const Layout = ({
 					admin={admin}
 					transparent={transparentNavFooter}
 				/>
-				<Row noGutters>
-					<Col>
-						<Container
-							className={classNames(
-								"mt-5",
-								card ? "main-card" : "",
-								className || ""
-							)}
-							style={{
-								...(narrow
-									? {
-											maxWidth: "600px",
-									  }
-									: {}),
-								...style,
-							}}
-						>
-							<main>{children}</main>
-						</Container>
-					</Col>
-				</Row>
+				{container ? (
+					<Row noGutters>
+						<Col>
+							<Container
+								className={classNames(
+									"mt-5",
+									card ? "main-card" : "",
+									className || ""
+								)}
+								style={{
+									...(narrow
+										? {
+												maxWidth: "600px",
+										  }
+										: {}),
+									...style,
+								}}
+							>
+								<main>{children}</main>
+							</Container>
+						</Col>
+					</Row>
+				) : (
+					<div className={className}>{children}</div>
+				)}
 			</Container>
 			<Container fluid className="px-0">
 				<Row noGutters>
 					<Col className="footer-col">
 						<footer
-							className={transparentNavFooter ? "transparent-footer" : ""}
+							className={classNames(
+								transparentNavFooter ? "transparent-footer" : "",
+								footerClassName
+							)}
 						>
 							<span>
 								Copyright © 2006

@@ -1,0 +1,26 @@
+.about-page {
+	.hero-text {
+		position: absolute;
+		top: 20vh;
+		width: 400px;
+		//background:rgba(100,100,100,0.5);
+		right: calc(50% - 200px);
+		left: calc(50% - 200px);
+		margin: 0 auto;
+		z-index: 10;
+		text-align: center;
+		color: #eee;
+		h1 {
+			font-size: 6rem;
+		}
+	}
+	.carousel-item {
+		height: 50vh;
+
+		.gatsby-image-wrapper {
+			div:first-child {
+				padding-bottom: 100% !important;
+			}
+		}
+	}
+}

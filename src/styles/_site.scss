@@ -10,3 +10,10 @@ a:not([href]):hover {
 	color: #0056b3;
 	text-decoration: underline;
 }
+
+.text-shadow {
+	text-shadow: black 0px 0px 75px, rgba(0, 0, 0, 0.7) 0px 0px 20px;
+}
+.text-shadow-heavy {
+	text-shadow: black 0px 0px 25px, rgba(0, 0, 0, 0.7) 0px 0px 20px;
+}

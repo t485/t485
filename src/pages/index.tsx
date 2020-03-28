@@ -3,7 +3,7 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import Layout from "../components/layout/Layout";
 import SEO from "../components/layout/seo";
 import "../styles/index.scss";
-import { graphql } from "gatsby";
+import { graphql, Link } from "gatsby";
 import Img, { FluidObject } from "gatsby-image";
 
 interface GraphQLQueryResult {
@@ -15,7 +15,14 @@ interface GraphQLQueryResult {
 }
 
 const IndexPage = ({ data }: { data: GraphQLQueryResult }): ReactElement => (
-	<Layout pageName="index" transparentNavFooter card={false} background={false}>
+	<Layout
+		pageName="index"
+		transparentNavFooter
+		noCard
+		noBackground
+		className={"text-shadow"}
+		footerClassName={"text-shadow"}
+	>
 		<SEO
 			title="Home"
 			keywords={[`Troop 485`, `Scouting`, `Boy Scouts`, `Cupertino`]}
@@ -27,14 +34,16 @@ const IndexPage = ({ data }: { data: GraphQLQueryResult }): ReactElement => (
 				<Row className="cta-block">
 					<Col md={2} lg={3} xl={4} className={"d-none d-md-block"}></Col>
 					<Col sm={12} md={4} lg={3} xl={2} className={""}>
-						<Button
-							variant="outline-light"
-							size="lg"
-							className="d-none d-md-block"
-							block
-						>
-							About Us
-						</Button>
+						<Link to={"/about"} className={"link-no-style"}>
+							<Button
+								variant="outline-light"
+								size="lg"
+								className="d-none d-md-block"
+								block
+							>
+								About Us
+							</Button>
+						</Link>
 						<Button
 							variant="light"
 							size="lg"

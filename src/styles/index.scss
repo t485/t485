@@ -34,11 +34,8 @@
 
 	.cta-block {
 		margin-top: 10vh;
-		//@include sm {
-		//  margin-bottom: 5vh;
-		//  & button:not(:first-child) {
-		//    margin-top: 10px;
-		//  }
-		//}
+		.btn-outline-light:not(:hover):not(:focus):not(:active) {
+			background-color: rgba(0, 0, 0, 0.3);
+		}
 	}
 }
