@@ -43,15 +43,15 @@ const IndexPage = ({ data }: { data: GraphQLQueryResult }): ReactElement => (
 							>
 								About Us
 							</Button>
+							<Button
+								variant="light"
+								size="lg"
+								className="d-block d-md-none"
+								block
+							>
+								About Us
+							</Button>
 						</Link>
-						<Button
-							variant="light"
-							size="lg"
-							className="d-block d-md-none"
-							block
-						>
-							About Us
-						</Button>
 					</Col>
 					<Col
 						sm={12}
