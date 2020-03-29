@@ -9,7 +9,7 @@ import {
 	onAuthSuccess,
 } from "../../components/auth";
 import firebase from "../../components/server/firebase";
-import { navigate } from "gatsby";
+import { Link, navigate } from "gatsby";
 
 export default function LoginPage({
 	location,
@@ -48,16 +48,13 @@ export default function LoginPage({
 				}}
 				tray={
 					<p className={"text-center"}>
-						<a>Need An Account?</a> |{" "}
-						<a
-							onClick={(): void => {
-								navigate("/account/forgotpassword", {
-									state: state,
-								});
-							}}
-						>
+						<Link to={"/account/howto"} state={state}>
+							Need an Account?
+						</Link>{" "}
+						|{" "}
+						<Link to={"/account/forgotpassword"} state={state}>
 							Forgot Your Password?
-						</a>
+						</Link>
 					</p>
 				}
 				buttonLabel={state?.message ? "Continue" : "Login"}
