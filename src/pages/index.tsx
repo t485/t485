@@ -60,9 +60,11 @@ const IndexPage = ({ data }: { data: GraphQLQueryResult }): ReactElement => (
 						xl={2}
 						className={"mt-3 ml-0 ml-md-3 mt-md-0"}
 					>
-						<Button variant="primary" size="lg" className="" block>
-							Join Today
-						</Button>
+						<Link to={"/new-scouts"} className={"link-no-style"}>
+							<Button variant="primary" size="lg" className="" block>
+								Join Today
+							</Button>
+						</Link>
 					</Col>
 					<Col md={2} lg={3} xl={4} className={"d-none d-md-block"}></Col>
 				</Row>
