@@ -80,7 +80,7 @@ const IndexPage = ({ data }: { data: GraphQLQueryResult }): ReactElement => (
 
 export const query = graphql`
 	query {
-		bgImage: file(relativePath: { eq: "index/bg_index2.JPG" }) {
+		bgImage: file(relativePath: { eq: "index/background.jpg" }) {
 			childImageSharp {
 				fluid(maxWidth: 1920, quality: 100) {
 					...GatsbyImageSharpFluid_withWebp
