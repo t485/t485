@@ -8,6 +8,7 @@ import {
 } from "../../components/auth";
 import firebase from "../../components/server/firebase";
 import { unexpectedFirebaseError } from "../../utils/unexpectedError";
+import { Link } from "gatsby";
 
 export interface ForgotPasswordState {
 	email: string;
@@ -64,6 +65,17 @@ export default function ForgotPasswordPage({
 							"If you also forgot the email you signed up with, please contact the webmaster.",
 					},
 				}}
+				tray={
+					<p className={"text-center"}>
+						<Link to={"/account/login"} state={state}>
+							Login Instead
+						</Link>{" "}
+						|{" "}
+						<Link to={"/account/howto"} state={state}>
+							Need an Account?
+						</Link>
+					</p>
+				}
 				dontDisableButtonWithError={noDisableButton}
 				buttonLabel={"Send Password Reset Email"}
 				onSubmit={({ email }, form): void => {
