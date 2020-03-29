@@ -7,7 +7,6 @@ import classNames from "classnames";
 import firebase from "../../components/server/firebase";
 import { unexpectedFirebaseError } from "../../utils/unexpectedError";
 import getParameterByName from "../../utils/getParameterByName";
-import sysend from "sysend";
 import { Button, Spinner } from "react-bootstrap";
 import { Link } from "gatsby";
 
@@ -263,6 +262,7 @@ export default function createAccountPage(): ReactElement {
 								emailVerified: user.emailVerified,
 							},
 						});
+						const sysend = await import("sysend");
 						sysend.on("email_verified", (data: { email: string }, name) => {
 							console.log("RECEIVED EVENT", data, name);
 							if (user.email === data.email)
@@ -415,6 +415,7 @@ export default function createAccountPage(): ReactElement {
 						await user.sendEmailVerification();
 						dispatch({ type: "UPDATE_DATA", data: { email: data.email } });
 						console.log("LISTENING");
+						const sysend = await import("sysend");
 						sysend.on("email_verified", (data: { email: string }, name) => {
 							console.log("RECEIVED EVENT", data, name);
 

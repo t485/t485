@@ -7,7 +7,6 @@ import { Button, Spinner } from "react-bootstrap";
 import { Link, navigate } from "gatsby";
 import { unexpectedFirebaseError } from "../../utils/unexpectedError";
 import useSessionStorage from "../../utils/useSessionStorage";
-import sysend from "sysend";
 
 const ActionPage = (): ReactElement => {
 	type UIMode =
@@ -247,6 +246,7 @@ const ActionPage = (): ReactElement => {
 						});
 						console.log(info);
 						setUIMode("verify_email_complete");
+						const sysend = await import("sysend");
 						sysend.broadcast("email_verified", { email: info.data.email });
 						// console.log("SENT", sysend);
 					} catch (error) {
