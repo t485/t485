@@ -21,7 +21,7 @@ const IndexPage = ({ data }: { data: GraphQLQueryResult }): ReactElement => (
 		noCard
 		noBackground
 		className={"text-shadow"}
-		footerClassName={"text-shadow"}
+		footerClassName={"text-shadow-heavy"}
 	>
 		<SEO
 			title="Home"
