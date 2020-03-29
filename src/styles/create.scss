@@ -1,0 +1,49 @@
+@import "variables";
+
+@include showcard() {
+	.create-account.main-card {
+		padding: 0;
+		width: calc(100% - 40px);
+		max-width: 800px;
+		margin-left: auto;
+		margin-right: auto;
+
+		.Arrows-container {
+			border-radius: 8px 8px 0px 0px;
+
+			// we use one class instead of .left-dark.right-light to avoid the impression that .left-dark by itself is acceptable.
+			&.left-dark-right-light {
+				background-image: linear-gradient(to bottom, #23468c 0%, #23468c 100%),
+					linear-gradient(to bottom, #d9e3f7 0%, #d9e3f7 100%);
+			}
+
+			&.left-light-right-light {
+				background-image: linear-gradient(to bottom, #d9e3f7 0%, #d9e3f7 100%),
+					linear-gradient(to bottom, #d9e3f7 0%, #d9e3f7 100%);
+			}
+
+			&.left-light-right-dark {
+				background-image: linear-gradient(to bottom, #d9e3f7 0%, #d9e3f7 100%),
+					linear-gradient(to bottom, #23468c 0%, #23468c 100%);
+			}
+
+			background-repeat: no-repeat, no-repeat;
+			background-size: 50% 60px, 50% 60px;
+			background-position: top left, top right;
+
+			.Arrows {
+				// the corner radius is 8px, we need to subtract double that
+				width: calc(100% - 16px);
+				margin-right: auto;
+				margin-left: auto;
+			}
+		}
+	}
+}
+
+@include hidecard() {
+	.create-account.main-card {
+		margin-top: 0 !important;
+		padding: 0;
+	}
+}

@@ -32,7 +32,8 @@ function unexpectedFirebaseError(
 		);
 	}
 	return (
-		error.message + " If this is unexpected, please contact the webmaster."
+		error.message +
+		" If this is unexpected, reload the page and try again in a few minutes, or contact the webmaster."
 	);
 	// "An unknown error occurred. Please contact the webmaster. Include the following Reference Data: \n\n" +
 	// "<<SDV1:START>> " +

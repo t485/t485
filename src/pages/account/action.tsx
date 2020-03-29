@@ -238,7 +238,21 @@ const ActionPage = (): ReactElement => {
 
 					break;
 				case "verifyEmail":
-					// Display email verification handler and UI.
+					try {
+						const info = await firebase.auth().checkActionCode(data.actionCode);
+						await firebase.auth().applyActionCode(data.actionCode);
+						setSuccess({
+							page: "verify_email_complete",
+							data: { email: info.data.email },
+						});
+						console.log(info);
+						setUIMode("verify_email_complete");
+						sysend.broadcast("email_verified", { email: info.data.email });
+						// console.log("SENT", sysend);
+					} catch (error) {
+						// invalid code
+						setError(handleGeneralError(error));
+					}
 
 					break;
 				default:
@@ -428,6 +442,21 @@ const ActionPage = (): ReactElement => {
 						>
 							Login
 						</Button>
+					</>
+				);
+				break;
+			case "verify_email_complete":
+				content = (
+					<>
+						<SEO title="Email Verified" />
+						<h1 className="text-center">
+							Success! Your email has been verified.
+						</h1>
+						<p>
+							To continue setting up your account, return to the first tab that
+							you used to setup your account. If you&apos;ve closed that tab,
+							simply login again, and you will be brought back to that page.
+						</p>
 					</>
 				);
 				break;
