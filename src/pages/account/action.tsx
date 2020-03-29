@@ -7,6 +7,7 @@ import { Button, Spinner } from "react-bootstrap";
 import { Link, navigate } from "gatsby";
 import { unexpectedFirebaseError } from "../../utils/unexpectedError";
 import useSessionStorage from "../../utils/useSessionStorage";
+import sysend from "sysend";
 
 const ActionPage = (): ReactElement => {
 	type UIMode =
