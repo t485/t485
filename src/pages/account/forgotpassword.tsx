@@ -6,9 +6,9 @@ import {
 	AuthForm,
 	FieldInputType,
 } from "../../components/auth";
-import firebase from "../../components/server/firebase";
 import { unexpectedFirebaseError } from "../../utils/unexpectedError";
 import { Link } from "gatsby";
+import { firebase, useFirebaseInitializer } from "../../firebase";
 
 export interface ForgotPasswordState {
 	email: string;

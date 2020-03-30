@@ -1,14 +1,15 @@
 import React, { ReactElement } from "react";
 import "../../styles/create.scss";
 import "../../styles/stepper.scss";
-import { AuthForm, FieldInputType, useAuthState } from "../../components/auth";
+import { AuthForm, FieldInputType } from "../../components/auth";
 import { Layout, SEO } from "../../components/layout";
 import classNames from "classnames";
-import firebase from "../../components/server/firebase";
 import { unexpectedFirebaseError } from "../../utils/unexpectedError";
 import getParameterByName from "../../utils/getParameterByName";
 import { Button, Spinner } from "react-bootstrap";
 import { Link } from "gatsby";
+import { firebase, useFirebaseInitializer } from "../../firebase";
+import AuthContext from "../../context/AuthContext";
 
 function Arrows({
 	labels,
@@ -82,7 +83,8 @@ function Arrows({
  * NOTE: this should be very modular so it's easy to update in the future, which WILL be necessary.
  * */
 export default function createAccountPage(): ReactElement {
-	const [user, userLoading, userError] = useAuthState();
+	const firebaseReady = useFirebaseInitializer();
+	const { user, loading: userLoading } = React.useContext(AuthContext);
 	const [step3Loading, setStep3Loading] = React.useState(false);
 	type Data = {
 		[key: string]: any;
@@ -204,6 +206,7 @@ export default function createAccountPage(): ReactElement {
 	);
 
 	React.useEffect(() => {
+		if (!firebaseReady) return;
 		(async (): Promise<void> => {
 			// a key can be verified in one of two ways: 1. the user uses a create link
 			// OR 2. the logged in user hasn't finished setting up their account. In this case, they have the right to finish
@@ -301,180 +304,191 @@ export default function createAccountPage(): ReactElement {
 					dispatch({ type: "INVALID_KEY" });
 				});
 		})();
-	}, [user, userLoading]);
+	}, [user, userLoading, firebaseReady]);
 
 	let content = <></>;
 	if (step === 0) {
 		content = (
-			<AuthForm
-				buttonLabel={"Next"}
-				invalidButtonLabel={"Fix errors to continue"}
-				buttonHelpText={
-					"Clicking next will immediately send a verification email, so please double check that the email you provided is correct."
-				}
-				fields={{
-					fullName: {
-						inputType: FieldInputType.TEXT,
-						label: "Your Full Name",
-						placeholder: "Enter your full name...",
-					},
-					email: {
-						inputType: FieldInputType.EMAIL,
-						label: "Your Email",
-					},
-					newPassword: {
-						inputType: FieldInputType.NEW_PASSWORD,
-						label: "Choose a password",
-					},
-					confirmNewPassword: {
-						inputType: FieldInputType.CONFIRM_PASSWORD,
-						label: "Confirm your new password",
-					},
-				}}
-				onSubmit={async (data, form): Promise<void> => {
-					let user: firebase.User;
-					let key: string;
-					try {
-						const credential = await firebase
-							.auth()
-							.createUserWithEmailAndPassword(data.email, data.newPassword);
-						user = credential.user;
-						key = getParameterByName("key");
+			<>
+				<h1>Create Account</h1>
+				<p>
+					Welcome to the t485 website! Let&apos;s setup a new account for you.
+					If you&apos;ve already started setting up your account, then please{" "}
+					<Link to={"/account/login"}>Login</Link> first, then you will be
+					automatically redirected back to this page to finish setup.
+				</p>
+				<hr />
+				<AuthForm
+					buttonLabel={"Next"}
+					invalidButtonLabel={"Fix errors to continue"}
+					buttonHelpText={
+						"Clicking next will immediately send a verification email, so please double check that the email you provided is correct."
+					}
+					fields={{
+						fullName: {
+							inputType: FieldInputType.TEXT,
+							label: "Your Full Name",
+							placeholder: "Enter your full name...",
+						},
+						email: {
+							inputType: FieldInputType.EMAIL,
+							label: "Your Email",
+						},
+						newPassword: {
+							inputType: FieldInputType.NEW_PASSWORD,
+							label: "Choose a password",
+						},
+						confirmNewPassword: {
+							inputType: FieldInputType.CONFIRM_PASSWORD,
+							label: "Confirm your new password",
+						},
+					}}
+					onSubmit={async (data, form): Promise<void> => {
+						let user: firebase.User;
+						let key: string;
+						try {
+							const credential = await firebase
+								.auth()
+								.createUserWithEmailAndPassword(data.email, data.newPassword);
+							user = credential.user;
+							key = getParameterByName("key");
 
-						if (!user) {
-							form.setErrors({
-								email: unexpectedFirebaseError({
-									code: "t485-internal/auth/user-not-found-after-submit",
-									message:
-										"Internal Error: The user was not found as part of the user credential after the new account " +
-										"was created.",
-								}),
-							});
-							form.setSubmitting(false);
+							if (!user) {
+								form.setErrors({
+									email: unexpectedFirebaseError({
+										code: "t485-internal/auth/user-not-found-after-submit",
+										message:
+											"Internal Error: The user was not found as part of the user credential after the new account " +
+											"was created.",
+									}),
+								});
+								form.setSubmitting(false);
+								return;
+							}
+						} catch (error) {
+							switch (error.code) {
+								case "auth/weak-password":
+									form.setErrors({
+										newPassword:
+											"This password is too weak. Try making it stronger by adding a combination of upper and lowercase letters, numbers, and symbols.",
+									});
+									break;
+								case "auth/invalid-email":
+									form.setErrors({
+										email:
+											"Sorry, but it looks like that isn't a valid email address. If you think this is a mistake, please contact the webmaster.",
+									});
+									break;
+								case "auth/email-already-in-use":
+									form.setErrors({
+										email:
+											"It looks like you already have a account under that email. Please login instead. If you haven't finished setting up, the setup page will" +
+											" reappear after you login.",
+									});
+									break;
+								default:
+									form.setErrors({
+										email: unexpectedFirebaseError(error),
+									});
+							}
 							return;
 						}
-					} catch (error) {
-						switch (error.code) {
-							case "auth/weak-password":
-								form.setErrors({
-									newPassword:
-										"This password is too weak. Try making it stronger by adding a combination of upper and lowercase letters, numbers, and symbols.",
-								});
-								break;
-							case "auth/invalid-email":
-								form.setErrors({
-									email:
-										"Sorry, but it looks like that isn't a valid email address. If you think this is a mistake, please contact the webmaster.",
-								});
-								break;
-							case "auth/email-already-in-use":
-								form.setErrors({
-									email:
-										"It looks like you already have a account under that email. Please login instead. If you haven't finished setting up, the setup page will" +
-										" reappear after you login.",
-								});
-								break;
-							default:
-								form.setErrors({
-									email: unexpectedFirebaseError(error),
-								});
-						}
-						return;
-					}
-					// unfortunately, it doesn't look like these can be merged...
-					// the errors must be handled differently.
-					try {
-						await Promise.all([
-							user.updateProfile({
-								displayName: data.fullName,
-							}),
-							firebase
-								.firestore()
-								.collection("users")
-								.doc(user.uid)
-								.set({
-									name: data.fullName,
-									admin: false,
-									setupComplete: false,
-									creationData: {
-										date: firebase.firestore.FieldValue.serverTimestamp(),
-										key: key,
-									},
+						// unfortunately, it doesn't look like these can be merged...
+						// the errors must be handled differently.
+						try {
+							await Promise.all([
+								user.updateProfile({
+									displayName: data.fullName,
 								}),
-							firebase
-								.firestore()
-								.collection("accountcreationkeys")
-								.doc(key)
-								.set(
-									{
-										uses: firebase.firestore.FieldValue.increment(1),
-									},
-									{ merge: true }
-								), // using .update would fail is uses didn't exist
-						]);
-						await user.sendEmailVerification();
-						dispatch({ type: "UPDATE_DATA", data: { email: data.email } });
-						console.log("LISTENING");
-						const sysend = await import("sysend");
-						sysend.on("email_verified", (data: { email: string }, name) => {
-							console.log("RECEIVED EVENT", data, name);
-
-							if (data.email === data.email)
-								dispatch({ type: "EMAIL_VERIFIED" });
-						});
-					} catch (error) {
-						console.log(error);
-
-						// ROLLBACK: do cleanup, as much as possible.
-						Promise.all(
-							[
-								user.delete(),
 								firebase
 									.firestore()
 									.collection("users")
 									.doc(user.uid)
-									.delete(),
-							].map(
-								p => p.catch(e => console.log(e)) // each promise should fail by itself, and as it
-								// isn't an essential function, we don't have to care if there is an error.
-							)
-						);
+									.set({
+										name: data.fullName,
+										admin: false,
+										setupComplete: false,
+										creationData: {
+											date: firebase.firestore.FieldValue.serverTimestamp(),
+											key: key,
+										},
+									}),
+								firebase
+									.firestore()
+									.collection("accountcreationkeys")
+									.doc(key)
+									.set(
+										{
+											uses: firebase.firestore.FieldValue.increment(1),
+										},
+										{ merge: true }
+									), // using .update would fail is uses didn't exist
+							]);
+							await user.sendEmailVerification();
+							dispatch({ type: "UPDATE_DATA", data: { email: data.email } });
+							console.log("LISTENING");
+							const sysend = await import("sysend");
+							sysend.on("email_verified", (data: { email: string }, name) => {
+								console.log("RECEIVED EVENT", data, name);
 
-						// An error happened.
-						form.setErrors({
-							email: unexpectedFirebaseError(error),
-						});
+								if (data.email === data.email)
+									dispatch({ type: "EMAIL_VERIFIED" });
+							});
+						} catch (error) {
+							console.log(error);
+
+							// ROLLBACK: do cleanup, as much as possible.
+							Promise.all(
+								[
+									user.delete(),
+									firebase
+										.firestore()
+										.collection("users")
+										.doc(user.uid)
+										.delete(),
+								].map(
+									p => p.catch(e => console.log(e)) // each promise should fail by itself, and as it
+									// isn't an essential function, we don't have to care if there is an error.
+								)
+							);
+
+							// An error happened.
+							form.setErrors({
+								email: unexpectedFirebaseError(error),
+							});
+							form.setSubmitting(false);
+							return;
+						}
+
+						// setsubmit before changing step because when step is changed, the form will become unmounted, which means that
+						// there will notbing to set the submit of, which will cause a react warning.
 						form.setSubmitting(false);
-						return;
-					}
-
-					// setsubmit before changing step because when step is changed, the form will become unmounted, which means that
-					// there will notbing to set the submit of, which will cause a react warning.
-					form.setSubmitting(false);
-					dispatch({ type: "INCREMENT_STEP" });
-					dispatch({
-						type: "UPDATE_DATA",
-						data: { name: data.name, email: data.email },
-					});
-				}}
-			/>
+						dispatch({ type: "INCREMENT_STEP" });
+						dispatch({
+							type: "UPDATE_DATA",
+							data: { name: data.name, email: data.email },
+						});
+					}}
+				/>
+			</>
 		);
 	} else if (step === 1) {
 		content = (
 			<>
+				<h1>Verify Your Email</h1>
 				<p className={"text-muted"}>
-					<b> Congratulations! </b> You have successfully created your t485
-					account. However, before you can use this account you&apos;ll need to
-					set it up. In the set up process, we will be verifying your email, and
-					giving you an special permissions that your role in the troop(such as
-					troop jobs) has access to.
+					Your account has been successfully created. However, before you can
+					use it, you must first set it up. You may leave this page and resume
+					the setup process at any time. Just login, and select the{" "}
+					<i>finish setup</i> button under the account dropdown. You will not be
+					able to access any secure areas, such as the directory, until you
+					finish setting up your account.
+					{/*	TODO: add dropdown under username saying finish setup. */}
 				</p>
 				<hr />
 				<p>
-					First, you&apos;ll need to <b>verify your email</b>. We&apos;ve
-					already sent an email to <i>{data.email || "you"}</i>. Once you
-					receive that email, click the link. You&apos;ll be taken to a new page
-					where you can verify your email.
+					We&apos;ve sent an email to <i>{data.email || "you"}</i>. Follow the
+					link on that email to verify your account email.
 				</p>
 				<p>
 					Wrong email address?{" "}
@@ -510,7 +524,9 @@ export default function createAccountPage(): ReactElement {
 											.delete(),
 										// .catch turns a error into a fulfilled process
 										// this is good since each promise should fail independently.
-									].map(promise => promise.catch(e => console.log(e)))
+									].map(promise =>
+										promise.catch((error: any) => console.log(error))
+									)
 								);
 							} catch (error) {
 								console.log(error);
@@ -532,13 +548,13 @@ export default function createAccountPage(): ReactElement {
 					>
 						Click Here
 					</a>{" "}
-					(please note that you may need to request a new account creation link
-					from the webmaster if the page says <i>invalid link</i> after you
-					click this link)
+					(this will cancel the current request, however, you will need to use a
+					new account creation link to re-create your account with the proper
+					email)
 				</p>
 				<p>
 					Once you verify your email, this page should automatically update. If
-					it doesn&apos;t, <a href={""}>reload</a>.
+					it doesn&apos;t, <a href={""}>reload this page</a>.
 				</p>
 			</>
 		);
@@ -546,6 +562,7 @@ export default function createAccountPage(): ReactElement {
 		//TODO TODO TODO: implement
 		content = (
 			<>
+				<h1>Special Permissions</h1>
 				<p>
 					Roles have not been implemented yet. They are not required for setting
 					up your account.
@@ -562,8 +579,8 @@ export default function createAccountPage(): ReactElement {
 							uid: user.uid,
 						})
 							.then(data => {
-								console.log("STEP 3 COMPLETE", data);
-								user.getIdTokenResult(true).then(data => console.log(data));
+								// console.log("STEP 3 COMPLETE", data);
+								// user.getIdTokenResult(true).then(data => console.log(data));
 								dispatch({ type: "INCREMENT_STEP" });
 							})
 							.catch(error => {
@@ -571,20 +588,27 @@ export default function createAccountPage(): ReactElement {
 							});
 					}}
 				>
-					{step3Loading
-						? "Loading... This could take up to 20 seconds."
-						: "Click here to finish setting up your account"}
+					{step3Loading ? (
+						<>
+							Loading... This could take up to 20 seconds.
+							<Spinner animation={"border"} as={"span"} />
+						</>
+					) : (
+						"Click here to finish setting up your account"
+					)}
 				</Button>
 			</>
 		);
 	} else if (step === 3) {
+		// TODO: remove
 		user
 			.getIdTokenResult(true)
-			.then(data => console.log(data))
-			.catch(error => console.log(error));
+			.then((data: firebase.auth.IdTokenResult) => console.log(data))
+			.catch((error: firebase.FirebaseError) => console.log(error));
 		content = (
 			<>
-				<p>All Done! Your account has been all set up.</p>
+				<h1>All Done!</h1>
+				<p>Your account has been all set up.</p>
 				<p>You can now explore the website!</p>
 			</>
 		);
@@ -620,40 +644,14 @@ export default function createAccountPage(): ReactElement {
 						<p>
 							If you are a member of troop 485, you can get a new account
 							creation link by{" "}
-							<a href="mailto:webmaster@t485.org?subject=Create%20T485%20Account">
+							<a href="mailto:webmaster@t485.org?subject=T485%20Account%20Creation%20Link">
 								emailing the webmaster
 							</a>
 							.
 						</p>
 					</>
 				)}
-				{success && (
-					<>
-						<h1 className="text-center">
-							{step === 0
-								? "Create Account"
-								: step === 3
-								? "Setup Complete!"
-								: "Setup Account"}
-						</h1>
-
-						{step === 0 && (
-							<>
-								<p>
-									Welcome to the t485 website! Let&apos;s setup a new account
-									for you. This process may take up to 10 minutes. If
-									you&apos;ve already started setting up your account, then
-									please <Link to={"/account/login"}>Login</Link> first, then
-									you will be automatically redirected back to this page to
-									finish setup.
-								</p>
-								<hr />
-							</>
-						)}
-
-						{content}
-					</>
-				)}
+				{success && <>{content}</>}
 			</div>
 		</Layout>
 	);

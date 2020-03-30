@@ -2,13 +2,14 @@ import React, { ReactElement } from "react";
 import { Layout, SEO } from "../../components/layout";
 import getParameterByName from "../../utils/getParameterByName";
 import { addToChain, AuthForm, FieldInputType } from "../../components/auth";
-import firebase from "../../components/server/firebase";
 import { Button, Spinner } from "react-bootstrap";
 import { Link, navigate } from "gatsby";
 import { unexpectedFirebaseError } from "../../utils/unexpectedError";
 import useSessionStorage from "../../utils/useSessionStorage";
+import { firebase, useFirebaseInitializer } from "../../firebase";
 
 const ActionPage = (): ReactElement => {
+	const firebaseReady = useFirebaseInitializer();
 	type UIMode =
 		| "loading"
 		| "get_new_password"
@@ -134,6 +135,7 @@ const ActionPage = (): ReactElement => {
 	}
 
 	React.useEffect(() => {
+		if (!firebaseReady) return;
 		const handler = async (): Promise<void> => {
 			if (success) {
 				// don't recompute since we know the action is already finished.
@@ -264,7 +266,7 @@ const ActionPage = (): ReactElement => {
 			}
 		};
 		handler();
-	}, []);
+	}, [firebaseReady]);
 
 	let content: ReactElement;
 	if (error) {

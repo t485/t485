@@ -1,9 +1,9 @@
 import React, { ReactElement, ReactNode } from "react";
 import { Link } from "gatsby";
 import { Nav, Navbar as BootstrapNavbar, NavDropdown } from "react-bootstrap";
-import { useAuthState } from "../../components/auth";
-import firebase from "../server/firebase";
+import AuthContext from "../../context/AuthContext";
 import navItems from "./navItems";
+import { firebase, useFirebaseInitializer } from "../../firebase";
 
 declare const heap: {
 	identify: (identifier: string) => void;
@@ -45,9 +45,10 @@ function NavbarLink(props: {
 
 // Also handles heap analytics. TODO: move analtyics out?
 const AuthDropdown = (): ReactElement => {
-	const [user, loading, error] = useAuthState();
+	const { user, loading, error } = React.useContext(AuthContext);
+	const firebaseReady = useFirebaseInitializer();
 	React.useEffect(() => {
-		if (loading) return;
+		if (loading || !firebaseReady) return;
 		if (error) {
 			heap.addUserProperties({
 				hadNavbarAuthError: true,
@@ -67,27 +68,29 @@ const AuthDropdown = (): ReactElement => {
 			.collection("users")
 			.doc(user.uid)
 			.get()
-			.then(snapshot => {
-				const data = snapshot.data() as {
-					admin?: boolean;
-					memberType?: string;
-					jobs?: string[];
-					roles?: string[];
-					permissions?: string[];
-				};
-				if (!data) return;
-				console.log(heap, data, "LOG");
-				heap.addUserProperties({
-					hasAccount: true,
-					isAdmin: data.admin,
-					memberType: data.memberType, // should be "scout" or "parent"
-					jobs: data.jobs,
-					roles: data.roles,
-					permissions: data.permissions,
-				});
-			});
-	}, [user, loading, error]);
-
+			.then(
+				(
+					snapshot: firebase.firestore.DocumentSnapshot<{
+						admin?: boolean;
+						memberType?: string;
+						jobs?: string[];
+						roles?: string[];
+						permissions?: string[];
+					}>
+				) => {
+					const data = snapshot.data();
+					if (!data) return;
+					heap.addUserProperties({
+						hasAccount: true,
+						isAdmin: data.admin,
+						memberType: data.memberType, // should be "scout" or "parent"
+						jobs: data.jobs,
+						roles: data.roles,
+						permissions: data.permissions,
+					});
+				}
+			);
+	}, [user, loading, error, firebaseReady]);
 	if (loading) {
 		return (
 			<NavDropdown id={"authDropdown"} title={"Loading..."} alignRight>

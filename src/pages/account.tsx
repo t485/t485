@@ -13,6 +13,7 @@ import * as Yup from "yup";
 import Mailcheck from "mailcheck";
 import { User } from "firebase";
 import { unexpectedFirebaseError } from "../utils/unexpectedError";
+import AuthContext from "../context/AuthContext";
 // const UpdateDisplayNameForm = (): ReactElement => {
 // 	const [user, loading, error] = useAuthState(firebase.auth())
 // 	const [name, setName] = React.useState(user?.displayName || "Loading...")
@@ -408,7 +409,7 @@ const AccountPage = ({
 }: {
 	location?: AuthReturnState;
 }): ReactElement => {
-	const [user, loading, error] = useAuthState();
+	const { user, loading, error } = React.useContext(AuthContext);
 	const [editable, setEditable] = React.useState(
 		location?.state?.state?.editable || false
 	);

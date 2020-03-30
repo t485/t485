@@ -8,8 +8,8 @@ import {
 	getErrorMessage,
 	onAuthSuccess,
 } from "../../components/auth";
-import firebase from "../../components/server/firebase";
 import { Link, navigate } from "gatsby";
+import { firebase, useFirebaseInitializer } from "../../firebase";
 
 export default function LoginPage({
 	location,

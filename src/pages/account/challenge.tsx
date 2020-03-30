@@ -10,14 +10,16 @@ import {
 	useAuthState,
 } from "../../components/auth";
 import { navigate } from "gatsby";
-import firebase from "../../components/server/firebase";
+import { firebase, useFirebaseInitializer } from "../../firebase";
+import AuthContext from "../../context/AuthContext";
 
 export default function AuthChallengePage({
 	location: { state },
 }: {
 	location: { state: AuthContinueState };
 }): ReactElement {
-	const [user, loading] = useAuthState();
+	useFirebaseInitializer();
+	const { user, loading } = React.useContext(AuthContext);
 	if (state) {
 		state = addToChain(state, "challenge");
 	}
@@ -54,6 +56,7 @@ export default function AuthChallengePage({
 						user.email,
 						password
 					);
+					console.log(firebase.auth.EmailAuthProvider);
 					user
 						.reauthenticateWithCredential(credentials)
 						.then(() => {
