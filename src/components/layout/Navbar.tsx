@@ -3,6 +3,7 @@ import { Link } from "gatsby";
 import { Nav, Navbar as BootstrapNavbar, NavDropdown } from "react-bootstrap";
 import { useAuthState } from "../../components/auth";
 import firebase from "../server/firebase";
+import navItems from "./navItems";
 
 declare const heap: {
 	identify: (identifier: string) => void;
@@ -165,7 +166,6 @@ export const Navbar = ({
 				className={transparent ? "transparent-navbar" : ""}
 				fixed="top"
 			>
-				{/* <Container> */}
 				<Link to="/" className="link-no-style">
 					<BootstrapNavbar.Brand as="span">
 						BSA Troop 485{" "}
@@ -178,13 +178,14 @@ export const Navbar = ({
 					className="justify-content-end"
 				>
 					<Nav activeKey={pageName}>
-						<NavbarLink page="/page-2">Page 2</NavbarLink>
-						<NavbarLink page="/404">Link Name 2</NavbarLink>
-
+						{navItems.map((item, i) => (
+							<NavbarLink key={i} page={item.path}>
+								{item.name}
+							</NavbarLink>
+						))}
 						<AuthDropdown />
 					</Nav>
 				</BootstrapNavbar.Collapse>
-				{/* </Container> */}
 			</BootstrapNavbar>
 		</>
 	);
