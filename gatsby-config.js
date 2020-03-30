@@ -44,6 +44,18 @@ module.exports = {
 				path: `${__dirname}/src/images`,
 			},
 		},
+		{
+			resolve: `gatsby-plugin-manifest`,
+			options: {
+				/* eslint-disable @typescript-eslint/camelcase */
+				name: `Troop 485`,
+				short_name: `T485`,
+				start_url: `/`,
+				icon: `src/favicons/apple-touch-icon-180x180.png`,
+				background_color: `#eee`,
+				theme_color: `#008000`,
+			},
+		},
 		`gatsby-transformer-sharp`,
 		`gatsby-plugin-sharp`,
 
