@@ -187,7 +187,6 @@ export default function AuthForm({
 			type === FieldInputType.CONFIRM_PASSWORD &&
 			(field as Field.ConfirmPassword)?.validation?.matches !== false
 		) {
-			console.log(field, linkedPasswordField);
 			schema = schema.oneOf(
 				[Yup.ref(linkedPasswordField)],
 				"The passwords you entered don't match."
@@ -230,7 +229,6 @@ export default function AuthForm({
 	};
 	const schemaShape: { [K in keyof FormData]: StringSchema } = {};
 	let firstPasswordFieldName: string | undefined;
-	console.log(fields);
 	for (const name in fields) {
 		if (
 			fields[name].inputType === FieldInputType.NEW_PASSWORD &&
@@ -244,7 +242,6 @@ export default function AuthForm({
 					"AuthForm: The confirm password field cannot exist in a form without a new password field before the confirm password field."
 				);
 			}
-			console.log("dfa", firstPasswordFieldName);
 			schemaShape[name] = getSchemaFor(
 				fields[name] as Field.ConfirmPassword,
 				firstPasswordFieldName
@@ -260,7 +257,6 @@ export default function AuthForm({
 		}
 	}
 	const schema = Yup.object().shape(schemaShape);
-	console.log(schema);
 	return (
 		<Formik
 			validationSchema={schema}
