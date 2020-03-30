@@ -3,36 +3,13 @@ import { Alert, Button, Form, Table } from "react-bootstrap";
 import { Layout, SEO } from "../components/layout";
 import NewPassword from "../components/auth/NewPassword";
 import { navigate } from "gatsby";
-import {
-	AuthContinueState,
-	AuthReturnState,
-	useAuthState,
-} from "../components/auth";
+import { AuthContinueState, AuthReturnState } from "../components/auth";
 import { Field, Formik, FormikBag } from "formik";
 import * as Yup from "yup";
 import Mailcheck from "mailcheck";
 import { User } from "firebase";
 import { unexpectedFirebaseError } from "../utils/unexpectedError";
 import AuthContext from "../context/AuthContext";
-// const UpdateDisplayNameForm = (): ReactElement => {
-// 	const [user, loading, error] = useAuthState(firebase.auth())
-// 	const [name, setName] = React.useState(user?.displayName || "Loading...")
-// 	if (!user) return <></>
-//
-// 	const handleSubmit = (): void => {
-// 		user
-// 			.updateProfile({
-// 				displayName: name,
-// 				// photoURL: "https://example.com/jane-q-user/profile.jpg"
-// 			})
-// 			.then(function () {
-// 				console.log("DONE")
-// 			})
-// 			.catch(function (error) {
-// 				console.log(error)
-// 			})
-// 	}
-// }
 
 interface AccountDetailsProps {
 	editable: boolean;
