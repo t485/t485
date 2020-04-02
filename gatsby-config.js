@@ -1,7 +1,7 @@
 module.exports = {
 	siteMetadata: {
 		title: `Troop 485`,
-		description: `The official BSA Troop 485 website, version 2`,
+		description: `Join Troop 485 in Cupertino to experience an excellent Scouting experience.`,
 		author: `Jeffrey Meng`,
 	},
 	plugins: [
