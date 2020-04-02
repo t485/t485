@@ -1,9 +1,14 @@
 import React, { ReactElement } from "react";
 import { Layout, SEO } from "../components/layout";
+import { WindowLocation } from "@reach/router";
 
-export default function NotFoundPage(): ReactElement {
+interface PageProps {
+	location: WindowLocation;
+}
+
+export default function NotFoundPage({ location }: PageProps): ReactElement {
 	return (
-		<Layout>
+		<Layout location={location}>
 			<SEO title="404: Not found" />
 			<h1>404: Resource not found</h1>
 			<p>

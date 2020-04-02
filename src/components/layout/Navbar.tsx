@@ -4,6 +4,8 @@ import { Nav, Navbar as BootstrapNavbar, NavDropdown } from "react-bootstrap";
 import AuthContext from "../../context/AuthContext";
 import navItems from "./navItems";
 import { firebase, useFirebaseInitializer } from "../../firebase";
+import { WindowLocation } from "@reach/router";
+import classNames from "classnames";
 
 declare const heap: {
 	identify: (identifier: string) => void;
@@ -143,7 +145,7 @@ interface PropDef {
 	 * The name of the page that should be active. This should be the path to the page.
 	 * For example, on a page /navbarDemo, the value should be `/navbarDemo`. This is used to determine which nav link should be highlighted.
 	 */
-	pageName?: string;
+	location: string | WindowLocation;
 	/**
 	 * Whether or not the admin variant of the navbar should be rendered instead of the normal component.
 	 */
@@ -155,10 +157,27 @@ interface PropDef {
 }
 
 export const Navbar = ({
-	pageName,
+	location,
 	admin,
 	transparent,
 }: PropDef): ReactElement => {
+	const [float, setFloat] = React.useState(false);
+	let path = "";
+	if (typeof location === "string") {
+		path = location;
+	} else if (location) {
+		path = location.pathname?.replace(/\/$/, ""); // remove trailing slash;
+	}
+	console.log(path);
+	React.useEffect(() => {
+		const handler = (): void => {
+			setFloat(window.scrollY > 10);
+		};
+		window.addEventListener("scroll", handler);
+		return (): void => {
+			window.removeEventListener("scroll", handler);
+		};
+	}, []);
 	return (
 		<>
 			<BootstrapNavbar
@@ -166,10 +185,13 @@ export const Navbar = ({
 				variant="dark"
 				expand="md"
 				id="site-navbar"
-				className={transparent ? "transparent-navbar" : ""}
+				className={classNames(
+					transparent ? "transparent-navbar" : "",
+					float ? "float" : ""
+				)}
 				fixed="top"
 			>
-				<Link to="/" className="link-no-style">
+				<Link to="/" className="link-no-style" id={"site-navbar-brand"}>
 					<BootstrapNavbar.Brand as="span">
 						BSA Troop 485{" "}
 						{admin ? <span style={{ color: "#99ccff" }}>| Admin</span> : <></>}
@@ -180,7 +202,7 @@ export const Navbar = ({
 					id="basic-navbar-nav"
 					className="justify-content-end"
 				>
-					<Nav activeKey={pageName}>
+					<Nav activeKey={path}>
 						{navItems.map((item, i) => (
 							<NavbarLink key={i} page={item.path}>
 								{item.name}

@@ -4,6 +4,7 @@ import "../styles/about.scss";
 import { Carousel } from "react-bootstrap";
 import { graphql } from "gatsby";
 import Image, { FluidObject } from "gatsby-image";
+import { WindowLocation } from "@reach/router";
 
 interface FluidImageWithName extends FluidObject {
 	originalName: string;
@@ -23,8 +24,10 @@ interface QueryResult {
 
 export default function AboutPage({
 	data,
+	location,
 }: {
 	data: QueryResult;
+	location: WindowLocation;
 }): ReactElement {
 	console.log(data);
 	const images = data.slideImages.edges?.map(
@@ -33,7 +36,7 @@ export default function AboutPage({
 	console.log(images);
 
 	return (
-		<Layout empty className={"about-page"}>
+		<Layout empty className={"about-page"} location={location}>
 			<SEO title={"About Us"} />
 			<header>
 				<div className={"hero-text text-shadow"}>

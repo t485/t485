@@ -1,9 +1,54 @@
 @import "variables";
 
+@include lg() {
+	nav.navbar:not(.transparent-navbar) .nav-link {
+		&:hover,
+		&:focus {
+			background-color: #e1e6ea;
+		}
+		&:active {
+			background-color: #babfc3;
+		}
+	}
+
+	#site-navbar:not(.transparent-navbar) .nav-link {
+		&:hover,
+		&:focus {
+			background-color: #00b300;
+		}
+
+		&:active {
+			background-color: #00cd00;
+		}
+	}
+	#site-navbar:not(.transparent-navbar) #site-navbar-brand:focus:not(:active) {
+		background-color: #00b300;
+	}
+	nav.navbar:not(.transparent-navbar) {
+		padding-top: 0;
+		padding-bottom: 0;
+
+		.nav-link {
+			padding-top: 16px;
+			padding-bottom: 12px;
+			border-bottom: 4px solid transparent; // in case we want to add transitions in the future
+
+			&.active {
+				border-bottom: 4px solid lightgreen;
+			}
+		}
+	}
+}
+
 #site-navbar {
+	transition: 0.2s;
+
 	&:not(.transparent-navbar) {
 		background-color: $color-primary !important;
-		box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+
+		&.float {
+			box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+		}
 	}
 
 	position: -webkit-sticky;

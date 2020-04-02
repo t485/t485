@@ -10,6 +10,7 @@ import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import Navbar from "./Navbar";
 import classNames from "classnames";
+import { WindowLocation } from "@reach/router";
 
 // fonts and base styles are in gatsby-browser and gatsby-ssr files, because layout is unmounted and remounted on page loads.
 
@@ -21,7 +22,7 @@ interface LayoutProps {
 	/**
 	 * The path to the current page. It will be used for the navbar.
 	 */
-	pageName?: string;
+	location: string | WindowLocation;
 	/**
 	 * If provided, the navbar will have a transparent background.
 	 */
@@ -70,7 +71,7 @@ interface LayoutProps {
 
 const Layout = ({
 	children,
-	pageName,
+	location,
 	transparentNavFooter,
 	admin,
 	empty,
@@ -95,7 +96,7 @@ const Layout = ({
 				className={classNames("px-0 main", background ? "main-background" : "")}
 			>
 				<Navbar
-					pageName={pageName}
+					location={location}
 					admin={admin}
 					transparent={transparentNavFooter}
 				/>
@@ -135,7 +136,7 @@ const Layout = ({
 							)}
 						>
 							<span>
-								Copyright © 2006
+								Copyright &copy; 2006
 								{new Date().getFullYear() > 2006
 									? "-" + new Date().getFullYear()
 									: ""}{" "}
