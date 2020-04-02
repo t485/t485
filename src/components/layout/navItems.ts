@@ -7,4 +7,8 @@ export default [
 		name: "New Scouts",
 		path: "/new-scouts",
 	},
+	{
+		name: "Calendar",
+		path: "/calendar",
+	},
 ];
