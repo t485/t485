@@ -7,17 +7,18 @@ import {
 	FieldInputType,
 	getErrorMessage,
 	onAuthSuccess,
-	useAuthState,
 } from "../../components/auth";
 import { navigate } from "gatsby";
 import { firebase, useFirebaseInitializer } from "../../firebase";
 import AuthContext from "../../context/AuthContext";
+import { WindowLocation } from "@reach/router";
 
 export default function AuthChallengePage({
-	location: { state },
+	location,
 }: {
-	location: { state: AuthContinueState };
+	location: WindowLocation;
 }): ReactElement {
+	let state = location.state as AuthContinueState;
 	useFirebaseInitializer();
 	const { user, loading } = React.useContext(AuthContext);
 	if (state) {
@@ -32,7 +33,7 @@ export default function AuthChallengePage({
 		});
 	}
 	return (
-		<Layout narrow>
+		<Layout narrow location={location}>
 			<SEO title={"Reauthenticate"} />
 			<h1 className="text-center">
 				{"Hi " + (user?.displayName?.split(" ")[0] || "")}
