@@ -12,7 +12,6 @@ import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/list/main.css";
 import "@fullcalendar/bootstrap/main.css";
 import "@fullcalendar/timegrid/main.css";
-import "../styles/calendar.scss";
 import { Button, Col, Modal, Row } from "react-bootstrap";
 import AuthContext from "../context/AuthContext";
 import { Link } from "gatsby";
