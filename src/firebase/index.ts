@@ -1,4 +1,3 @@
-import firebase from "./firebase";
-import useFirebaseInitializer from "./useFirebaseInitializer";
+import useFirebase from "./useFirebase";
 
-export { firebase, useFirebaseInitializer };
+export { useFirebase };

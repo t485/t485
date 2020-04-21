@@ -3,16 +3,17 @@ import React, { ReactElement } from "react";
 import { Layout, SEO } from "../../components/layout";
 import { addToChain, AuthContinueState } from "../../components/auth";
 import { Link } from "gatsby";
+import { WindowLocation } from "@reach/router";
 
 const GetAnAccountPage = ({
 	location,
 }: {
-	location: { state: AuthContinueState };
+	location: WindowLocation & { state: AuthContinueState };
 }): ReactElement => {
 	const state = location.state && addToChain(location.state, "login");
 
 	return (
-		<Layout>
+		<Layout location={location}>
 			<SEO title="How to get an account" />
 			<h1>Getting a t485.org Account</h1>
 			<p>

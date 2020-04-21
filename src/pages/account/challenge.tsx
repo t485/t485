@@ -9,7 +9,7 @@ import {
 	onAuthSuccess,
 } from "../../components/auth";
 import { navigate } from "gatsby";
-import { firebase, useFirebaseInitializer } from "../../firebase";
+import { useFirebase } from "../../firebase";
 import AuthContext from "../../context/AuthContext";
 import { WindowLocation } from "@reach/router";
 
@@ -19,7 +19,7 @@ export default function AuthChallengePage({
 	location: WindowLocation;
 }): ReactElement {
 	let state = location.state as AuthContinueState;
-	useFirebaseInitializer();
+	const firebase = useFirebase();
 	const { user, loading } = React.useContext(AuthContext);
 	if (state) {
 		state = addToChain(state, "challenge");

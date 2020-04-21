@@ -79,6 +79,7 @@ const IndexPage = ({
 				</div>
 				<div className="absolute bottom-0 left-0 right-0 top-0 -z-10 overflow-hidden background-image">
 					<Img
+						loading={"eager"}
 						fluid={data.bgImage.childImageSharp.fluid}
 						className="h-screen"
 						style={{ minHeight: "800px" }}

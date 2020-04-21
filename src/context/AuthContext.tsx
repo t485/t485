@@ -1,7 +1,6 @@
 import React, { ReactElement, ReactNode, useEffect, useState } from "react";
-import { firebase } from "../firebase";
 import firebaseConfig from "../../firebase-config";
-
+import { User as FirebaseUser } from "firebase";
 const AuthContext = React.createContext({
 	user: null,
 	loading: true,
@@ -14,27 +13,34 @@ const AuthProvider = ({ children }: { children: ReactNode }): ReactElement => {
 	const [error, setError] = useState(null);
 	const [auth, setAuth] = React.useState(null);
 	React.useEffect(() => {
-		if (typeof window !== "undefined") {
-			if (firebase.apps.length === 0) {
-				firebase.initializeApp(firebaseConfig);
+		(async (): Promise<void> => {
+			// import firebase app
+			const firebaseApp: any = await import("firebase/app");
+			//
+			await Promise.all([
+				import("firebase/auth"),
+				import("firebase/firestore"),
+				import("firebase/functions"),
+			]);
+			// lazy load firebase in an async IIFE
+			if (firebaseApp.apps.length === 0) {
+				firebaseApp.initializeApp(firebaseConfig);
 			}
-			setAuth(firebase.auth());
-		}
-	}, [firebase]);
+			setAuth(firebaseApp.auth());
+		})();
+	}, []);
 	useEffect(() => {
 		if (!auth) {
 			return;
 		}
-		const unsubscribe = auth.onAuthStateChanged(
-			(user: firebase.User | null) => {
-				setLoading(false);
-				setUser(user);
-			}
-		);
+		const unsubscribe = auth.onAuthStateChanged((user: FirebaseUser | null) => {
+			setLoading(false);
+			setUser(user);
+		});
 		return (): void => {
 			unsubscribe();
 		};
-	}, [auth, firebase]);
+	}, [auth]);
 
 	return (
 		<AuthContext.Provider

@@ -9,13 +9,15 @@ import {
 	onAuthSuccess,
 } from "../../components/auth";
 import { Link, navigate } from "gatsby";
-import { firebase, useFirebaseInitializer } from "../../firebase";
+import { useFirebase } from "../../firebase";
+import { WindowLocation } from "@reach/router";
 
 export default function LoginPage({
 	location,
 }: {
-	location: { state: AuthContinueState };
+	location: WindowLocation & { state: AuthContinueState };
 }): ReactElement {
+	const firebase = useFirebase();
 	console.log(location);
 	let state = location.state;
 	if (location.state) {
@@ -23,7 +25,7 @@ export default function LoginPage({
 	}
 	console.log(state);
 	return (
-		<Layout narrow>
+		<Layout narrow location={location}>
 			<SEO title={"Reauthenticate"} />
 			<h1 className="text-center">
 				{"Login" + (state?.message ? " to Continue" : "")}

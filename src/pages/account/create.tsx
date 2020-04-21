@@ -8,7 +8,7 @@ import { unexpectedFirebaseError } from "../../utils/unexpectedError";
 import getParameterByName from "../../utils/getParameterByName";
 import { Button, Spinner } from "react-bootstrap";
 import { Link } from "gatsby";
-import { firebase, useFirebaseInitializer } from "../../firebase";
+import { useFirebase } from "../../firebase";
 import AuthContext from "../../context/AuthContext";
 
 function Arrows({
@@ -83,7 +83,7 @@ function Arrows({
  * NOTE: this should be very modular so it's easy to update in the future, which WILL be necessary.
  * */
 export default function createAccountPage(): ReactElement {
-	const firebaseReady = useFirebaseInitializer();
+	const firebase = useFirebase();
 	const { user, loading: userLoading } = React.useContext(AuthContext);
 	const [step3Loading, setStep3Loading] = React.useState(false);
 	type Data = {
@@ -206,7 +206,7 @@ export default function createAccountPage(): ReactElement {
 	);
 
 	React.useEffect(() => {
-		if (!firebaseReady) return;
+		if (!firebase) return;
 		(async (): Promise<void> => {
 			// a key can be verified in one of two ways: 1. the user uses a create link
 			// OR 2. the logged in user hasn't finished setting up their account. In this case, they have the right to finish
@@ -304,7 +304,7 @@ export default function createAccountPage(): ReactElement {
 					dispatch({ type: "INVALID_KEY" });
 				});
 		})();
-	}, [user, userLoading, firebaseReady]);
+	}, [user, userLoading, firebase]);
 
 	let content = <></>;
 	if (step === 0) {

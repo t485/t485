@@ -56,6 +56,15 @@ module.exports = {
 				theme_color: `#008000`,
 			},
 		},
+		{
+			resolve: "gatsby-plugin-web-font-loader",
+			options: {
+				custom: {
+					families: ["Proxima Nova", "Nexa"],
+					urls: ["/fonts/ProximaNova/index.css", "/fonts/Nexa/index.css"],
+				},
+			},
+		},
 		`gatsby-transformer-sharp`,
 		`gatsby-plugin-sharp`,
 

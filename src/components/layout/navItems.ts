@@ -11,4 +11,8 @@ export default [
 		name: "Calendar",
 		path: "/calendar",
 	},
+	{
+		name: "Events",
+		path: "/events",
+	},
 ];

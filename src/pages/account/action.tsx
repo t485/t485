@@ -6,10 +6,15 @@ import { Button, Spinner } from "react-bootstrap";
 import { Link, navigate } from "gatsby";
 import { unexpectedFirebaseError } from "../../utils/unexpectedError";
 import useSessionStorage from "../../utils/useSessionStorage";
-import { firebase, useFirebaseInitializer } from "../../firebase";
+import { useFirebase } from "../../firebase";
+import { WindowLocation } from "@reach/router";
 
-const ActionPage = (): ReactElement => {
-	const firebaseReady = useFirebaseInitializer();
+const ActionPage = ({
+	location,
+}: {
+	location: WindowLocation;
+}): ReactElement => {
+	const firebase = useFirebase();
 	type UIMode =
 		| "loading"
 		| "get_new_password"
@@ -135,7 +140,7 @@ const ActionPage = (): ReactElement => {
 	}
 
 	React.useEffect(() => {
-		if (!firebaseReady) return;
+		if (!firebase) return;
 		const handler = async (): Promise<void> => {
 			if (success) {
 				// don't recompute since we know the action is already finished.
@@ -266,7 +271,7 @@ const ActionPage = (): ReactElement => {
 			}
 		};
 		handler();
-	}, [firebaseReady]);
+	}, [firebase]);
 
 	let content: ReactElement;
 	if (error) {
@@ -477,7 +482,11 @@ const ActionPage = (): ReactElement => {
 				);
 		}
 	}
-	return <Layout narrow>{content}</Layout>;
+	return (
+		<Layout narrow location={location}>
+			{content}
+		</Layout>
+	);
 };
 
 export default ActionPage;

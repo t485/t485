@@ -7,3 +7,4 @@ public/*
 reports/*
 storybook-config/webpack.config.js
 src/setupTests.ts
+functions/*

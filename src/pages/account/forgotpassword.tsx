@@ -8,7 +8,8 @@ import {
 } from "../../components/auth";
 import { unexpectedFirebaseError } from "../../utils/unexpectedError";
 import { Link } from "gatsby";
-import { firebase, useFirebaseInitializer } from "../../firebase";
+import { useFirebase } from "../../firebase";
+import { WindowLocation } from "@reach/router";
 
 export interface ForgotPasswordState {
 	email: string;
@@ -16,19 +17,21 @@ export interface ForgotPasswordState {
 }
 
 export default function ForgotPasswordPage({
-	location: { state },
+	location,
 }: {
-	location: { state: AuthContinueState };
+	location: WindowLocation & { state: AuthContinueState };
 }): ReactElement {
+	let state = location.state;
 	const [successEmail, setSuccessEmail] = React.useState<string>("");
 	const [noDisableButton, setNoDisableButton] = React.useState(false);
+	const firebase = useFirebase();
 	if (state) {
 		state = addToChain(state, "forgotpassword");
 	}
 	console.log(state);
 	if (successEmail !== "") {
 		return (
-			<Layout narrow>
+			<Layout narrow location={location}>
 				<SEO title={"Reauthenticate"} />
 				<h1 className="text-center">Check your inbox!</h1>
 				<p>
@@ -44,7 +47,7 @@ export default function ForgotPasswordPage({
 		);
 	}
 	return (
-		<Layout narrow>
+		<Layout narrow location={location}>
 			<SEO title={"Reauthenticate"} />
 			{/*<Alert show={!!successEmail} variant={"success"} dismissible onClose={() => setSuccessEmail("")}>*/}
 			{/*	<b>Check your inbox!</b> We&apos;ve sent an email to <b>{successEmail}</b>.*/}

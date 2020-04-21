@@ -1,0 +1,14 @@
+// event layout
+.lead {
+	margin-bottom: 0;
+	padding-bottom: 1em;
+}
+
+.attached {
+	position: fixed;
+	top: 56px;
+	right: 0;
+	left: 0;
+	z-index: 1025;
+	box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.5);
+}

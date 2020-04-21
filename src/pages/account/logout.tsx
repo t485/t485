@@ -1,10 +1,16 @@
 import React, { ReactElement } from "react";
 import Layout from "../../components/layout/Layout";
 import SEO from "../../components/layout/seo";
-import { firebase, useFirebaseInitializer } from "../../firebase";
+import { useFirebase } from "../../firebase";
+import { WindowLocation } from "@reach/router";
 
-const LogoutPage = (): ReactElement => {
-	const firebaseReady = useFirebaseInitializer();
+const LogoutPage = ({
+	location,
+}: {
+	location: WindowLocation;
+}): ReactElement => {
+	const firebase = useFirebase();
+
 	interface Error {
 		exists: boolean;
 		message?: string;
@@ -16,7 +22,7 @@ const LogoutPage = (): ReactElement => {
 	});
 	const [loading, setLoading] = React.useState(true);
 	React.useEffect(() => {
-		if (!firebaseReady) return;
+		if (!firebase) return;
 		firebase
 			.auth()
 			.signOut()
@@ -26,9 +32,9 @@ const LogoutPage = (): ReactElement => {
 			.catch((e: Error) => {
 				setError(e);
 			});
-	}, [firebaseReady]);
+	}, [firebase]);
 	return (
-		<Layout>
+		<Layout location={location}>
 			<SEO title="Login" />
 			<h1>Logout</h1>
 			<p>

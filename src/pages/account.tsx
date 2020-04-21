@@ -10,6 +10,7 @@ import Mailcheck from "mailcheck";
 import { User } from "firebase";
 import { unexpectedFirebaseError } from "../utils/unexpectedError";
 import AuthContext from "../context/AuthContext";
+import { WindowLocation } from "@reach/router";
 
 interface AccountDetailsProps {
 	editable: boolean;
@@ -384,7 +385,7 @@ const AccountDetails = ({
 const AccountPage = ({
 	location,
 }: {
-	location?: AuthReturnState;
+	location: WindowLocation & { state: AuthReturnState };
 }): ReactElement => {
 	const { user, loading, error } = React.useContext(AuthContext);
 	const [editable, setEditable] = React.useState(
@@ -477,7 +478,7 @@ const AccountPage = ({
 	}, [user]);
 
 	return (
-		<Layout>
+		<Layout location={location}>
 			<SEO title="Your Account" />
 			<h1>Account Settings</h1>
 			<p>

@@ -3,7 +3,7 @@ import { Link } from "gatsby";
 import { Nav, Navbar as BootstrapNavbar, NavDropdown } from "react-bootstrap";
 import AuthContext from "../../context/AuthContext";
 import navItems from "./navItems";
-import { firebase, useFirebaseInitializer } from "../../firebase";
+import { useFirebase } from "../../firebase";
 import { WindowLocation } from "@reach/router";
 import classNames from "classnames";
 
@@ -48,9 +48,9 @@ function NavbarLink(props: {
 // Also handles heap analytics. TODO: move analtyics out?
 const AuthDropdown = (): ReactElement => {
 	const { user, loading, error } = React.useContext(AuthContext);
-	const firebaseReady = useFirebaseInitializer();
+	const firebase = useFirebase();
 	React.useEffect(() => {
-		if (loading || !firebaseReady) return;
+		if (loading || !firebase) return;
 		if (error) {
 			heap.addUserProperties({
 				hadNavbarAuthError: true,
@@ -92,7 +92,7 @@ const AuthDropdown = (): ReactElement => {
 					});
 				}
 			);
-	}, [user, loading, error, firebaseReady]);
+	}, [user, loading, error, firebase]);
 	if (loading) {
 		return (
 			<NavDropdown id={"authDropdown"} title={"Loading..."} alignRight>
