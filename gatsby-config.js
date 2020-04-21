@@ -57,6 +57,10 @@ module.exports = {
 			},
 		},
 		{
+			resolve: `gatsby-plugin-create-client-paths`,
+			options: { prefixes: [`/events/*`] },
+		},
+		{
 			resolve: "gatsby-plugin-web-font-loader",
 			options: {
 				custom: {
