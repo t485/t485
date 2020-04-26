@@ -34,8 +34,8 @@ const AuthProvider = ({ children }: { children: ReactNode }): ReactElement => {
 			return;
 		}
 		const unsubscribe = auth.onAuthStateChanged((user: FirebaseUser | null) => {
-			setLoading(false);
 			setUser(user);
+			setLoading(false);
 		});
 		return (): void => {
 			unsubscribe();

@@ -29,7 +29,7 @@ function NavbarLink(props: {
 	if (props.dropdown) {
 		return (
 			<>
-				<NavDropdown.Item eventKey={props.page} as={Link} to={props.page}>
+				<NavDropdown.Item as={Link} to={props.page}>
 					{props.children}
 				</NavDropdown.Item>
 			</>
@@ -168,7 +168,7 @@ export const Navbar = ({
 	} else if (location) {
 		path = location.pathname?.replace(/\/$/, ""); // remove trailing slash;
 	}
-	console.log(path);
+	// console.log(path);
 	React.useEffect(() => {
 		const handler = (): void => {
 			setFloat(window.scrollY > 10);
@@ -203,11 +203,26 @@ export const Navbar = ({
 					className="justify-content-end"
 				>
 					<Nav activeKey={path}>
-						{navItems.map((item, i) => (
-							<NavbarLink key={i} page={item.path}>
-								{item.name}
-							</NavbarLink>
-						))}
+						{navItems.map((item, i) =>
+							item.dropdown ? (
+								<NavDropdown
+									id={"navDropdown-" + item.name}
+									title={item.name}
+									key={i}
+									alignRight
+								>
+									{item.children.map((item, j) => (
+										<NavbarLink key={j} page={item.path} dropdown>
+											{item.name}
+										</NavbarLink>
+									))}
+								</NavDropdown>
+							) : (
+								<NavbarLink key={i} page={item.path}>
+									{item.name}
+								</NavbarLink>
+							)
+						)}
 						<AuthDropdown />
 					</Nav>
 				</BootstrapNavbar.Collapse>

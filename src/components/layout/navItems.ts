@@ -15,4 +15,14 @@ export default [
 		name: "Events",
 		path: "/events",
 	},
+	{
+		name: "Resources",
+		dropdown: true,
+		children: [
+			{
+				name: "Link Shortener",
+				path: "/resources/linkshortener",
+			},
+		],
+	},
 ];
