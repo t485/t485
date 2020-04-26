@@ -27,7 +27,7 @@ export default function CalendarPage({ location }: PageProps): ReactElement {
 	return (
 		<Layout location={location}>
 			<SEO title="Calendar" />
-			<h1>Calendar</h1>
+			<h1>Troop 485 Calendar</h1>
 			<LoadableCalendar />
 		</Layout>
 	);
