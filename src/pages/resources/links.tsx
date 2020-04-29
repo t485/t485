@@ -5,7 +5,8 @@ import { useFirebase } from "../../firebase";
 import AuthContext from "../../context/AuthContext";
 import { navigate } from "gatsby";
 import { AuthContinueState } from "../../components/auth";
-import Loadable from "../../components/loadable";
+import { LoadingGate } from "../../components/gates";
+import { Link } from "gatsby";
 import {
 	Alert,
 	Button,
@@ -17,18 +18,46 @@ import {
 } from "react-bootstrap";
 import { Field, Formik } from "formik";
 import * as Yup from "yup";
+const CopyLink = ({ link }: { link: string }): React.ReactElement => {
+	const [show, setShow] = React.useState(false);
+	const [timeoutID, setTimeoutID] = React.useState();
+	const linkRef = React.useRef(null);
+	return (
+		<>
+			<Alert.Link
+				ref={linkRef}
+				onClick={(): void => {
+					navigator.clipboard.writeText(link);
+					setShow(true);
+					if (timeoutID) {
+						clearTimeout(timeoutID);
+					}
+					setTimeoutID(setTimeout(() => setShow(false), 3000));
+				}}
+			>
+				copy to clipboard
+			</Alert.Link>
 
+			<Overlay show={show} target={linkRef.current} placement={"top"}>
+				{(props): ReactElement => (
+					<Tooltip id={`tooltip-short-link-copy`} {...props}>
+						Copied!
+					</Tooltip>
+				)}
+			</Overlay>
+		</>
+	);
+};
 interface PageProps {
 	location: WindowLocation;
 }
 
-export default function NotFoundPage({ location }: PageProps): ReactElement {
-	const { user, loading, error } = React.useContext(AuthContext);
+export default function LinkShortenerPage({
+	location,
+}: PageProps): ReactElement {
+	const { user, loading, error, admin } = React.useContext(AuthContext);
 	const firebase = useFirebase();
-	const [successAlert, setSuccessAlert] = React.useState({
-		shortLink: "shortLink",
-		toLink: "https://toLink.com",
-	});
+	const [successAlert, setSuccessAlert] = React.useState(null);
 	if (!loading && !user) {
 		navigate("/account/login", {
 			state: {
@@ -38,6 +67,7 @@ export default function NotFoundPage({ location }: PageProps): ReactElement {
 			} as AuthContinueState,
 		});
 	}
+	console.log(user);
 	const generateId = (count = 0, minLength = 5): Promise<string> => {
 		return new Promise((resolve, reject) => {
 			// no lowercase L or 0 to avoid ambiguity.
@@ -73,48 +103,26 @@ export default function NotFoundPage({ location }: PageProps): ReactElement {
 				});
 		});
 	};
-	const CopyLink = ({ link }: { link: string }): React.ReactElement => {
-		const [show, setShow] = React.useState(false);
-		const [timeoutID, setTimeoutID] = React.useState();
-		const linkRef = React.useRef(null);
-		return (
-			<>
-				<Alert.Link
-					ref={linkRef}
-					onClick={(): void => {
-						navigator.clipboard.writeText(link);
-						setShow(true);
-						if (timeoutID) {
-							clearTimeout(timeoutID);
-						}
-						setTimeoutID(setTimeout(() => setShow(false), 3000));
-					}}
-				>
-					copy short link to clipboard
-				</Alert.Link>
 
-				<Overlay show={show} target={linkRef.current} placement={"top"}>
-					{(props): void => (
-						<Tooltip id={`tooltip-short-link-copy`} {...props}>
-							Copied!
-						</Tooltip>
-					)}
-				</Overlay>
-			</>
-		);
-	};
 	return (
 		<Layout location={location}>
 			<SEO title="Link Shortener" />
 			<h1>Troop 485 Link Shortener</h1>
+
 			{user && (
 				<p>
 					Hello, <b>{user?.displayName || user?.email}</b>. Your account will be
 					privately linked to any short links you create.
 				</p>
 			)}
+			{admin && (
+				<p>
+					<b>Administrator Actions:</b>{" "}
+					<Link to={"/resources/links/manage"}>Manage Links</Link>
+				</p>
+			)}
 			<hr />
-			<Loadable loading={loading || !user} loadingText={"Authenticating..."}>
+			<LoadingGate loading={loading || !user} loadingText={"Authenticating..."}>
 				{successAlert && (
 					<Alert
 						variant={"success"}
@@ -122,12 +130,11 @@ export default function NotFoundPage({ location }: PageProps): ReactElement {
 						onClose={(): void => setSuccessAlert(null)}
 					>
 						<b>Success!</b> The short link{" "}
-						<b>https://link.t485.org/{successAlert.shortLink}</b> now redirects
-						to <b>{successAlert.toLink}</b>. (
+						<b>https://link.t485.org/{successAlert.shortLink}</b> (
 						<CopyLink
 							link={"https://link.t485.org/" + successAlert.shortLink}
 						/>
-						)
+						) now redirects to <b>{successAlert.toLink}</b>.
 					</Alert>
 				)}
 				<Formik
@@ -289,7 +296,7 @@ export default function NotFoundPage({ location }: PageProps): ReactElement {
 						);
 					}}
 				</Formik>
-			</Loadable>
+			</LoadingGate>
 		</Layout>
 	);
 }

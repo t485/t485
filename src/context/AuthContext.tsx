@@ -1,16 +1,19 @@
 import React, { ReactElement, ReactNode, useEffect, useState } from "react";
 import firebaseConfig from "../../firebase-config";
 import { User as FirebaseUser } from "firebase";
+
 const AuthContext = React.createContext({
 	user: null,
 	loading: true,
 	error: null,
+	admin: null,
 });
 
 const AuthProvider = ({ children }: { children: ReactNode }): ReactElement => {
 	const [user, setUser] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+	const [admin, setAdmin] = useState(null);
 	const [auth, setAuth] = React.useState(null);
 	React.useEffect(() => {
 		(async (): Promise<void> => {
@@ -35,7 +38,22 @@ const AuthProvider = ({ children }: { children: ReactNode }): ReactElement => {
 		}
 		const unsubscribe = auth.onAuthStateChanged((user: FirebaseUser | null) => {
 			setUser(user);
-			setLoading(false);
+			if (user) {
+				user
+					.getIdTokenResult()
+					.then(({ claims }) => {
+						console.log(claims);
+						setAdmin(claims.admin);
+						setLoading(false);
+					})
+					.catch(error => {
+						console.log(error);
+						setAdmin(false);
+						setLoading(false);
+					});
+			} else {
+				setLoading(false);
+			}
 		});
 		return (): void => {
 			unsubscribe();
@@ -48,6 +66,7 @@ const AuthProvider = ({ children }: { children: ReactNode }): ReactElement => {
 				user,
 				loading,
 				error,
+				admin,
 			}}
 		>
 			{children}

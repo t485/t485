@@ -21,7 +21,7 @@ export default [
 		children: [
 			{
 				name: "Link Shortener",
-				path: "/resources/linkshortener",
+				path: "/resources/links",
 			},
 		],
 	},

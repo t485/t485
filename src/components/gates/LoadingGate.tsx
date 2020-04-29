@@ -1,13 +1,13 @@
 import React from "react";
 import { Spinner } from "react-bootstrap";
 
-export interface LoadableProps {
+export interface LoadingGateProps {
 	loadingText?: string;
 	loading: boolean;
 	children: any;
 }
 
-export default function Loadable({
+export default function LoadingGate({
 	loadingText,
 	loading,
 	children,
