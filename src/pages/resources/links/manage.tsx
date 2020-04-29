@@ -48,7 +48,7 @@ export default function LinkShortenerManagePage({
 	if (!loading && !user) {
 		navigate("/account/login", {
 			state: {
-				from: "/404",
+				from: "/links/manage",
 				message: true,
 				return: true,
 			} as AuthContinueState,

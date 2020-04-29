@@ -16,7 +16,7 @@ export default function NotFoundPage({ location }: PageProps): ReactElement {
 	// if (!loading && !user) {
 	// 	navigate("/account/login", {
 	// 		state: {
-	// 			from: "/404",
+	//  // TODO			from: "/404",
 	// 			message: true,
 	// 			return: true,
 	// 		} as AuthContinueState,

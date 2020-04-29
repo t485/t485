@@ -61,7 +61,7 @@ export default function LinkShortenerPage({
 	if (!loading && !user) {
 		navigate("/account/login", {
 			state: {
-				from: "/resources/linkshortener",
+				from: "/resources/links",
 				message: true,
 				return: true,
 			} as AuthContinueState,
