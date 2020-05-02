@@ -32,9 +32,9 @@ interface LayoutProps {
 	 */
 	admin?: boolean;
 	/**
-	 * Equiviliant to setting noCard, noContainer, and noBackground all to true.
-	 * If empty is set and noCard, noContainer, or noBackground is also explicitly set to false (not undefined), then empty has lower precedent.
-	 * E.g.: <Layout empty noContainer={false}> renders Layout with noCad={true} noContainer={false} noBackground={true}
+	 * Equivalent to setting noCard, noContainer, and noBackground all to true.
+	 * If empty is set and noCard, noContainer, or noBackground is also explicitly set to false (not undefined), then empty has LOWER precedent.
+	 * E.g.: <Layout empty noContainer={false}> renders Layout with noCard={true} noContainer={false} noBackground={true}
 	 */
 	empty?: boolean;
 	/**
@@ -89,7 +89,29 @@ const Layout = ({
 	const background = empty ? noBackground === false : !noBackground;
 	const card = empty ? noCard === false : !noCard;
 	const container = empty ? noContainer === false : !noContainer;
-	return (
+	console.log(
+		"LAYOUT props",
+		{
+			children,
+			location,
+			transparentNavFooter,
+			admin,
+			empty,
+			noCard,
+			noContainer,
+			noBackground,
+			className,
+			style,
+			narrow,
+			footerClassName,
+		},
+		{
+			background,
+			card,
+			container,
+		}
+	);
+	const TEMPtoReturn = (
 		<>
 			<Container
 				fluid
@@ -149,6 +171,8 @@ const Layout = ({
 			</Container>
 		</>
 	);
+	console.log(TEMPtoReturn);
+	return TEMPtoReturn;
 };
 
 // export { Layout };
