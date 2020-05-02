@@ -38,13 +38,19 @@ const Download = ({
 export default function LinkAnalyticsPage({
 	location,
 }: PageProps): ReactElement {
-	const id = location.hash.length > 0 ? location.hash.substring(1) : "";
+	const path = /\/resources\/links\/analytics\/(.+)/.exec(location.pathname);
+	const id =
+		path && path[1]
+			? path[1]
+			: location.hash.length > 0
+			? location.hash.substring(1)
+			: "";
 	const firebase = useFirebase();
 	const [data, setData] = React.useState<null | LinkData>(null);
 	const [hideClicks, setHideClicks] = React.useState(true);
 	const [show404, setShow404] = React.useState(false);
 	React.useEffect(() => {
-		if (!firebase) return;
+		if (!firebase || !id) return;
 		const unsubscribe = firebase
 			.firestore()
 			.collection("linkshortener")

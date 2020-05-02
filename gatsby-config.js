@@ -58,7 +58,7 @@ module.exports = {
 		},
 		{
 			resolve: `gatsby-plugin-create-client-paths`,
-			options: { prefixes: [`/events/*`] },
+			options: { prefixes: [`/events/*`, `/resources/links/analytics/*`] },
 		},
 		{
 			resolve: "gatsby-plugin-web-font-loader",
