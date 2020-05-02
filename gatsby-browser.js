@@ -5,7 +5,6 @@
  */
 
 // import global styles here so they don't get reloaded when the page switches.
-import "typeface-muli";
 import "./src/styles/style.scss";
 import { AuthProvider } from "./src/context/AuthContext";
 import React from "react";

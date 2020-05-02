@@ -6,7 +6,6 @@ import navItems from "./navItems";
 import { useFirebase } from "../../firebase";
 import { WindowLocation } from "@reach/router";
 import classNames from "classnames";
-
 declare const heap: {
 	identify: (identifier: string) => void;
 	addUserProperties: (properties: object) => void;
@@ -49,6 +48,7 @@ function NavbarLink(props: {
 const AuthDropdown = (): ReactElement => {
 	const { user, loading, error } = React.useContext(AuthContext);
 	const firebase = useFirebase();
+	// TODO: finish setup button, and redirect to finish setup upon login, and fix auth context to not give user unless setup is complete?
 	React.useEffect(() => {
 		if (loading || !firebase) return;
 		if (error) {
@@ -91,7 +91,16 @@ const AuthDropdown = (): ReactElement => {
 						permissions: data.permissions,
 					});
 				}
-			);
+			)
+			.catch(e => {
+				if (e.code == "permission-denied") {
+					// do nothing because when logging out, the user will be logged out
+					// after the firebase call is made, but before it finishes. Thus, the request
+					// will be sent, but will also fail
+					return;
+				}
+				console.error(e); // other errors are cause for concern.
+			});
 	}, [user, loading, error, firebase]);
 	if (loading) {
 		return (

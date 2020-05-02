@@ -70,11 +70,6 @@ function Arrows({
 	);
 }
 
-/**
- *
- * TODO TODO TODO TODO
- * State should be saved on reload. To do this, sae state to firebase, so any logged in user
- */
 /*
  * SIGN UP FLOW
  * using a unique link, a user may sign up
@@ -83,7 +78,7 @@ function Arrows({
  * on PAGE 3, they will be appointed permissions based on troop jobs and stuff?
  * NOTE: this should be very modular so it's easy to update in the future, which WILL be necessary.
  * */
-export default function createAccountPage({
+export default function AccountSetupPage({
 	location,
 }: {
 	location: WindowLocation;
@@ -584,8 +579,8 @@ export default function createAccountPage({
 							uid: user.uid,
 						})
 							.then(data => {
-								// console.log("STEP 3 COMPLETE", data);
-								// user.getIdTokenResult(true).then(data => console.log(data));
+								// get the ID token to force a refresh, so that the setup status is immediately updated on all pages
+								user.getIdTokenResult(true); //.then(data => console.log(data));
 								dispatch({ type: "INCREMENT_STEP" });
 							})
 							.catch(error => {
@@ -606,10 +601,10 @@ export default function createAccountPage({
 		);
 	} else if (step === 3) {
 		// TODO: remove
-		user
-			.getIdTokenResult(true)
-			.then((data: firebase.auth.IdTokenResult) => console.log(data))
-			.catch((error: firebase.FirebaseError) => console.log(error));
+		// user
+		// 	.getIdTokenResult(true)
+		// 	.then((data: firebase.auth.IdTokenResult) => console.log(data))
+		// 	.catch((error: firebase.FirebaseError) => console.log(error));
 		content = (
 			<>
 				<h1>All Done!</h1>

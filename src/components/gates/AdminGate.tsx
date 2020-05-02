@@ -1,17 +1,16 @@
-import Loadable from "./LoadingGate";
+import LoadingGate from "./LoadingGate";
 import React from "react";
+import AuthContext from "../../context/AuthContext";
 
 export default function AdminGate({
-	loading,
-	admin,
 	children,
 }: {
-	loading: boolean;
-	admin?: boolean;
 	children: any;
 }): React.ReactElement {
+	const { user, admin, loading } = React.useContext(AuthContext);
+
 	return (
-		<Loadable loading={loading}>
+		<LoadingGate loading={loading}>
 			{admin ? (
 				children
 			) : (
@@ -20,6 +19,6 @@ export default function AdminGate({
 					<p>You do not have permission to view this page.</p>
 				</>
 			)}
-		</Loadable>
+		</LoadingGate>
 	);
 }

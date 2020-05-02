@@ -7,6 +7,7 @@ const AuthContext = React.createContext({
 	loading: true,
 	error: null,
 	admin: null,
+	setupComplete: null,
 });
 
 const AuthProvider = ({ children }: { children: ReactNode }): ReactElement => {
@@ -14,7 +15,8 @@ const AuthProvider = ({ children }: { children: ReactNode }): ReactElement => {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [admin, setAdmin] = useState(null);
-	const [auth, setAuth] = React.useState(null);
+	const [auth, setAuth] = useState(null);
+	const [setupComplete, setSetupComplete] = useState(null);
 	React.useEffect(() => {
 		(async (): Promise<void> => {
 			// import firebase app
@@ -42,8 +44,9 @@ const AuthProvider = ({ children }: { children: ReactNode }): ReactElement => {
 				user
 					.getIdTokenResult()
 					.then(({ claims }) => {
-						console.log(claims);
+						console.log("CLAIMS", claims);
 						setAdmin(claims.admin);
+						setSetupComplete(claims.setupComplete);
 						setLoading(false);
 					})
 					.catch(error => {
@@ -67,6 +70,7 @@ const AuthProvider = ({ children }: { children: ReactNode }): ReactElement => {
 				loading,
 				error,
 				admin,
+				setupComplete,
 			}}
 		>
 			{children}

@@ -23,10 +23,12 @@ const LogoutPage = ({
 	const [loading, setLoading] = React.useState(true);
 	React.useEffect(() => {
 		if (!firebase) return;
+		console.log("BEFORE");
 		firebase
 			.auth()
 			.signOut()
 			.then(() => {
+				console.log("AFTER");
 				setLoading(false);
 			})
 			.catch((e: Error) => {

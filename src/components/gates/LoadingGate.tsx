@@ -11,7 +11,7 @@ export default function LoadingGate({
 	loadingText,
 	loading,
 	children,
-}: LoadableProps): React.ReactElement {
+}: LoadingGateProps): React.ReactElement {
 	if (loading) {
 		return (
 			<>

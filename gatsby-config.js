@@ -63,6 +63,9 @@ module.exports = {
 		{
 			resolve: "gatsby-plugin-web-font-loader",
 			options: {
+				google: {
+					families: ["Muli"],
+				},
 				custom: {
 					families: ["Proxima Nova", "Nexa"],
 					urls: ["/fonts/ProximaNova/index.css", "/fonts/Nexa/index.css"],

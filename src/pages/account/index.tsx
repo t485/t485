@@ -1,15 +1,15 @@
 import React, { ReactElement, ReactNode } from "react";
 import { Alert, Button, Form, Table } from "react-bootstrap";
-import { Layout, SEO } from "../components/layout";
-import NewPassword from "../components/auth/NewPassword";
+import { Layout, SEO } from "../../components/layout";
+import NewPassword from "../../components/auth/NewPassword";
 import { navigate } from "gatsby";
-import { AuthContinueState, AuthReturnState } from "../components/auth";
+import { AuthContinueState, AuthReturnState } from "../../components/auth";
 import { Field, Formik, FormikBag } from "formik";
 import * as Yup from "yup";
 import Mailcheck from "mailcheck";
 import { User } from "firebase";
-import { unexpectedFirebaseError } from "../utils/unexpectedError";
-import AuthContext from "../context/AuthContext";
+import { unexpectedFirebaseError } from "../../utils/unexpectedError";
+import AuthContext from "../../context/AuthContext";
 import { WindowLocation } from "@reach/router";
 
 interface AccountDetailsProps {

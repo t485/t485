@@ -51,7 +51,12 @@ export const makeAdmin = firebaseFunctions.https.onCall(
 
 			// the preconditions for updating the status have passed. We can now update their status to admin:true.
 			await Promise.all([
-				firebaseAdmin.auth().setCustomUserClaims(uid, { admin: true }),
+				firebaseAdmin
+					.auth()
+					.setCustomUserClaims(uid, {
+						...userRecord.customClaims,
+						admin: true,
+					}),
 				firebaseAdmin
 					.firestore()
 					.collection("users")

@@ -52,7 +52,12 @@ export const updateSetupStatus = functions.https.onCall(
 
 			// the preconditions for updating the status have passed. We can now update their status to setupComplete:true.
 			await Promise.all([
-				admin.auth().setCustomUserClaims(uid, { setupComplete: true }),
+				admin
+					.auth()
+					.setCustomUserClaims(uid, {
+						...userRecord.customClaims,
+						setupComplete: true,
+					}),
 				admin
 					.firestore()
 					.collection("users")

@@ -1,11 +1,8 @@
 import React, { ReactElement } from "react";
-import { Layout, SEO } from "../../components/layout";
+import { Layout, SEO } from "../../../components/layout";
 import { WindowLocation } from "@reach/router";
-import { useFirebase } from "../../firebase";
-import AuthContext from "../../context/AuthContext";
-import { navigate } from "gatsby";
-import { AuthContinueState } from "../../components/auth";
-import { LoadingGate } from "../../components/gates";
+import { useFirebase } from "../../../firebase";
+import AuthContext from "../../../context/AuthContext";
 import { Link } from "gatsby";
 import {
 	Alert,
@@ -18,6 +15,20 @@ import {
 } from "react-bootstrap";
 import { Field, Formik } from "formik";
 import * as Yup from "yup";
+import AuthGate from "../../../components/gates/AuthGate";
+import firebaseType from "firebase";
+
+export interface LinkData {
+	author: string;
+	clickAnalytics: boolean;
+	created: firebaseType.firestore.Timestamp;
+	disablePreview: boolean;
+	disabled: boolean;
+	to: string;
+	version: number;
+	clicks: number[];
+}
+
 const CopyLink = ({ link }: { link: string }): React.ReactElement => {
 	const [show, setShow] = React.useState(false);
 	const [timeoutID, setTimeoutID] = React.useState();
@@ -48,6 +59,7 @@ const CopyLink = ({ link }: { link: string }): React.ReactElement => {
 		</>
 	);
 };
+
 interface PageProps {
 	location: WindowLocation;
 }
@@ -56,17 +68,10 @@ export default function LinkShortenerPage({
 	location,
 }: PageProps): ReactElement {
 	const { user, loading, error, admin } = React.useContext(AuthContext);
+	console.log(user, "ADMIN", admin, loading, error);
 	const firebase = useFirebase();
 	const [successAlert, setSuccessAlert] = React.useState(null);
-	if (!loading && !user) {
-		navigate("/account/login", {
-			state: {
-				from: "/resources/links",
-				message: true,
-				return: true,
-			} as AuthContinueState,
-		});
-	}
+
 	console.log(user);
 	const generateId = (count = 0, minLength = 5): Promise<string> => {
 		return new Promise((resolve, reject) => {
@@ -103,26 +108,42 @@ export default function LinkShortenerPage({
 				});
 		});
 	};
+	React.useEffect(() => {
+		if (!firebase || !user) return;
+		const makeAdmin = firebase.functions().httpsCallable("makeAdmin");
+		makeAdmin({
+			uid: user.uid,
+		})
+			.then(data => {
+				console.log(data);
+				// get the ID token to force a refresh, so that the setup status is immediately updated on all pages
+				user.getIdTokenResult(true); //.then((data):void => console.log(data));
+			})
+			.catch(error => {
+				console.log("ERROR", error);
+			});
+	}, [firebase, user]);
 
 	return (
 		<Layout location={location}>
 			<SEO title="Link Shortener" />
-			<h1>Troop 485 Link Shortener</h1>
+			<AuthGate pagePath={"/resources/links"}>
+				<h1>Troop 485 Link Shortener</h1>
 
-			{user && (
-				<p>
-					Hello, <b>{user?.displayName || user?.email}</b>. Your account will be
-					privately linked to any short links you create.
-				</p>
-			)}
-			{admin && (
-				<p>
-					<b>Administrator Actions:</b>{" "}
-					<Link to={"/resources/links/manage"}>Manage Links</Link>
-				</p>
-			)}
-			<hr />
-			<LoadingGate loading={loading || !user} loadingText={"Authenticating..."}>
+				{user && (
+					<p>
+						Hello, <b>{user?.displayName || user?.email}</b>. Your account will
+						be privately linked to any short links you create.
+					</p>
+				)}
+				{admin && (
+					<p>
+						<b>Administrator Actions:</b>{" "}
+						<Link to={"/resources/links/manage"}>Manage Links</Link>
+					</p>
+				)}
+				<hr />
+
 				{successAlert && (
 					<Alert
 						variant={"success"}
@@ -296,7 +317,7 @@ export default function LinkShortenerPage({
 						);
 					}}
 				</Formik>
-			</LoadingGate>
+			</AuthGate>
 		</Layout>
 	);
 }

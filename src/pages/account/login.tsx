@@ -65,7 +65,17 @@ export default function LoginPage({
 						.auth()
 						.signInWithEmailAndPassword(email, password)
 						.then(() => {
-							return onAuthSuccess(state, "login");
+							firebase
+								.auth()
+								.currentUser.getIdTokenResult()
+								.then(({ claims }) => {
+									console.log(claims);
+									if (claims.setupComplete) {
+										return onAuthSuccess(state, "login");
+									} else {
+										navigate("/account/setup");
+									}
+								});
 						})
 						.catch((e: firebase.FirebaseError) => {
 							form.setErrors(getErrorMessage(e));

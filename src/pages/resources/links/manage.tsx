@@ -8,15 +8,11 @@ import AuthContext from "../../../context/AuthContext";
 import { AdminGate } from "../../../components/gates";
 import { Button, Form, ListGroup, Modal, Table } from "react-bootstrap";
 import moment from "moment";
+import firebaseType from "firebase";
+import { LinkData } from "./index";
 
 interface PageProps {
 	location: WindowLocation;
-}
-
-interface LinkData {
-	to: string;
-
-	[Key: string]: any;
 }
 
 export default function LinkShortenerManagePage({
@@ -83,7 +79,7 @@ export default function LinkShortenerManagePage({
 	return (
 		<Layout location={location} admin={admin}>
 			<SEO title="Manage Links" />
-			<AdminGate loading={loading} admin={admin}>
+			<AdminGate>
 				<h1>Manage Links</h1>
 				<Table hover>
 					<thead>
@@ -289,70 +285,78 @@ export default function LinkShortenerManagePage({
 								),
 								order: 0,
 							},
-							...Object.keys(infoModal?.data || {}).map(key => {
-								const getFullKey = (id: string): string => {
-									const fullKey = ({
-										clickAnalytics: "Click Analytics",
-										created: "Creation Date",
-										to: "To",
-										author: "Author",
-										disablePreview: "Disable Preview",
-										disabled: "Disabled",
-										version: "Version",
-										clicks: "Clicks",
-									} as any)[key];
-									return fullKey || id;
-								};
-								const getOrder = (key: string): number => {
-									const order =
-										[
-											"to",
-											"created",
-											"author",
-											"disabled",
-											"clickAnalytics",
-											"clicks",
-											"disablePreview",
-											"version",
-										].indexOf(key) + 1;
-									if (order !== 0) return order;
-									return 100000;
-								};
-								const value = infoModal?.data[key];
-								return {
-									order: getOrder(key),
-									component: (
-										<ListGroup.Item>
-											<b>{getFullKey(key)}:</b>{" "}
-											{key === "created" ? (
-												moment(value.toDate()).format("M/D/YY, h:mm a")
-											) : key === "clicks" ? (
-												<>
-													<span>{value.length} Total</span>
-													<ul>
-														{" "}
-														{value.map((click: number, id: number) => (
-															<li key={id}>
-																{moment(click).format("M/D/YY [at] h:mm:ss a")}
-															</li>
-														))}
-													</ul>
-												</>
-											) : typeof value === "string" ? (
-												value
-											) : typeof value === "boolean" ? (
-												value ? (
-													<span className={"text-success"}>Yes</span>
+							...Object.keys(infoModal?.data || {}).map(
+								(key: keyof LinkData) => {
+									const getFullKey = (id: keyof LinkData): string => {
+										const fullKey = ({
+											clickAnalytics: "Click Analytics",
+											created: "Creation Date",
+											to: "To",
+											author: "Author",
+											disablePreview: "Disable Preview",
+											disabled: "Disabled",
+											version: "Version",
+											clicks: "Clicks",
+										} as any)[key];
+										return fullKey || id;
+									};
+									const getOrder = (key: keyof LinkData): number => {
+										const order =
+											[
+												"to",
+												"created",
+												"author",
+												"disabled",
+												"clickAnalytics",
+												"clicks",
+												"disablePreview",
+												"version",
+											].indexOf(key) + 1;
+										if (order !== 0) return order;
+										return 100000;
+									};
+									const value = infoModal?.data[key];
+									return {
+										order: getOrder(key),
+										component: (
+											<ListGroup.Item>
+												<b>{getFullKey(key)}:</b>{" "}
+												{key === "created" ? (
+													moment(infoModal?.data.created.toDate()).format(
+														"M/D/YY, h:mm a"
+													)
+												) : key === "clicks" ? (
+													<>
+														<span>{infoModal?.data.clicks.length} Total</span>
+														<ul>
+															{" "}
+															{infoModal?.data.clicks.map(
+																(click: number, id: number) => (
+																	<li key={id}>
+																		{moment(click).format(
+																			"M/D/YY [at] h:mm:ss a"
+																		)}
+																	</li>
+																)
+															)}
+														</ul>
+													</>
+												) : typeof value === "string" ? (
+													value
+												) : typeof value === "boolean" ? (
+													value ? (
+														<span className={"text-success"}>Yes</span>
+													) : (
+														<span className={"text-danger"}>No</span>
+													)
 												) : (
-													<span className={"text-danger"}>No</span>
-												)
-											) : (
-												JSON.stringify(value)
-											)}
-										</ListGroup.Item>
-									),
-								};
-							}),
+													JSON.stringify(value)
+												)}
+											</ListGroup.Item>
+										),
+									};
+								}
+							),
 						]
 							.sort((a, b) => a.order - b.order)
 							.map((obj, i) => (
