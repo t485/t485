@@ -30,7 +30,9 @@
     "storybook": "start-storybook -p 6006 --https --ssl-cert ./t485.org.pem  --ssl-key ./t485.org-key.pem -c ./storybook-config",
     "storybook:build": "build-storybook -o ./public/development/storybook/ -c ./storybook-config",
     "storybook:nossl": "start-storybook -p 6006 -c ./storybook-config",
-    "test": "jest"
+    "test": "jest",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "@babel/core": "^7.8.7",
@@ -155,7 +157,8 @@
     "ts-loader": "^6.2.1",
     "typescript": "^3.8.3",
     "yup": "^0.28.3",
-    "zxcvbn": "^4.4.2"
+    "zxcvbn": "^4.4.2",
+    "snyk": "^1.316.2"
   },
   "keywords": [
     "gatsby",
@@ -171,5 +174,6 @@
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": "eslint --cache",
     "*.{ts,tsx,js,jsx,json,md,scss,css}": "prettier --write"
-  }
+  },
+  "snyk": true
 }
