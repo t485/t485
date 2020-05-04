@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { Router } from "@reach/router";
+import { Router, WindowLocation } from "@reach/router";
 import NotFoundPage from "./404";
 import EventListPage from "../components/events/EventListPage";
 import EventDetailsPage from "../components/events/EventDetailsPage";
@@ -8,6 +8,9 @@ import EventRegisterPage from "../components/events/EventRegisterPage";
 import EventResourcesPage from "../components/events/EventResourcesPage";
 import EventPhotosPage from "../components/events/EventPhotosPage";
 import EventHeadcountsPage from "../components/events/EventHeadcountsPage";
+import { Layout } from "../components/layout";
+import { Spinner } from "react-bootstrap";
+import { useFirebase } from "../firebase";
 
 /*
 NOTES:
@@ -54,8 +57,39 @@ const NotFoundPageWrapper = (props: any): ReactElement => {
 	return <NotFoundPage {...props} />;
 };
 
-export default function EventsPage(): ReactElement {
-	return (
+export default function EventsPage({
+	location,
+}: {
+	location: WindowLocation;
+}): ReactElement {
+	const [loading, setLoading] = React.useState(true);
+	const firebase = useFirebase();
+	const [data, setData] = React.useState();
+	React.useEffect(() => {
+		if (!firebase) return;
+
+		setData({
+			name: "Rafting",
+			start: firebase.firestore.Timestamp.fromMillis(1591772400000),
+			end: firebase.firestore.Timestamp.fromMillis(1591858800000),
+			location: "American River",
+			SICs: ["KeRay Chen", "Daniel Lin"],
+			bannerPhoto:
+				"https://images.unsplash.com/photo-1503232478550-492d531afef9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2110&q=80",
+		});
+		setLoading(false);
+	}, [firebase]);
+	//TODO: fetch firebase here?
+	//  How should changes be dealt with? live, or not?
+	// what about headcounts data
+	return loading ? (
+		<Layout location={location} empty>
+			<div className={"text-center pt-5"}>
+				<Spinner animation={"border"} />
+			</div>
+			<p className={"text-center pt-5"}>Loading...</p>
+		</Layout>
+	) : (
 		<Router>
 			<EventListPage path={"/events"} />
 			<EventListPage path={"/events/:year"} />
