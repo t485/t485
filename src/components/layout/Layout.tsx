@@ -89,29 +89,8 @@ const Layout = ({
 	const background = empty ? noBackground === false : !noBackground;
 	const card = empty ? noCard === false : !noCard;
 	const container = empty ? noContainer === false : !noContainer;
-	console.log(
-		"LAYOUT props",
-		{
-			children,
-			location,
-			transparentNavFooter,
-			admin,
-			empty,
-			noCard,
-			noContainer,
-			noBackground,
-			className,
-			style,
-			narrow,
-			footerClassName,
-		},
-		{
-			background,
-			card,
-			container,
-		}
-	);
-	const TEMPtoReturn = (
+
+	return (
 		<>
 			<Container
 				fluid
@@ -171,8 +150,6 @@ const Layout = ({
 			</Container>
 		</>
 	);
-	console.log(TEMPtoReturn);
-	return TEMPtoReturn;
 };
 
 // export { Layout };

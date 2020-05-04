@@ -44,7 +44,7 @@ const AuthProvider = ({ children }: { children: ReactNode }): ReactElement => {
 				user
 					.getIdTokenResult()
 					.then(({ claims }) => {
-						console.log("CLAIMS", claims);
+						// console.log("CLAIMS", claims);
 						setAdmin(claims.admin);
 						setSetupComplete(claims.setupComplete);
 						setLoading(false);

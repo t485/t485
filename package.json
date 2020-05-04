@@ -119,6 +119,7 @@
     "gatsby-source-filesystem": "^2.1.56",
     "gatsby-transformer-sharp": "^2.3.19",
     "husky": "^4.2.3",
+    "ismounted": "^0.1.6",
     "jest": "^25.1.0",
     "jest-chain": "^1.1.5",
     "jest-environment-enzyme": "^7.1.2",

@@ -4,8 +4,10 @@ import firebaseConfig from "../../firebase-config";
 // thus, we can use it as a type even though firebase uses `window` which gatsby doesnt allow in ssr
 // the below lazy import of firebase is still necessary.
 import * as FirebaseType from "firebase";
+import useIsMounted from "ismounted";
 
 export default function useFirebase(): null | typeof FirebaseType {
+	const isMounted = useIsMounted();
 	const [firebase, setFirebase] = React.useState(null);
 	React.useEffect(() => {
 		if (typeof window == "undefined") {
@@ -24,7 +26,9 @@ export default function useFirebase(): null | typeof FirebaseType {
 			if (firebaseApp.apps.length === 0) {
 				firebaseApp.initializeApp(firebaseConfig);
 			}
-			setFirebase(firebaseApp);
+			if (isMounted.current) {
+				setFirebase(firebaseApp);
+			}
 		})();
 	}, [firebaseConfig]);
 	return firebase;

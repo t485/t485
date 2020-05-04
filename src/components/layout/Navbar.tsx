@@ -47,6 +47,7 @@ function NavbarLink(props: {
 // Also handles heap analytics. TODO: move analtyics out?
 const AuthDropdown = (): ReactElement => {
 	const { user, loading, error } = React.useContext(AuthContext);
+
 	const firebase = useFirebase();
 	// TODO: finish setup button, and redirect to finish setup upon login, and fix auth context to not give user unless setup is complete?
 	React.useEffect(() => {
