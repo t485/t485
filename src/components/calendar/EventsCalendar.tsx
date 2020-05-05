@@ -14,6 +14,7 @@ import { Button, Col, Modal, Row } from "react-bootstrap";
 import AuthContext from "../../context/AuthContext";
 import { Link } from "gatsby";
 import moment from "moment";
+import DOMPurify from "dompurify";
 
 export default function EventsCalendar(): ReactElement {
 	// false to hide, data to show
@@ -143,10 +144,15 @@ export default function EventsCalendar(): ReactElement {
 					<Modal.Title>{eventModal.title}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					{eventModal.description
-						?.split("\n")
-						.map((string, i) => [string, <br key={i} />])
-						.flat()}
+					{
+						<div
+							dangerouslySetInnerHTML={{
+								__html: DOMPurify.sanitize(
+									eventModal.description?.split("\n").join("<br/>")
+								),
+							}}
+						/>
+					}
 					{eventModal.description === undefined && (
 						<>
 							<p>
@@ -157,12 +163,22 @@ export default function EventsCalendar(): ReactElement {
 					<br />
 					{eventModal.time !== "" && (
 						<p>
-							<b>When: </b> <span>{eventModal.time}</span>
+							<b>When: </b>{" "}
+							<span
+								dangerouslySetInnerHTML={{
+									__html: DOMPurify.sanitize(eventModal.time),
+								}}
+							/>
 						</p>
 					)}
 					{eventModal.location && (
 						<p>
-							<b>Where: </b> <span>{eventModal.location}</span>
+							<b>Where: </b>{" "}
+							<span
+								dangerouslySetInnerHTML={{
+									__html: DOMPurify.sanitize(eventModal.location),
+								}}
+							/>
 						</p>
 					)}
 				</Modal.Body>
