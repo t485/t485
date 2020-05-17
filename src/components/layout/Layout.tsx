@@ -68,7 +68,6 @@ interface LayoutProps {
 
 const Layout = ({
 	children,
-	location,
 	transparentNavFooter,
 	admin,
 	empty,
@@ -93,11 +92,7 @@ const Layout = ({
 				fluid
 				className={classNames("px-0 main", background ? "main-background" : "")}
 			>
-				<Navbar
-					location={location}
-					admin={admin}
-					transparent={transparentNavFooter}
-				/>
+				<Navbar admin={admin} transparent={transparentNavFooter} />
 				{container ? (
 					<Row noGutters>
 						<Col>
