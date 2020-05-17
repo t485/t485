@@ -6,7 +6,7 @@ import navItems from "./navItems";
 import { useFirebase } from "../../firebase";
 import { globalHistory, WindowLocation } from "@reach/router";
 import classNames from "classnames";
-import { firebase as FirebaseType } from "firebase";
+import * as FirebaseType from "firebase";
 
 const { location } = globalHistory;
 
