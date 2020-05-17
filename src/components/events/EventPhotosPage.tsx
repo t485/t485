@@ -13,7 +13,7 @@ export default function EventPhotosPage(
 	props: Partial<EventPageProps>
 ): ReactElement {
 	// because reach router types doesn't understand path slugs.
-	const { year, event, location } = props as EventPageProps;
+	const { year, event, location, data } = props as EventPageProps;
 	const [photos, setPhotos] = React.useState<string[]>([]);
 	const [photosError, setPhotosError] = React.useState(false);
 	const id = "hDwBRi7uMV5pJ9wM7";
@@ -43,6 +43,7 @@ export default function EventPhotosPage(
 			location={location}
 			event={event}
 			year={year}
+			data={data}
 			noContainer
 		>
 			<Container className={"mt-5"}>

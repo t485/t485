@@ -29,26 +29,22 @@ const NewPassword = ({
 		"cupertino",
 		"correcthorsebatterystaple",
 	]);
-	const UpdatingPopoverBase = (
-		{
-			popper,
-			children,
-			id,
-			...props
-		}: {
-			id: string;
-			children: ReactElement | ReactElement[];
-			popper: { scheduleUpdate: () => void };
-		},
-		ref: React.RefObject<Popover> & React.RefObject<HTMLDivElement>
-	): ReactElement => {
+	const UpdatingPopoverBase = ({
+		popper,
+		children,
+		id,
+		...props
+	}: {
+		id: string;
+		children: ReactElement | ReactElement[];
+		popper: { scheduleUpdate: () => void };
+	}): ReactElement => {
 		React.useEffect(() => {
-			// console.log('updating!');
 			popper.scheduleUpdate();
 		}, [children, popper]);
 
 		return (
-			<Popover ref={ref} id={id} {...props}>
+			<Popover id={id} {...props}>
 				{children}
 			</Popover>
 		);

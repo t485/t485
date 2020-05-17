@@ -12,7 +12,7 @@ export default function EventsList(props: EventsListProps): ReactElement {
 		navigate("/events/?filteryear=" + props.year);
 	}
 	return (
-		<Layout location={props.location}>
+		<Layout>
 			<SEO title={"Events"} />
 			<h1>Events List</h1>
 			<ul>

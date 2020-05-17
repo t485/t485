@@ -11,13 +11,7 @@ import moment from "moment";
 import firebaseType from "firebase";
 import { LinkData } from "./index";
 
-interface PageProps {
-	location: WindowLocation;
-}
-
-export default function LinkShortenerManagePage({
-	location,
-}: PageProps): ReactElement {
+export default function LinkShortenerManagePage(): ReactElement {
 	const { user, loading, admin } = React.useContext(AuthContext);
 	const [links, setLinks] = React.useState([]);
 	const [editModal, setEditModal] = React.useState<null | {
@@ -77,7 +71,7 @@ export default function LinkShortenerManagePage({
 	}, [firebase, admin, loading]);
 	const colWidths = [2, 3, 3, 2, 2];
 	return (
-		<Layout location={location} admin={admin}>
+		<Layout admin={admin}>
 			<SEO title="Manage Links" />
 			<AdminGate>
 				<h1>Manage Links</h1>

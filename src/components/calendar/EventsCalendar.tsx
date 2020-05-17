@@ -45,9 +45,9 @@ export default function EventsCalendar(): ReactElement {
 		DOMPurify.addHook("afterSanitizeAttributes", function(node) {
 			// set all elements owning target to target=_blank
 			if ("target" in node) {
-				node.setAttribute("target", "_blank");
+				(node as Element).setAttribute("target", "_blank");
 				// prevent https://www.owasp.org/index.php/Reverse_Tabnabbing
-				node.setAttribute("rel", "noopener noreferrer");
+				(node as Element).setAttribute("rel", "noopener noreferrer");
 			}
 			// set non-HTML/MathML links to xlink:show=new
 			if (

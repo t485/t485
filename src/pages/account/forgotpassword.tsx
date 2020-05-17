@@ -47,7 +47,7 @@ export default function ForgotPasswordPage({
 		);
 	}
 	return (
-		<Layout narrow location={location}>
+		<Layout narrow>
 			<SEO title={"Reauthenticate"} />
 			{/*<Alert show={!!successEmail} variant={"success"} dismissible onClose={() => setSuccessEmail("")}>*/}
 			{/*	<b>Check your inbox!</b> We&apos;ve sent an email to <b>{successEmail}</b>.*/}

@@ -91,7 +91,7 @@ export default function EventResourcesPage(
 	props: Partial<EventPageProps>
 ): ReactElement {
 	// because reach router types doesn't understand path slugs.
-	const { year, event, location } = props as EventPageProps;
+	const { year, event, location, data: eventData } = props as EventPageProps;
 
 	const [resourceModalOpen, setResourceModalOpen] = React.useState(false);
 	const [resourceModalContent, setResourceModalContent] = React.useState<
@@ -167,6 +167,7 @@ export default function EventResourcesPage(
 			location={location}
 			event={event}
 			year={year}
+			data={eventData}
 		>
 			<h1>Resources</h1>
 			{data.map((group, i) => (

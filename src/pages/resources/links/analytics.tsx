@@ -67,9 +67,9 @@ export default function LinkAnalyticsPage({
 	}, [firebase, id]);
 	console.log(location);
 	return show404 ? (
-		<NotFoundPage location={location} />
+		<NotFoundPage />
 	) : (
-		<Layout location={location}>
+		<Layout>
 			<SEO title="Link Analytics" />
 			<AuthGate pagePath={"/links/analytics"}>
 				<LoadingGate loading={!data} loadingText={"Fetching Data..."}>

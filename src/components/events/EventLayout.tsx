@@ -3,28 +3,31 @@ import { Layout, SEO } from "../layout";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { Link } from "gatsby";
 import classNames from "classnames";
-import { RouteComponentProps, WindowLocation } from "@reach/router";
+import { RouteComponentProps } from "@reach/router";
 import "../../styles/events.scss";
+import { EventData } from "../../pages/events";
+import moment from "moment";
 
 export interface EventPageProps extends RouteComponentProps {
 	year: string;
 	event: string;
+	data: EventData;
 }
 
 export default function EventLayout({
 	page,
 	year,
-	location,
 	children,
 	event,
 	noContainer,
+	data,
 }: {
 	page: string;
 	year: string;
 	event: string;
-	location: WindowLocation;
 	children: React.ReactNode;
 	noContainer?: boolean;
+	data: EventData;
 }): ReactElement {
 	const [sticky, setSticky] = React.useState(false);
 	const [navTop, setNavTop] = React.useState<undefined | number>(undefined);
@@ -55,15 +58,16 @@ export default function EventLayout({
 			window.removeEventListener("scroll", scrollHandler);
 		};
 	}, [navTop]);
-	console.log(`/events/${year}/${page}/${event}/${page}`);
+	// console.log(`/events/${year}/${page}/${event}/${page}`);
 	const Seperator = (): ReactElement => <> &nbsp;&nbsp;&#8226;&nbsp;&nbsp; </>;
 	return (
-		<Layout empty location={location}>
-			<SEO title={event + " " + year} />
+		<Layout empty>
+			<SEO
+				title={data.name + " " + moment(data.start.toDate()).format("YYYY")}
+			/>
 			<div
 				style={{
-					background:
-						"linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ),  url('https://images.unsplash.com/photo-1503232478550-492d531afef9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2110&q=80') center",
+					background: `linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ),  url('${data.bannerPhoto}') center`,
 				}}
 				className={"parallax-header"}
 			>
@@ -77,10 +81,12 @@ export default function EventLayout({
 					}}
 					ref={headerNavRef}
 				>
-					<h1>Rafting</h1>
+					<h1>{data.name}</h1>
 					<p className="lead">
-						June 10, 2020 - June 11, 2020 <Seperator /> American River{" "}
-						<Seperator /> SIC: KeRay Chen, Daniel Lin
+						{moment(data.start.toDate()).format("MMMM D, YYYY")} -{" "}
+						{moment(data.end.toDate()).format("MMMM D, YYYY")}
+						<Seperator /> {data.location} <Seperator /> SIC:{" "}
+						{data.SICs.join(", ")}
 					</p>
 				</div>
 			</div>
@@ -100,11 +106,11 @@ export default function EventLayout({
 				{/* Show the navbar brand if either sticky is on OR it's a moible device*/}
 				{sticky && (
 					<Navbar.Brand href="#home" className={"d-none d-md-block"}>
-						Rafting 2020
+						{data.name} {moment(data.start.toDate()).year()}
 					</Navbar.Brand>
 				)}
 				<Navbar.Brand href="#home" className={"d-block d-md-none"}>
-					Rafting 2020
+					{data.name} {moment(data.start.toDate()).year()}
 				</Navbar.Brand>
 				<Navbar.Toggle aria-controls="basic-navbar-nav ml-auto" />
 				<Navbar.Collapse id="basic-navbar-nav">

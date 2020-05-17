@@ -6,10 +6,16 @@ export default function EventDetailsPage(
 	props: Partial<EventPageProps>
 ): ReactElement {
 	// because reach router types doesn't understand path slugs.
-	const { year, event, location } = props as EventPageProps;
+	const { year, event, location, data } = props as EventPageProps;
 
 	return (
-		<EventLayout page={""} location={location} event={event} year={year}>
+		<EventLayout
+			page={""}
+			location={location}
+			event={event}
+			year={year}
+			data={data}
+		>
 			<h1>Details</h1>
 			<p>
 				Rafting is a fun campout where we head out to the american river. On

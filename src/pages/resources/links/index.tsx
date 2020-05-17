@@ -31,7 +31,7 @@ export interface LinkData {
 
 const CopyLink = ({ link }: { link: string }): React.ReactElement => {
 	const [show, setShow] = React.useState(false);
-	const [timeoutID, setTimeoutID] = React.useState();
+	const [timeoutID, setTimeoutID] = React.useState<NodeJS.Timeout>();
 	const linkRef = React.useRef(null);
 	return (
 		<>
@@ -60,13 +60,7 @@ const CopyLink = ({ link }: { link: string }): React.ReactElement => {
 	);
 };
 
-interface PageProps {
-	location: WindowLocation;
-}
-
-export default function LinkShortenerPage({
-	location,
-}: PageProps): ReactElement {
+export default function LinkShortenerPage(): ReactElement {
 	const { user, loading, error, admin } = React.useContext(AuthContext);
 	console.log(user, "ADMIN", admin, loading, error);
 	const firebase = useFirebase();
@@ -125,7 +119,7 @@ export default function LinkShortenerPage({
 	}, [firebase, user]);
 
 	return (
-		<Layout location={location}>
+		<Layout>
 			<SEO title="Link Shortener" />
 			<AuthGate pagePath={"/resources/links"}>
 				<h1>Troop 485 Link Shortener</h1>

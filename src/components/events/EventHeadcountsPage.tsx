@@ -6,7 +6,7 @@ export default function EventHeadcountsPage(
 	props: Partial<EventPageProps>
 ): ReactElement {
 	// because reach router types doesn't understand path slugs.
-	const { year, event, location } = props as EventPageProps;
+	const { year, event, location, data } = props as EventPageProps;
 	/**
 	 *
 	 * Allow FORMBUILDER
@@ -28,6 +28,7 @@ export default function EventHeadcountsPage(
 			location={location}
 			event={event}
 			year={year}
+			data={data}
 		>
 			<h1>Headcounts</h1>
 		</EventLayout>

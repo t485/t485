@@ -11,10 +11,16 @@ export default function EventAgendaPage(
 	props: Partial<EventPageProps>
 ): ReactElement {
 	// because reach router types doesn't understand path slugs.
-	const { year, event, location } = props as EventPageProps;
+	const { year, event, location, data } = props as EventPageProps;
 
 	return (
-		<EventLayout page={"agenda"} location={location} event={event} year={year}>
+		<EventLayout
+			page={"agenda"}
+			location={location}
+			event={event}
+			year={year}
+			data={data}
+		>
 			<Button
 				onClick={(): void => {
 					navigator.clipboard
