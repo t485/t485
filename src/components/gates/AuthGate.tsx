@@ -17,16 +17,18 @@ export default function AuthGate({
 }): React.ReactElement {
 	const { user, admin, loading, setupComplete } = React.useContext(AuthContext);
 	const [redirecting, setRedirecting] = React.useState(false);
-	if (!loading && !user) {
-		setRedirecting(true);
-		navigate("/account/login", {
-			state: {
-				from: pagePath || location?.pathname,
-				message: true,
-				return: true,
-			} as AuthContinueState,
-		});
-	}
+	React.useEffect(() => {
+		if (!loading && !user && !redirecting) {
+			setRedirecting(true);
+			navigate("/account/login", {
+				state: {
+					from: pagePath || location?.pathname,
+					message: true,
+					return: true,
+				} as AuthContinueState,
+			});
+		}
+	}, [loading, user, redirecting]);
 	return (
 		<LoadingGate
 			loading={loading || redirecting}

@@ -24,10 +24,8 @@ interface QueryResult {
 
 export default function AboutPage({
 	data,
-	location,
 }: {
 	data: QueryResult;
-	location: WindowLocation;
 }): ReactElement {
 	console.log(data);
 	const images = data.slideImages.edges?.map(
@@ -36,7 +34,7 @@ export default function AboutPage({
 	console.log(images);
 
 	return (
-		<Layout empty className={"about-page"} location={location}>
+		<Layout empty className={"about-page"}>
 			<SEO title={"About Us"} />
 			<header>
 				<div className={"hero-text text-shadow"}>

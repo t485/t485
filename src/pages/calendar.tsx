@@ -1,13 +1,8 @@
 import React, { ReactElement } from "react";
 import { Layout, SEO } from "../components/layout";
-import { WindowLocation } from "@reach/router";
 import Loadable from "react-loadable";
 
-interface PageProps {
-	location: WindowLocation;
-}
-
-export default function CalendarPage({ location }: PageProps): ReactElement {
+export default function CalendarPage(): ReactElement {
 	/**
 	 * TODO
 	 * When you click an event, it shows details in the tab
@@ -25,7 +20,7 @@ export default function CalendarPage({ location }: PageProps): ReactElement {
 		},
 	});
 	return (
-		<Layout location={location}>
+		<Layout>
 			<SEO title="Calendar" />
 			<h1>Troop 485 Calendar</h1>
 			<LoadableCalendar />

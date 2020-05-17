@@ -81,7 +81,7 @@ export default function LinkShortenerManagePage({
 			<SEO title="Manage Links" />
 			<AdminGate>
 				<h1>Manage Links</h1>
-				<Table hover>
+				<Table hover responsive>
 					<thead>
 						<tr className={"d-flex"}>
 							<th className={`col-${colWidths[0]}`}>Actions</th>

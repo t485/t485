@@ -19,7 +19,7 @@ export interface ForgotPasswordState {
 export default function ForgotPasswordPage({
 	location,
 }: {
-	location: WindowLocation & { state: AuthContinueState };
+	location: { state: AuthContinueState };
 }): ReactElement {
 	let state = location.state;
 	const [successEmail, setSuccessEmail] = React.useState<string>("");
@@ -31,7 +31,7 @@ export default function ForgotPasswordPage({
 	console.log(state);
 	if (successEmail !== "") {
 		return (
-			<Layout narrow location={location}>
+			<Layout narrow>
 				<SEO title={"Reauthenticate"} />
 				<h1 className="text-center">Check your inbox!</h1>
 				<p>

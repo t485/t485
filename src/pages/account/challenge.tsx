@@ -11,14 +11,12 @@ import {
 import { navigate } from "gatsby";
 import { useFirebase } from "../../firebase";
 import AuthContext from "../../context/AuthContext";
-import { WindowLocation } from "@reach/router";
 
 export default function AuthChallengePage({
-	location,
+	location: { state },
 }: {
-	location: WindowLocation;
+	location: { state: AuthContinueState };
 }): ReactElement {
-	let state = location.state as AuthContinueState;
 	const firebase = useFirebase();
 	const { user, loading } = React.useContext(AuthContext);
 	if (state) {
@@ -33,7 +31,7 @@ export default function AuthChallengePage({
 		});
 	}
 	return (
-		<Layout narrow location={location}>
+		<Layout narrow>
 			<SEO title={"Reauthenticate"} />
 			<h1 className="text-center">
 				{"Hi " + (user?.displayName?.split(" ")[0] || "")}

@@ -11,6 +11,7 @@ import EventHeadcountsPage from "../components/events/EventHeadcountsPage";
 import { Layout } from "../components/layout";
 import { Spinner } from "react-bootstrap";
 import { useFirebase } from "../firebase";
+import firebaseType from "firebase";
 
 /*
 NOTES:
@@ -57,11 +58,16 @@ const NotFoundPageWrapper = (props: any): ReactElement => {
 	return <NotFoundPage {...props} />;
 };
 
-export default function EventsPage({
-	location,
-}: {
-	location: WindowLocation;
-}): ReactElement {
+export interface EventData {
+	name: string;
+	start: firebaseType.firestore.Timestamp;
+	end: firebaseType.firestore.Timestamp;
+	location: string;
+	SICs: string[];
+	bannerPhoto: string;
+}
+
+export default function EventsPage(): ReactElement {
 	const [loading, setLoading] = React.useState(true);
 	const firebase = useFirebase();
 	const [data, setData] = React.useState();
@@ -83,7 +89,7 @@ export default function EventsPage({
 	//  How should changes be dealt with? live, or not?
 	// what about headcounts data
 	return loading ? (
-		<Layout location={location} empty>
+		<Layout empty>
 			<div className={"text-center pt-5"}>
 				<Spinner animation={"border"} />
 			</div>
@@ -93,12 +99,15 @@ export default function EventsPage({
 		<Router>
 			<EventListPage path={"/events"} />
 			<EventListPage path={"/events/:year"} />
-			<EventDetailsPage path={"/events/:year/:event"} />
-			<EventAgendaPage path={"/events/:year/:event/agenda"} />
-			<EventResourcesPage path={"/events/:year/:event/resources"} />
-			<EventPhotosPage path={"/events/:year/:event/photos"} />
-			<EventHeadcountsPage path={"/events/:year/:event/headcounts"} />
-			<EventRegisterPage path={"/events/:year/:event/register"} />
+			<EventDetailsPage data={data} path={"/events/:year/:event"} />
+			<EventAgendaPage data={data} path={"/events/:year/:event/agenda"} />
+			<EventResourcesPage data={data} path={"/events/:year/:event/resources"} />
+			<EventPhotosPage data={data} path={"/events/:year/:event/photos"} />
+			<EventHeadcountsPage
+				data={data}
+				path={"/events/:year/:event/headcounts"}
+			/>
+			<EventRegisterPage data={data} path={"/events/:year/:event/register"} />
 			<NotFoundPageWrapper default />
 		</Router>
 	);

@@ -3138,6 +3138,13 @@
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-0.0.30.tgz#dc1e40f7af3b9c815013a7860e6252f6352a84df"
   integrity sha512-orGL5LXERPYsLov6CWs3Fh6203+dXzJkR7OnddIr2514Hsecwc8xRpzCapshBbKFImCsvS/mk6+FWiN5LyZJAQ==
 
+"@types/dompurify@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@types/dompurify/-/dompurify-2.0.1.tgz#0bf3a9f8ee21d81adb20b8c374ab034d6a74dbf7"
+  integrity sha512-OQ16dECrRv/I//woKkVUxyVGYR94W3qp3Wy//B63awHVe3h/1/URFqP5a/V2m4k01DEvWs1+z7FWW3xfM1lH3Q==
+  dependencies:
+    "@types/trusted-types" "*"
+
 "@types/enzyme-adapter-react-16@^1.0.6":
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/@types/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.0.6.tgz#8aca7ae2fd6c7137d869b6616e696d21bb8b0cec"
@@ -3359,6 +3366,14 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-loadable@^5.5.3":
+  version "5.5.3"
+  resolved "https://registry.yarnpkg.com/@types/react-loadable/-/react-loadable-5.5.3.tgz#65d50a6f9f7ff62513010bd6a460ed60ba58ca7d"
+  integrity sha512-BRzQhbMo5CjfxFU2tmmBNh16QqKUwNiaX0vflCwIVPVG8g/pCOyJ3rOdSPo4m+TPS7C9q/TupaqYXXTMtFoyng==
+  dependencies:
+    "@types/react" "*"
+    "@types/webpack" "*"
+
 "@types/react-native@*":
   version "0.62.4"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.62.4.tgz#0aea6619a19de1c6994ce8e4175fc4e44409bcdb"
@@ -3450,6 +3465,11 @@
   resolved "https://registry.yarnpkg.com/@types/tough-cookie/-/tough-cookie-4.0.0.tgz#fef1904e4668b6e5ecee60c52cc6a078ffa6697d"
   integrity sha512-I99sngh224D0M7XgW1s120zxCt3VYQ3IQsuw3P3jbq5GG4yc79+ZjyKznyOGIQrflfylLgcfekeZW/vk0yng6A==
 
+"@types/trusted-types@*":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@types/trusted-types/-/trusted-types-1.0.4.tgz#922d092c84a776a59acb0bd6785fd82b59b9bad5"
+  integrity sha512-6jtHrHpmiXOXoJ31Cg9R+iEVwuEKPf0XHwFUI93eEPXx492/J2JHyafkleKE2EYzZprayk9FSjTyK1GDqcwDng==
+
 "@types/uglify-js@*":
   version "3.9.0"
   resolved "https://registry.yarnpkg.com/@types/uglify-js/-/uglify-js-3.9.0.tgz#4490a140ca82aa855ad68093829e7fd6ae94ea87"
@@ -3480,6 +3500,18 @@
     "@types/node" "*"
     "@types/source-list-map" "*"
     source-map "^0.6.1"
+
+"@types/webpack@*":
+  version "4.41.13"
+  resolved "https://registry.yarnpkg.com/@types/webpack/-/webpack-4.41.13.tgz#988d114c8913d039b8a0e0502a7fe4f1f84f3d5e"
+  integrity sha512-RYmIHOWSxnTTa765N6jJBVE45pd2SYNblEYshVDduLw6RhocazNmRzE5/ytvBD8IkDMH6DI+bcrqxh8NILimBA==
+  dependencies:
+    "@types/anymatch" "*"
+    "@types/node" "*"
+    "@types/tapable" "*"
+    "@types/uglify-js" "*"
+    "@types/webpack-sources" "*"
+    source-map "^0.6.0"
 
 "@types/webpack@^4.41.8":
   version "4.41.12"

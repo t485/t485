@@ -10,7 +10,6 @@ import { Button, Spinner } from "react-bootstrap";
 import { Link } from "gatsby";
 import { useFirebase } from "../../firebase";
 import AuthContext from "../../context/AuthContext";
-import { WindowLocation } from "@reach/router";
 
 function Arrows({
 	labels,
@@ -78,11 +77,7 @@ function Arrows({
  * on PAGE 3, they will be appointed permissions based on troop jobs and stuff?
  * NOTE: this should be very modular so it's easy to update in the future, which WILL be necessary.
  * */
-export default function AccountSetupPage({
-	location,
-}: {
-	location: WindowLocation;
-}): ReactElement {
+export default function AccountSetupPage(): ReactElement {
 	const firebase = useFirebase();
 	const { user, loading: userLoading } = React.useContext(AuthContext);
 	const [step3Loading, setStep3Loading] = React.useState(false);
@@ -616,7 +611,7 @@ export default function AccountSetupPage({
 
 	return (
 		// Create uses custom css to set maxwidth, so it doesn't need to be `narrow`
-		<Layout className={"create-account"} location={location}>
+		<Layout className={"create-account"}>
 			<SEO title={"Create Account"} />
 			{success && (
 				<Arrows

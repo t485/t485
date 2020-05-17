@@ -4,8 +4,12 @@ import { Nav, Navbar as BootstrapNavbar, NavDropdown } from "react-bootstrap";
 import AuthContext from "../../context/AuthContext";
 import navItems from "./navItems";
 import { useFirebase } from "../../firebase";
-import { WindowLocation } from "@reach/router";
+import { globalHistory, WindowLocation } from "@reach/router";
 import classNames from "classnames";
+import { firebase as FirebaseType } from "firebase";
+
+const { location } = globalHistory;
+
 declare const heap: {
 	identify: (identifier: string) => void;
 	addUserProperties: (properties: object) => void;
@@ -46,7 +50,7 @@ function NavbarLink(props: {
 
 // Also handles heap analytics. TODO: move analtyics out?
 const AuthDropdown = (): ReactElement => {
-	const { user, loading, error } = React.useContext(AuthContext);
+	const { user, loading, error, setupComplete } = React.useContext(AuthContext);
 
 	const firebase = useFirebase();
 	// TODO: finish setup button, and redirect to finish setup upon login, and fix auth context to not give user unless setup is complete?
@@ -66,6 +70,7 @@ const AuthDropdown = (): ReactElement => {
 		}
 
 		heap.identify("user-" + user.uid);
+		console.log(location.pathname == "/account/logout");
 		firebase
 			.firestore()
 			.collection("users")
@@ -73,7 +78,7 @@ const AuthDropdown = (): ReactElement => {
 			.get()
 			.then(
 				(
-					snapshot: firebase.firestore.DocumentSnapshot<{
+					snapshot: FirebaseType.firestore.DocumentSnapshot<{
 						admin?: boolean;
 						memberType?: string;
 						jobs?: string[];
@@ -94,7 +99,10 @@ const AuthDropdown = (): ReactElement => {
 				}
 			)
 			.catch(e => {
-				if (e.code == "permission-denied") {
+				if (
+					e.code == "permission-denied" &&
+					location.pathname == "/account/logout"
+				) {
 					// do nothing because when logging out, the user will be logged out
 					// after the firebase call is made, but before it finishes. Thus, the request
 					// will be sent, but will also fail
@@ -114,12 +122,21 @@ const AuthDropdown = (): ReactElement => {
 		return (
 			<NavDropdown
 				id={"authDropdown"}
-				title={`Hello, ${user.displayName || user.email}`}
+				title={`Hello, ${(setupComplete
+					? user.displayName
+					: user.displayName.split(" ")[0]) || user.email}${
+					setupComplete ? "" : " (Needs Setup)"
+				}`}
 				alignRight
 			>
 				<NavDropdown.Header>
 					You are logged in as <b>{user.displayName || user.email}</b>
 				</NavDropdown.Header>
+				{!setupComplete && (
+					<NavbarLink page="/account" dropdown>
+						Finish setting up your account
+					</NavbarLink>
+				)}
 				<NavbarLink page="/account" dropdown>
 					Account Settings
 				</NavbarLink>
@@ -150,12 +167,7 @@ const AuthDropdown = (): ReactElement => {
 	);
 };
 
-interface PropDef {
-	/**
-	 * The name of the page that should be active. This should be the path to the page.
-	 * For example, on a page /navbarDemo, the value should be `/navbarDemo`. This is used to determine which nav link should be highlighted.
-	 */
-	location: string | WindowLocation;
+interface NavbarProps {
 	/**
 	 * Whether or not the admin variant of the navbar should be rendered instead of the normal component.
 	 */
@@ -166,18 +178,9 @@ interface PropDef {
 	transparent?: boolean;
 }
 
-export const Navbar = ({
-	location,
-	admin,
-	transparent,
-}: PropDef): ReactElement => {
+export const Navbar = ({ admin, transparent }: NavbarProps): ReactElement => {
 	const [float, setFloat] = React.useState(false);
-	let path = "";
-	if (typeof location === "string") {
-		path = location;
-	} else if (location) {
-		path = location.pathname?.replace(/\/$/, ""); // remove trailing slash;
-	}
+	const path = location.pathname?.replace(/\/$/, ""); // remove trailing slash
 	// console.log(path);
 	React.useEffect(() => {
 		const handler = (): void => {

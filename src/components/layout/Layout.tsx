@@ -19,10 +19,7 @@ interface LayoutProps {
 	 * The content of the page. It will be wrapped in a contianer.
 	 */
 	children: React.ReactNode;
-	/**
-	 * The path to the current page. It will be used for the navbar.
-	 */
-	location: string | WindowLocation;
+
 	/**
 	 * If provided, the navbar will have a transparent background.
 	 */

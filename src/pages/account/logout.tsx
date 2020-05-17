@@ -4,11 +4,7 @@ import SEO from "../../components/layout/seo";
 import { useFirebase } from "../../firebase";
 import { WindowLocation } from "@reach/router";
 
-const LogoutPage = ({
-	location,
-}: {
-	location: WindowLocation;
-}): ReactElement => {
+const LogoutPage = (): ReactElement => {
 	const firebase = useFirebase();
 
 	interface Error {
@@ -36,7 +32,7 @@ const LogoutPage = ({
 			});
 	}, [firebase]);
 	return (
-		<Layout location={location}>
+		<Layout>
 			<SEO title="Login" />
 			<h1>Logout</h1>
 			<p>

@@ -385,7 +385,7 @@ const AccountDetails = ({
 const AccountPage = ({
 	location,
 }: {
-	location: WindowLocation & { state: AuthReturnState };
+	location: { state: AuthReturnState };
 }): ReactElement => {
 	const { user, loading, error } = React.useContext(AuthContext);
 	const [editable, setEditable] = React.useState(
@@ -478,7 +478,7 @@ const AccountPage = ({
 	}, [user]);
 
 	return (
-		<Layout location={location}>
+		<Layout>
 			<SEO title="Your Account" />
 			<h1>Account Settings</h1>
 			<p>

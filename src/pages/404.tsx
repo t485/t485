@@ -1,16 +1,11 @@
 import React, { ReactElement } from "react";
 import { Layout, SEO } from "../components/layout";
-import { WindowLocation } from "@reach/router";
-import { navigate } from "gatsby";
-import { AuthContinueState } from "../components/auth";
-import { useFirebase } from "../firebase";
-import AuthContext from "../context/AuthContext";
+// import { navigate } from "gatsby";
+// import { AuthContinueState } from "../components/auth";
+// import { useFirebase } from "../firebase";
+// import AuthContext from "../context/AuthContext";
 
-interface PageProps {
-	location: WindowLocation;
-}
-
-export default function NotFoundPage({ location }: PageProps): ReactElement {
+export default function NotFoundPage(): ReactElement {
 	// const {user, loading, error} = React.useContext(AuthContext);
 	// const firebase = useFirebase();
 	// if (!loading && !user) {
@@ -24,7 +19,7 @@ export default function NotFoundPage({ location }: PageProps): ReactElement {
 	// }
 
 	return (
-		<Layout location={location}>
+		<Layout>
 			<SEO title="404: Not found" />
 			<h1>404: Resource not found</h1>
 			<p>

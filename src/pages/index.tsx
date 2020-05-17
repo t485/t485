@@ -5,9 +5,8 @@ import SEO from "../components/layout/seo";
 import "../styles/index.scss";
 import { graphql, Link } from "gatsby";
 import Img, { FluidObject } from "gatsby-image";
-import { WindowLocation } from "@reach/router";
 
-interface GraphQLQueryResult {
+interface QueryResult {
 	bgImage: {
 		childImageSharp: {
 			fluid: FluidObject;
@@ -15,16 +14,9 @@ interface GraphQLQueryResult {
 	};
 }
 
-const IndexPage = ({
-	data,
-	location,
-}: {
-	data: GraphQLQueryResult;
-	location: WindowLocation;
-}): ReactElement => {
+const IndexPage = ({ data }: { data: QueryResult }): ReactElement => {
 	return (
 		<Layout
-			location={location}
 			transparentNavFooter
 			noCard
 			noBackground
@@ -37,8 +29,8 @@ const IndexPage = ({
 			/>
 			<Container className="text-center container index-page-container">
 				<div>
-					<h1>Troop 485</h1>
-					<h3>Cupertino, California</h3>
+					<h1 className={"hide-without-proper-font"}>Troop 485</h1>
+					<h3 className={"hide-without-proper-font"}>Cupertino, California</h3>
 					<Row className="cta-block">
 						<Col md={2} lg={3} xl={4} className={"d-none d-md-block"}></Col>
 						<Col sm={12} md={4} lg={3} xl={2} className={""}>

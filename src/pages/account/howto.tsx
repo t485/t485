@@ -8,12 +8,12 @@ import { WindowLocation } from "@reach/router";
 const GetAnAccountPage = ({
 	location,
 }: {
-	location: WindowLocation & { state: AuthContinueState };
+	location: { state: AuthContinueState };
 }): ReactElement => {
 	const state = location.state && addToChain(location.state, "login");
 
 	return (
-		<Layout location={location}>
+		<Layout>
 			<SEO title="How to get an account" />
 			<h1>Getting a t485.org Account</h1>
 			<p>

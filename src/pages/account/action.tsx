@@ -7,13 +7,8 @@ import { Link, navigate } from "gatsby";
 import { unexpectedFirebaseError } from "../../utils/unexpectedError";
 import useSessionStorage from "../../utils/useSessionStorage";
 import { useFirebase } from "../../firebase";
-import { WindowLocation } from "@reach/router";
 
-const ActionPage = ({
-	location,
-}: {
-	location: WindowLocation;
-}): ReactElement => {
+const ActionPage = (): ReactElement => {
 	const firebase = useFirebase();
 	type UIMode =
 		| "loading"
@@ -482,11 +477,7 @@ const ActionPage = ({
 				);
 		}
 	}
-	return (
-		<Layout narrow location={location}>
-			{content}
-		</Layout>
-	);
+	return <Layout narrow>{content}</Layout>;
 };
 
 export default ActionPage;

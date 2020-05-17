@@ -1,5 +1,5 @@
 @import "variables";
-.wf-loading {
+html:not(.wf-active):not(.wf-inactive) {
 	p,
 	h1,
 	h2,
@@ -10,7 +10,9 @@
 	span,
 	a,
 	b {
-		opacity: 0;
+		&.hide-without-proper-font {
+			opacity: 0;
+		}
 	}
 }
 body {

@@ -10,22 +10,20 @@ import {
 } from "../../components/auth";
 import { Link, navigate } from "gatsby";
 import { useFirebase } from "../../firebase";
-import { WindowLocation } from "@reach/router";
 
 export default function LoginPage({
-	location,
+	location: { state },
 }: {
-	location: WindowLocation & { state: AuthContinueState };
+	location: { state: AuthContinueState };
 }): ReactElement {
 	const firebase = useFirebase();
 	console.log(location);
-	let state = location.state;
-	if (location.state) {
-		state = addToChain(location.state, "login");
+	if (state) {
+		state = addToChain(state, "login");
 	}
 	console.log(state);
 	return (
-		<Layout narrow location={location}>
+		<Layout narrow>
 			<SEO title={"Reauthenticate"} />
 			<h1 className="text-center">
 				{"Login" + (state?.message ? " to Continue" : "")}
