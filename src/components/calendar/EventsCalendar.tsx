@@ -138,7 +138,7 @@ export default function EventsCalendar(): ReactElement {
 						as={Link}
 						to={"/events"}
 					>
-						View All Event Pages {(loading || !user) && " (login required)"}
+						View Event Pages {(loading || !user) && " (login required)"}
 					</Button>
 					{/*</Link>*/}
 				</Col>

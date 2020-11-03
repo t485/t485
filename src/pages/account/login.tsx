@@ -49,11 +49,11 @@ export default function LoginPage({
 				tray={
 					<p className={"text-center"}>
 						<Link to={"/account/howto"} state={state}>
-							Need an Account?
+							Create An Account
 						</Link>{" "}
 						|{" "}
 						<Link to={"/account/forgotpassword"} state={state}>
-							Forgot Your Password?
+							Forgot Password
 						</Link>
 					</p>
 				}

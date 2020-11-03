@@ -70,7 +70,7 @@ export interface EventData {
 export default function EventsPage(): ReactElement {
 	const [loading, setLoading] = React.useState(true);
 	const firebase = useFirebase();
-	const [data, setData] = React.useState();
+	const [data, setData] = React.useState<EventData>();
 	React.useEffect(() => {
 		if (!firebase) return;
 

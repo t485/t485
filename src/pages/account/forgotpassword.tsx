@@ -10,6 +10,7 @@ import { unexpectedFirebaseError } from "../../utils/unexpectedError";
 import { Link } from "gatsby";
 import { useFirebase } from "../../firebase";
 import { WindowLocation } from "@reach/router";
+import moment from "moment";
 
 export interface ForgotPasswordState {
 	email: string;
@@ -75,7 +76,7 @@ export default function ForgotPasswordPage({
 						</Link>{" "}
 						|{" "}
 						<Link to={"/account/howto"} state={state}>
-							Need an Account?
+							Create Account
 						</Link>
 					</p>
 				}
@@ -85,28 +86,13 @@ export default function ForgotPasswordPage({
 					const lastResetEmail = parseInt(
 						localStorage.getItem("lastResetEmail" + email)
 					);
-					const canTryAgain = new Date(lastResetEmail + 11 * 60 * 1000);
-					const tryAgainHours =
-						canTryAgain.getHours() > 12
-							? canTryAgain.getHours() - 12
-							: canTryAgain.getHours();
-					const tryAgainTime =
-						(tryAgainHours < 10 ? "0" : "") +
-						tryAgainHours +
-						":" +
-						(canTryAgain.getMinutes() < 10 ? "0" : "") +
-						canTryAgain.getMinutes() +
-						(canTryAgain.getHours() < 12 ? "AM" : "PM");
-					if (
-						lastResetEmail &&
-						new Date().getTime() - lastResetEmail < 10 * 60 * 1000
-					) {
-						// 1000 second buffer to prevent errors.
-						const timeLeft =
-							lastResetEmail + 10 * 60 * 1000 - new Date().getTime() + 1000;
+					const canTryAgain = moment(lastResetEmail).add(3, "minutes");
+
+					const tryAgainTime = canTryAgain.format("h:mm A");
+					if (lastResetEmail && canTryAgain.isSameOrAfter(moment())) {
 						form.setErrors({
 							email:
-								"You can't send a password reset email to the same address more than once every 10 to 15 minutes. Try again at " +
+								"You can't send a password reset email to the same address more than once every 3 minutes. Try again at " +
 								tryAgainTime +
 								".",
 						});
@@ -147,7 +133,7 @@ export default function ForgotPasswordPage({
 								case "auth/too-many-requests":
 									form.setErrors({
 										email:
-											"We have blocked all requests from this device due to unusual activity. Please try again later.",
+											"We have blocked all requests from this device due to unusual activity. Please try again in 24 hours.",
 									});
 									break;
 								default:
