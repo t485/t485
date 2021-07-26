@@ -17,7 +17,6 @@ export default function LoginPage({
 	location: { state: AuthContinueState };
 }): ReactElement {
 	const firebase = useFirebase();
-	console.log(location);
 	if (state) {
 		state = addToChain(state, "login");
 	}
