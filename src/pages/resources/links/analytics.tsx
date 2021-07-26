@@ -129,7 +129,7 @@ export default function LinkAnalyticsPage({
 							)}
 							<p>
 								Raw click data (with each value representing the time of one
-								click) is also avaliable{" "}
+								click) is also available{" "}
 								<Download
 									name={`t485ls-rawdata-${id}`}
 									content={`data:text/csv;charset=utf-8,${data?.clicks

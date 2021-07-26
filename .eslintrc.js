@@ -27,6 +27,9 @@ module.exports = {
 	rules: {
 		"@typescript-eslint/explicit-function-return-type": "off",
 		semi: ["warn", "always"],
+
+		// most modern browsers have patched the issue, and it wasn't that big of a deal to begin with in our context
+		"react/jsx-no-target-blank": "off",
 	},
 	overrides: [
 		{

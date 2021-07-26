@@ -124,12 +124,6 @@ export default function LinkShortenerPage(): ReactElement {
 			<AuthGate pagePath={"/resources/links"}>
 				<h1>Troop 485 Link Shortener</h1>
 
-				{user && (
-					<p>
-						Hello, <b>{user?.displayName || user?.email}</b>. Your account will
-						be privately linked to any short links you create.
-					</p>
-				)}
 				{admin && (
 					<p>
 						<b>Administrator Actions:</b>{" "}
@@ -164,8 +158,8 @@ export default function LinkShortenerPage(): ReactElement {
 							.required("The short URL is required."),
 						toLink: Yup.string()
 							.max(
-								2048,
-								"You may not redirect to a URL longer than 2048 characters."
+								10000,
+								"You may not redirect to a URL longer than 10000 characters."
 							)
 							.matches(
 								/^((\b(https?|ftp|file):\/\/)[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]$)|mailto:.+/,
@@ -205,7 +199,7 @@ export default function LinkShortenerPage(): ReactElement {
 									disabled: false,
 									created: firebase.firestore.FieldValue.serverTimestamp(),
 									disablePreview: !data.enablePreview,
-									clickAnalytics: !data.enableAnalytics,
+									clickAnalytics: data.enableAnalytics,
 									author: user?.uid,
 								});
 

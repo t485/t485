@@ -12,8 +12,30 @@ export default [
 		path: "/calendar",
 	},
 	{
+		name: "Directory",
+		path: "/directory",
+	},
+	{
 		name: "Events",
 		path: "/events",
+	},
+	{
+		name: "About",
+		dropdown: true,
+		children: [
+			{
+				name: "PLC",
+				path: "/about/plc",
+			},
+			{
+				name: "Troop Jobs",
+				path: "/about/troop-jobs",
+			},
+			{
+				name: "Merit Badges",
+				path: "/about/merit-badges",
+			},
+		],
 	},
 	{
 		name: "Resources",
