@@ -38,7 +38,15 @@ export default function useDirectoryData(): Scout[] {
 				})
 			);
 			console.log(sheetsData);
-			const directoryData = sheetsData.flat();
+			const directoryData = sheetsData.flat().sort((a, b) => {
+				return (
+					a.lastName.toLowerCase().localeCompare(b.lastName.toLowerCase()) ||
+					a.firstName.toLowerCase().localeCompare(b.firstName.toLowerCase())
+				);
+			});
+
+			// TODO transform into class?
+
 			setData(directoryData);
 		})();
 	}, [user, firebase]);

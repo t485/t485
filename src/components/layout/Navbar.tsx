@@ -124,7 +124,7 @@ const AuthDropdown = (): ReactElement => {
 				id={"authDropdown"}
 				title={`Hello, ${(setupComplete
 					? user.displayName
-					: user.displayName.split(" ")[0]) || user.email}${
+					: user.displayName?.split(" ")[0]) || user.email}${
 					setupComplete ? "" : " (Needs Setup)"
 				}`}
 				alignRight
